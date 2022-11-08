@@ -1,0 +1,400 @@
+{% extends 'clientside/clientBase.html' %}
+{% block title %}
+<title>Products - Acupuncture and Herbal Medicine with Dr. Lee</title>
+{% endblock %}
+{% block chatcontent%}
+<!-- CHATBOT SRC -->
+<link rel="stylesheet" href="{{url_for('static', path='/assets/css/chatStyle.css')}}" />
+<script src="{{url_for('static', path='/assets/js/chatbotservice.js')}}" defer></script>
+<script src="{{url_for('static', path='/assets/js/app.js')}}" defer></script>
+{% endblock %}
+{% block linkcontent %}
+<link rel="stylesheet" href="{{url_for('static', path='/assets/css/navprod.css')}}" type="text/css">
+<link rel="stylesheet" href="{{url_for('static', path='/assets/css/product.css')}}" type="text/css">	
+<link rel="stylesheet" href="{{url_for('static', path='/assets/css/cart.css')}}" type="text/css">
+{% endblock %}
+
+
+<!--for product na ma angas!!-->
+{% block content %}
+<section></section>
+    <div class = "products">
+        <div class = "container">
+            <h1 class = "lg-title" style="color:rgb(0, 0, 0)">Special  Offers</h1>
+            <p class = "text-light"></p>
+            <div class = "product-items">
+                <!-- single product -->
+                <div class = "product">
+                    <div class = "product-content">
+                        <div class = "product-img">
+                            <section class="shop-section">
+    
+                            <img src = "../static/images/mask.png" alt = "product image">
+                        </div>
+                        <div class = "product-btns">
+                            <button type = "button" class="add-to-cart-btn btn-cart"> ADD TO CART
+                             
+                            </button>
+                            <button type = "button" class = "btn-buy"> buy now
+                              
+                            </button>
+                        </div>
+                    </div>
+                    <div class = "product-info">
+                        <div class = "product-info-top">
+                            <h2 class = "sm-title"></h2>
+                            <div class = "rating">
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "far fa-star"></i></span>
+                            </div>
+                        </div>
+                        <a href = "#" class = "product-name">Faith Hope Love - Christian Mask</a>
+                        <p class = "product-price">₱  150.00</p>
+                        <p class = "product-price">₱  133.00</p>
+                    </div>
+    
+                   <!-- pag sale to pre <div class = "off-info">
+                        <h2 class = "sm-title">% off</h2>
+                    </div>-->
+                </div>
+                <!-- end of single product -->
+                <!-- single product -->
+                <div class = "product">
+                    <div class = "product-content">
+                        <div class = "product-img">
+                            <img src = "../static/images/mug.png" alt = "product image">
+                        </div>
+                        <div class = "product-btns">
+                            <button type = "button" class="add-to-cart-btn btn-cart"> ADD TO CART
+                             
+                            </button>
+                            <button type = "button" class = "btn-buy"> buy now
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class = "product-info">
+                        <div class = "product-info-top">
+                            <h2 class = "sm-title"></h2>
+                            <div class = "rating">
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "far fa-star"></i></span>
+                            </div>
+                        </div>
+                        <a href = "#" class = "product-name">The Faith, Hope, Love Mug</a><br>
+                        <p class = "product-price">₱  150.00</p>
+                        <p class = "product-price">₱  133.00</p>
+                    </div>
+                </div>
+                <!-- end of single product -->
+                <!-- single product -->
+                <div class = "product">
+                    <div class = "product-content">
+                        <div class = "product-img">
+                            <a href="prdct1.html">
+                            <img src = "../static/images/shirt-black.png" alt = "product image"></a>
+                        </div>
+                        <div class = "product-btns">
+                            <button type = "button" class="add-to-cart-btn btn-cart"> ADD TO CART
+                             
+                            </button>
+                            <button type = "button" class = "btn-buy"> buy now
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class = "product-info">
+                        <div class = "product-info-top">
+                            <h2 class = "sm-title"></h2>
+                            <div class = "rating">
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "far fa-star"></i></span>
+                            </div>
+                        </div>
+                        <a href = "#" class = "product-name">Faith Hope Love T-Shirt</a><br>
+                        <p class = "product-price">₱  150.00</p>
+                        <p class = "product-price">₱ 133.00</p>
+                    </div>
+                </div>
+                <!-- end of single product -->
+                <!-- single product -->
+                <div class = "product">
+                    <div class = "product-content">
+                        <div class = "product-img">
+                            <img src = "../static/images/mug.png" alt = "product image">
+                        </div>
+                        <div class = "product-btns">
+                            <button type = "button" class="add-to-cart-btn btn-cart"> ADD TO CART
+                             
+                            </button>
+                            <button type = "button" class = "btn-buy"> buy now
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class = "product-info">
+                        <div class = "product-info-top">
+                           <h2 class = "sm-title"></h2>
+                            <div class = "rating">
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "far fa-star"></i></span>
+                            </div>
+                        </div>
+                        <a href = "#" class = "product-name">The Faith, Hope, Love Mug</a><br>
+                        <p class = "product-price">₱  150.00</p>
+                        <p class = "product-price">₱  133.00</p>
+                    </div>
+    
+                    <div class = "off-info">
+                        <!--<h2 class = "sm-title">25% off</h2>-->
+                    </div>
+                </div>
+                <!-- end of single product -->
+                  <!-- single product -->
+                  <div class = "product">
+                    <div class = "product-content">
+                        <div class = "product-img">
+                            <img src = "../static/images/mask.png" alt = "product image">
+                        </div>
+                        <div class = "product-btns">
+                            <button type = "button" class="add-to-cart-btn btn-cart"> ADD TO CART
+                             
+                            </button>
+                            <button type = "button" class = "btn-buy"> buy now
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class = "product-info">
+                        <div class = "product-info-top">
+                            <h2 class = "sm-title"></h2>
+                            <div class = "rating">
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "far fa-star"></i></span>
+                            </div>
+                        </div>
+                        <a href = "#" class = "product-name">Faith Hope Love - Christian Mask</a>
+                        <p class = "product-price">₱  150.00</p>
+                        <p class = "product-price">₱  133.00</p>
+                    </div>
+    
+                   <!-- pag sale to pre <div class = "off-info">
+                        <h2 class = "sm-title">% off</h2>
+                    </div>-->
+                </div>
+                <!-- end of single product -->
+                <!-- single product -->
+                <div class = "product">
+                    <div class = "product-content">
+                        <div class = "product-img">
+                            <img src = "../static/images/mug.png" alt = "product image">
+                        </div>
+                        <div class = "product-btns">
+                            <button type = "button" class="add-to-cart-btn btn-cart"> ADD TO CART
+                             
+                            </button>
+                            <button type = "button" class = "btn-buy"> buy now
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class = "product-info">
+                        <div class = "product-info-top">
+                            <h2 class = "sm-title"></h2>
+                            <div class = "rating">
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "far fa-star"></i></span>
+                            </div>
+                        </div>
+                        <a href = "#" class = "product-name">The Faith, Hope, Love Mug</a>
+                        <p class = "product-price">₱  150.00</p>
+                        <p class = "product-price">₱  133.00</p>
+                    </div>
+                </div>
+                <!-- end of single product -->
+                <!-- single product -->
+                <div class = "product">
+                    <div class = "product-content">
+                        <div class = "product-img">
+                            <img src = "../static/images/shirt-black.png" alt = "product image">
+                        </div>
+                        <div class = "product-btns">
+                            <button type = "button" class="add-to-cart-btn btn-cart"> ADD TO CART
+                             
+                            </button>
+                            <button type = "button" class = "btn-buy"> buy now
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class = "product-info">
+                        <div class = "product-info-top">
+                            <h2 class = "sm-title"></h2>
+                            <div class = "rating">
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "far fa-star"></i></span>
+                            </div>
+                        </div>
+                        <a href = "#" class = "product-name">Faith Hope Love T-Shirt</a><br>
+                        <p class = "product-price">₱  150.00</p>
+                        <p class = "product-price">₱ 133.00</p>
+                    </div>
+                </div>
+                <!-- end of single product -->
+                <!-- single product -->
+                <div class = "product">
+                    <div class = "product-content">
+                        <div class = "product-img">
+                            <img src = "../static/images/mug.png" alt = "product image">
+                        </div>
+                        <div class = "product-btns">
+                            <button type = "button" class="add-to-cart-btn btn-cart"> ADD TO CART
+                             
+                            </button>
+                            <button type = "button" class = "btn-buy"> buy now
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class = "product-info">
+                        <div class = "product-info-top">
+                           <h2 class = "sm-title"></h2>
+                            <div class = "rating">
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "fas fa-star"></i></span>
+                                <span><i class = "far fa-star"></i></span>
+                            </div>
+                        </div>
+                        <a href = "#" class = "product-name">The Faith, Hope, Love Mug</a>
+                        <p class = "product-price">₱  150.00</p>
+                        <p class = "product-price">₱  133.00</p>
+                    </div>
+    
+                    <div class = "off-info">
+                        <!--<h2 class = "sm-title">25% off</h2>-->
+                    </div>
+                </div>
+                <!-- end of single product -->
+                <!-- end of single product -->
+            </div>
+        </div>
+    </div>
+    </section>
+    <div class = "product-collection">
+        <div class = "container">
+            <div class = "product-collection-wrapper">
+                <!-- product col left -->
+                <div class = "product-col-left flex">
+                    <div class = "product-col-content">
+                        <img src = "../static/images/shirt2.png" alt = "product image">
+                        <h2 class = "sm-title">faith hope love Essential T-Shirt</h2>
+                        <h2 class = "md-title"></h2>
+                        <p class = "text-light"></p>
+                        <button type = "button" class = "btn-dark">Shop now</button>
+                    </div>
+                </div>
+    
+                <!-- product col right -->
+                <div class = "product-col-right">
+                    <div class = "product-col-r-top flex">
+                        <div class = "product-col-content">
+                       
+                            <h2 class = "sm-title"></h2>
+                            <h2 class = "md-title"> </h2>
+                            <p class = "text-light"></p>
+                            <button type = "button" class = "btn-dark">Shop now</button>
+                        </div>
+                    </div>
+    
+                    <div class = "product-col-r-bottom">
+                        <!-- left -->
+                        <div class = "flex">
+                            <div class = "product-col-content">
+                                <h2 class = "sm-title"></h2>
+                                <h2 class = "md-title">Extra 50% Off </h2>
+                                <p class = "text-light"></p>
+                                <button type = "button" class = "btn-dark">Shop now</button>
+                            </div>
+                        </div>
+                        <!-- right -->
+                        <div class = "flex">
+                            <div class = "product-col-content">
+                                <h2 class = "sm-title"></h2>
+                                <h2 class = "md-title">best sellers </h2>
+                                <p class = "text-light"></p>
+                                <button type = "button" class = "btn-dark">Shop now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="hero-banner" id="home-section"></section>
+    <div class="chat-bar-collapsible">
+        <button id="chat-button" type="button" class="collapsible">Customer Service
+            <i id="chat-icon" style="color: #fff;" class="fa fa-fw fa-comments-o"></i>
+        </button>
+
+        <div class="content">
+            <div class="full-chat-block">
+                <!-- Message Container -->
+                <div class="outer-container">
+                    <div class="chat-container">
+                        <!-- Messages -->
+                        <div id="chatbox">
+                            <h5 id="chat-timestamp"></h5>
+                            <p id="botStarterMessage" class="botText"><span>Loading...</span></p>
+                        </div>
+
+                        <!-- User input box -->
+                        <div class="chat-bar-input-block">
+                            <div id="userInput">
+                                <input id="textInput" class="input-box" type="text" name="msg"
+                                    placeholder="Tap 'Enter' to send a message">
+                                <p></p>
+                            </div>
+
+                            <div class="chat-bar-icons">
+                                <!-- <i id="chat-icon" style="color: crimson;" class="fa fa-fw fa-heart"
+                                    onclick="heartButton()"></i> -->
+                                <i id="chat-icon" style="color: #333;" class="fa fa-fw fa-send"
+                                    onclick="sendButton()"></i>
+                            </div>
+                        </div>
+
+                        <div id="chat-bar-bottom">
+                            <p></p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,78 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}
+    <title>FastAPI Blog</title>
+    {% endblock %}
+    <link rel="stylesheet" href="{{url_for('static', path='/plugins/fontawesome-free/css/all.min.css')}}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700" rel="stylesheet">
+    <!-- BLOCK FOR PLUGINS STYLESHEET -->
+    {%block plugins_css%}
+    {%endblock%}
+    
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/adminlte.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/open-iconic-bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/animate.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/owl.carousel.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/owl.theme.default.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/magnific-popup.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/aos.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/ionicons.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/bootstrap-datepicker.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/jquery.timepicker.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/flaticon.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/icomoon.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', path='/dist/css/style.css')}}">
+    
+    <!-- BLOCK FOR EXTRA STYLES -->
+    {%block styles%}
+    {%endblock%}
+
+</head>
+<body>
+  {% include 'navbar.html' %}
+    <div class="wrapper">
+      <div class="content">
+        <!-- BLOCK FOR MAIN CONTENT -->
+        {%block content%}{%endblock%}
+      </div>
+    </div>
+
+    <footer>
+      {% include 'components/footer.html' %}
+    </footer>
+
+    <script src="{{url_for('static', path='/plugins/jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', path='/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+    <!-- BLOCK FOR PLUGINS JAVASCRIPT -->
+    {%block plugins_js%}
+    {%endblock%}
+    
+    <!-- <script src="{{url_for('static', path='/dist/js/adminlte.min.js')}}"></script> -->
+
+    <!-- BLOCK FOR EXTRA SCRIPTS -->
+    {%block scripts%}
+    {%endblock%}
+
+    <script src="{{url_for('static', path='/dist/js/jquery-migrate-3.0.1.min.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/popper.min.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/jquery.easing.1.3.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/jquery.waypoints.min.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/jquery.stellar.min.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/owl.carousel.min.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/jquery.magnific-popup.min.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/aos.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/jquery.animateNumber.min.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/bootstrap-datepicker.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/jquery.timepicker.min.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/scrollax.min.js')}}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="{{url_for('static', path='/dist/js/google-map.js')}}"></script>
+    <script src="{{url_for('static', path='/dist/js/main.js')}}"></script>
+
+</body>
+</html>
