@@ -22,7 +22,7 @@ conf = ConnectionConfig(
 )
 
 class EmailSchema(BaseModel):
-    email: List[EmailStr]
+    email: List[EmailStr] 
 
 async def send_email(email : list, user):
 
