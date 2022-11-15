@@ -2,12 +2,6 @@
 {% block title %}
 <title>Products - Acupuncture and Herbal Medicine with Dr. Lee</title>
 {% endblock %}
-{% block chatcontent%}
-<!-- CHATBOT SRC -->
-<link rel="stylesheet" href="{{url_for('static', path='/assets/css/chatStyle.css')}}" />
-<script src="{{url_for('static', path='/assets/js/chatbotservice.js')}}" defer></script>
-<script src="{{url_for('static', path='/assets/js/app.js')}}" defer></script>
-{% endblock %}
 {% block linkcontent %}
 <link rel="stylesheet" href="{{url_for('static', path='/assets/css/navprod.css')}}" type="text/css">
 <link rel="stylesheet" href="{{url_for('static', path='/assets/css/product.css')}}" type="text/css">	
@@ -354,47 +348,4 @@
         </div>
     </div>
     <section class="hero-banner" id="home-section"></section>
-    <div class="chat-bar-collapsible">
-        <button id="chat-button" type="button" class="collapsible">Customer Service
-            <i id="chat-icon" style="color: #fff;" class="fa fa-fw fa-comments-o"></i>
-        </button>
-
-        <div class="content">
-            <div class="full-chat-block">
-                <!-- Message Container -->
-                <div class="outer-container">
-                    <div class="chat-container">
-                        <!-- Messages -->
-                        <div id="chatbox">
-                            <h5 id="chat-timestamp"></h5>
-                            <p id="botStarterMessage" class="botText"><span>Loading...</span></p>
-                        </div>
-
-                        <!-- User input box -->
-                        <div class="chat-bar-input-block">
-                            <div id="userInput">
-                                <input id="textInput" class="input-box" type="text" name="msg"
-                                    placeholder="Tap 'Enter' to send a message">
-                                <p></p>
-                            </div>
-
-                            <div class="chat-bar-icons">
-                                <!-- <i id="chat-icon" style="color: crimson;" class="fa fa-fw fa-heart"
-                                    onclick="heartButton()"></i> -->
-                                <i id="chat-icon" style="color: #333;" class="fa fa-fw fa-send"
-                                    onclick="sendButton()"></i>
-                            </div>
-                        </div>
-
-                        <div id="chat-bar-bottom">
-                            <p></p>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
 {% endblock %}

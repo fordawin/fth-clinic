@@ -2,12 +2,6 @@
 {% block title %}
 <title>Contact - Acupuncture and Herbal Medicine with Dr. Lee</title>
 {% endblock %}
-{% block chatcontent%}
-<!-- CHATBOT SRC -->
-<link rel="stylesheet" href="{{url_for('static', path='/assets/css/chatStyle.css')}}" />
-<script src="{{url_for('static', path='/assets/js/chatbotservice.js')}}" defer></script>
-<script src="{{url_for('static', path='/assets/js/app.js')}}" defer></script>
-{% endblock %}
 {% block linkcontent %}
 <!-- Fontawesome icon -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
@@ -70,51 +64,6 @@
     </div>
   </div>
 </div>
-<div class="chat-bar-collapsible">
-  <button id="chat-button" type="button" class="collapsible">Customer Service
-      <i id="chat-icon" style="color: #fff;" class="fa fa-fw fa-comments-o"></i>
-  </button>
-
-  <div class="content">
-      <div class="full-chat-block">
-          <!-- Message Container -->
-          <div class="outer-container">
-              <div class="chat-container">
-                  <!-- Messages -->
-                  <div id="chatbox">
-                      <h5 id="chat-timestamp"></h5>
-                      <p id="botStarterMessage" class="botText"><span>Loading...</span></p>
-                  </div>
-
-                  <!-- User input box -->
-                  <div class="chat-bar-input-block">
-                      <div id="userInput">
-                          <input id="textInput" class="input-box" type="text" name="msg"
-                              placeholder="Tap 'Enter' to send a message">
-                          <p></p>
-                      </div>
-
-                      <div class="chat-bar-icons">
-                          <!-- <i id="chat-icon" style="color: crimson;" class="fa fa-fw fa-heart"
-                              onclick="heartButton()"></i> -->
-                          <i id="chat-icon" style="color: #333;" class="fa fa-fw fa-send"
-                              onclick="sendButton()"></i>
-                      </div>
-                  </div>
-
-                  <div id="chat-bar-bottom">
-                      <p></p>
-                  </div>
-
-              </div>
-          </div>
-
-      </div>
-  </div>
-
-</div>
-
-
 
 </section>
 {% endblock %}
