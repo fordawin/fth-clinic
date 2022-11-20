@@ -1,0 +1,175 @@
+{% extends 'doctorside/doctorBase.html' %}
+    
+{%block content%}
+
+<div class="content-page">
+   <!-- Start content -->
+   <div class="content">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-xl-12">
+               <div class="breadcrumb-holder">
+                  <h1 class="main-title float-left">My Profile</h1>
+                  <ol class="breadcrumb float-right">
+                     <li class="breadcrumb-item">Home</li>
+                     <li class="breadcrumb-item active">Profile</li>
+                  </ol>
+                  <div class="clearfix"></div>
+               </div>
+            </div>
+         </div>
+         <!-- end row -->
+         {% for data in doctor %}
+            {% if data.dt_user_credential == doctor[-1] %}
+         <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+               <div class="card mb-3">
+                  <div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
+                     <h3><i class="fa fa-user text-warning "></i> Profile details</h3>
+                  </div>
+                  <div class="card-body">
+                     <form action="https://faith-hope-love.herokuapp.com/prescription/update/{{data.dt_id}}" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                           <div class="col-lg-9 col-xl-9">
+                              <div class="row">
+                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                       <label class="form-label">First Name </label>
+                                       <input class="form-control" name="dt_firstName" type="text" value="{{data.dt_firstName}}"/>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                       <label class="form-label">Middle Name </label>
+                                       <input class="form-control" name="dt_middleName" type="text" value="{{data.dt_middleName}}"/>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                       <label class="form-label">Last Name </label>
+                                       <input class="form-control" name="dt_lastName" type="text" value="{{data.dt_lastName}}"/>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                       <label class="form-label">Email </label>
+                                       <input class="form-control" name="email" type="email" value="doctor@doctor.com"/>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                       <label class="form-label">House No. </label>
+                                       <input class="form-control" name="dt_houseNo" type="text" value="{{data.dt_houseNo}}"/>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                       <label class="form-label">Street </label>
+                                       <input class="form-control" name="dt_street" type="text" value="{{data.dt_street}}"/>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                       <label class="form-label">Barangay </label>
+                                       <input class="form-control" name="dt_brgy" type="text" value="{{data.dt_brgy}}"/>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                       <label class="form-label">City </label>
+                                       <input class="form-control" name="dt_city" type="text" value="{{data.dt_city}}"/>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                       <label class="form-label">Contact No </label>
+                                       <input class="form-control" name="dt_contactNo" type="text" value="{{data.dt_contactNo}}"/>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-lg-12">
+                                    <button type="submit" class="btn btn-primary" onclick="confirm()">Edit profile</button>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-lg-3 col-xl-3 border-left">
+                              <b>Latest activity</b>:July 25 2022, 22:23	
+                              <br />
+                              <b>Register date: </b>: July 24 2022, 20:32	
+                              <br />
+                              <div class="m-b-10"></div>
+                              <div id="avatar_image">
+                                 <img alt="image" style="max-width:100px; height:auto;" src="../static/assets/images/avatars/admin.png" />
+                                 <br />
+                                 <i class="fa fa-trash-o fa-fw"></i> <a class="delete_image" href="#">Remove avatar</a>
+                              </div>
+                              <div id="image_deleted_text"></div>
+                              <div class="m-b-10"></div>
+                              <div class="form-group">
+                                 <label>Change avatar</label> 
+                                 <input type="file" name="image" class="form-control">
+                              </div>
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+                  <!-- end card-body -->								
+               </div>
+               <!-- end card -->					
+            </div>
+            <!-- end col -->	
+         </div>
+         <!-- end row -->	
+            {% endif %}
+         {% endfor %}
+      </div>
+      <!-- END container-fluid -->
+   </div>
+   <!-- END content -->
+</div>
+<!-- END content-page -->
+<footer class="footer">
+   <span class="text-right">
+   Copyright <a target="_blank" href="#">Your Website</a>
+   </span>
+   <span class="float-right">
+   Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
+   </span>
+</footer>
+{%endblock%}
+
+{% block sidebarscripts%}
+      <script>
+         function confirm() {
+         Swal.fire(
+            'Saved Changes!',
+            '',
+            'success'
+         )
+         }
+      </script>
+     <!-- sidebar script -->
+     <script>
+		$(document).ready(function() {
+			// data-tables
+			$('#example1').DataTable();
+					
+			// counter-up
+			$('.counter').counterUp({
+				delay: 10,
+				time: 600
+			});
+		} );		
+	</script>
+
+     <!-- CUSTOM ACTIVE NAVBAR  -->
+     <script>
+		$('.navbar-nav .nav-link').click(function(){
+		$('.navbar-nav .nav-link').removeClass('active');
+		$(this).addClass('active');
+		})
+	</script>
+{% endblock %}

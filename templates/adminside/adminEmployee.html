@@ -1,0 +1,277 @@
+{% extends 'adminside/adminBase.html' %}
+    
+{%block content%}
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="breadcrumb-holder">
+                        <h1 class="main-title float-left">Admin</h1>
+                        <ol class="breadcrumb float-right">
+                            <li class="breadcrumb-item">Admin</li>
+                            <li class="breadcrumb-item active">User's Credential</li>
+                        </ol>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            
+                <!-- end row -->
+                    
+
+          
+
+            <!-- student tracker table  -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
+                    <div class="card mb-3">
+                        <div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
+                            <h3><i class="fa fa-table text-warning" aria-hidden="true"></i> Employee</h3>
+                           
+                            <span><a type="button" class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#addEmployee">Add Employee</a></span>
+                        </div>
+
+                        <div class="card-body">
+                            <table id="example1" class="table table-hover table-control no-footer" >
+                                <thead>
+                                    <tr>
+                                        <th>Employee Name</th>
+                                        <th>Email</th>
+                                        <th>Contact #</th>
+                                        <th>Address</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  {% for usercred, employees in employee %}
+                                   <tr>
+                                        <td>{{ employees.em_fullName }}</td>
+                                        <td>{{ usercred.user_email }}</td>
+                                        <td>{{ employees.em_contactNo }}</td>
+                                        <td>{{ employees.em_address }}</td>
+                                        <td class="text-white">
+                                          <span><a type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editEmployee{{ employees.em_id }}">Edit</a></span>
+                                          <span><a type="button" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#deleteEmployee">Delete</a></span>
+                                        </td>
+                                   </tr>
+                                  {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>							
+                        <div class="card-footer small text-muted"> Updated yesterday at 11:59 PM</div>
+                    </div><!-- end card-->					
+                </div>
+            </div>
+            
+    <!-- end row -->
+        </div>
+    </div>
+</div>
+   <!-- end row -->
+
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Add Employee</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST">
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label" for="">Username</label>
+                <input class="form-control" type="text" name="user_username">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="">Password</label>
+                <input class="form-control" type="password" name="user_password">
+              </div>
+              <div class="col-md-4">
+                  <label class="form-label" for="">First Name</label>
+                  <input class="form-control" type="text" name="em_firstName">
+              </div>
+              <div class="col-md-4">
+                  <label class="form-label" for="">Middle Name</label>
+                  <input class="form-control" type="text" name="em_middleName">
+              </div>
+              <div class="col-md-4">
+                  <label class="form-label" for="">Last Name</label>
+                  <input class="form-control" type="text" name="em_lastName">
+              </div>
+              <div class="col-md-2">
+                  <label class="form-label" for="">#</label>
+                  <input class="form-control" type="text" name="em_houseNo">
+              </div>
+              <div class="col-md-4">
+                  <label class="form-label" for="">Street</label>
+                  <input class="form-control" type="text" name="em_street">
+              </div>
+              <div class="col-md-3">
+                  <label class="form-label" for="">Barangay</label>
+                  <input class="form-control" type="text" name="em_brgy">
+              </div>
+              <div class="col-md-3">
+                  <label class="form-label" for="">City</label>
+                  <input class="form-control" type="text" name="em_city">
+              </div>
+              <div class="col-md-5">
+                  <label class="form-label" for="">Email</label>
+                  <input class="form-control" type="email" name="user_email">
+              </div>
+              <div class="col-md-3">
+                  <label class="form-label" for="">Contact #</label>
+                  <input class="form-control" type="text" name="em_contactNo">
+              </div>
+              <div class="col-md-4">
+                  <label class="form-label" for="">Birthdate</label>
+                  <input class="form-control" type="date" name="em_birthdate">
+              </div>
+            </div>
+            <div class="modal-footer">
+                <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary btn-sm" onclick="confirm()">Save changes</button>
+              </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+{% for usercred, employees in employee %}
+  <!-- Edit Employee Modal -->
+<div class="modal fade" id="editEmployee{{ employees.em_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Add Employee</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="https://faith-hope-love.herokuapp.com/employee/{{employees.em_id}}" method="POST">
+            <div class="row">
+              <div class="col-md-4">
+                  <label class="form-label" for="">First Name</label>
+                  <input class="form-control" type="text" value="{{employees.em_firstName}}" name="em_firstName">
+              </div>
+              <div class="col-md-4">
+                  <label class="form-label" for="">Middle Name</label>
+                  <input class="form-control" type="text" value="{{employees.em_middleName}}" name="em_middleName">
+              </div>
+              <div class="col-md-4">
+                  <label class="form-label" for="">Last Name</label>
+                  <input class="form-control" type="text" value="{{employees.em_lastName}}" name="em_lastName">
+              </div>
+              <div class="col-md-2">
+                  <label class="form-label" for="">#</label>
+                  <input class="form-control" type="text" value="{{employees.em_houseNo}}" name="em_houseNo">
+              </div>
+              <div class="col-md-4">
+                  <label class="form-label" for="">Street</label>
+                  <input class="form-control" type="text" value="{{employees.em_street}}" name="em_street">
+              </div>
+              <div class="col-md-3">
+                  <label class="form-label" for="">Barangay</label>
+                  <input class="form-control" type="text" value="{{employees.em_brgy}}" name="em_brgy">
+              </div> 
+              <div class="col-md-3">
+                  <label class="form-label" for="">City</label>
+                  <input class="form-control" type="text" value="{{employees.em_city}}" name="em_city">
+              </div>
+              <div class="col-md-5">
+                  <label class="form-label" for="">Email</label>
+                  <input class="form-control" type="email" value="{{usercred.user_email}}" name="user_email">
+              </div>
+              <div class="col-md-3">
+                  <label class="form-label" for="">Contact #</label>
+                  <input class="form-control" type="text" value="{{employees.em_contactNo}}" name="em_contactNo">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+{% for usercred, employees in employee %}
+  <!-- Delete Employee Modal -->
+<div class="modal fade" id="deleteEmployee" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Confirm delete</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete these entry?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-danger" href="https://faith-hope-love.herokuapp.com/employee/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+<footer class="footer">
+    <span class="text-right">
+    Copyright <a target="_blank" href="#">Polytechnic University of the Philippines</a>
+    </span>
+    <span class="float-right">
+    Powered by <a target="_blank" href="https://www.pikeAdmin.com"><b>Pike Admin</b></a>
+    </span>
+</footer>
+{% endblock %}
+{% block scripts %}
+    <script>
+      function confirm() {
+        Swal.fire(
+          'Employee successfully added!',
+          '',
+          'success'
+        )
+      }
+      function delet() {
+        Swal.fire(
+          'Employee Deleted!',
+          '',
+          'success'
+        )
+      }
+    </script>
+
+    <!-- sidebar script -->
+    <script>
+		$(document).ready(function() {
+			// data-tables
+			$('#example1').DataTable();
+					
+			// counter-up
+			$('.counter').counterUp({
+				delay: 10,
+				time: 600
+			});
+		} );		
+	</script>
+     <!-- CUSTOM ACTIVE NAVBAR  -->
+    <script>
+        $('.navbar-nav .nav-link').click(function(){
+        $('.navbar-nav .nav-link').removeClass('active');
+        $(this).addClass('active');
+        })
+   </script>
+
+{% endblock %}
