@@ -1,0 +1,184 @@
+{% extends 'clientside/clientBase.html' %}
+{% block title %}
+<title>Register - Acupuncture and Herbal Medicine with Dr. Lee</title>
+{% endblock %}
+{% block chatcontent%}
+<!-- CHATBOT SRC -->
+<link rel="stylesheet" href="{{url_for('static', path='/assets/css/chatStyle.css')}}" />
+<script src="{{url_for('static', path='/assets/js/chatbotservice.js')}}" defer></script>
+<script src="{{url_for('static', path='/assets/js/app.js')}}" defer></script>
+{% endblock %}
+{% block content %}
+
+<section>
+  <div class="card" style="border-top-right-radius: 50%">
+  <div class="container">
+     <div class="col-md-12 mb-4">
+        <h2 class="h4"></h2>
+        <br><br><br>
+        <div class="container">
+          <form method="POST">
+           <div class="row">
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <b>User Name</b>  <input type="text" class="form-control" required="active" name="user_username" placeholder="enter user name ">
+                 </div>
+              </div>
+              <div class="col-md-6">
+                 <div class="form-group">
+                 </div>
+              </div>
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <b>Password</b>  <input type="password" class="form-control"  required="active" name="user_password"  placeholder="enter password">
+                 </div>
+              </div>
+              <!--para mag ka space lang pi -->
+              <div class="col-md-6">
+                 <div class="form-group">
+                 </div>
+              </div>
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <br>
+                 </div>
+              </div>
+              <div class="col-md-6">
+                 <div class="form-group">
+                 </div>
+              </div>
+              <br>
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <b>First name</b>  <input type="text" class="form-control" required="active" name="cl_firstName" placeholder="enter name">
+                 </div>
+              </div>
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <b>Marital status</b> 
+                    <select required input type="text" class="form-control" required="active" name="cl_maritalStatus" placeholder="enter contact no.">
+                       <option disabled selected hidden>Select Status</option>
+                       <option value="Married">Married</option>
+                       <option value="Widowed">Widowed</option>
+                       <option value="Separated">Separated</option>
+                       <option value="Divorced">Divorced</option>
+                       <option value="Single">Single</option>
+                    </select>
+                 </div>
+              </div>
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <b>Middle</b> <input type="text" class="form-control" required="active" name="cl_middleName" placeholder="enter middle name">
+                 </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                   <b>Date of Birth</b>  <input type="date" class="form-control appointment_date" name="cl_birthdate" required="active" placeholder="">
+                </div>
+             </div>
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <b>Last Name</b> <input type="text"  required="active" class="form-control" name="cl_lastName" placeholder="enter last name">
+                 </div>
+              </div>
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <b>Email</b><input type="text" class="form-control" required="active" name="user_email" placeholder="enter email">
+                 </div>
+              </div>
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <b>Select Gender</b> 
+                    <select required input type="text" class="form-control" required="active" name="cl_gender" placeholder="select gender">
+                       <option disabled selected>Select Gender</option>
+                       <option value="Male">Male</option>
+                       <option value="Female">Female</option>
+                       <option value="Others">Others</option>
+                    </select>
+                 </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <b>#</b><input type="text" class="form-control" required="active" name="cl_houseNo" placeholder="enter house no.">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <b>Street</b><input type="text" class="form-control" required="active" name="cl_street" placeholder="enter street">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <b>Barangay</b><input type="text" class="form-control" required="active" name="cl_brgy" placeholder="enter brgy">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <b>City</b><input type="text" class="form-control" required="active" name="cl_city" placeholder="enter city">
+                </div>
+              </div>
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <b>Contact No.</b><input type="text" class="form-control" required="active" name="cl_contactNo" placeholder="enter contact no.">
+                 </div>
+              </div>
+              <br><br><br>
+              <!-- <div class="col-md-12">
+                 <div class="form-group">
+                   <textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
+                 </div>
+                 </div>--><br><br>
+              <div class="col-md-3">
+                 <button type="submit" class="btn btn-outline-success">Register</a>
+              </div>
+           </div>
+           </form>
+        </div>
+     </div>
+  </div>
+</section>
+<div class="chat-bar-collapsible">
+   <button id="chat-button" type="button" class="collapsible">Customer Service
+       <i id="chat-icon" style="color: #fff;" class="fa fa-fw fa-comments-o"></i>
+   </button>
+
+   <div class="content">
+       <div class="full-chat-block">
+           <!-- Message Container -->
+           <div class="outer-container">
+               <div class="chat-container">
+                   <!-- Messages -->
+                   <div id="chatbox">
+                       <h5 id="chat-timestamp"></h5>
+                       <p id="botStarterMessage" class="botText"><span>Loading...</span></p>
+                   </div>
+
+                   <!-- User input box -->
+                   <div class="chat-bar-input-block">
+                       <div id="userInput">
+                           <input id="textInput" class="input-box" type="text" name="msg"
+                               placeholder="Tap 'Enter' to send a message">
+                           <p></p>
+                       </div>
+
+                       <div class="chat-bar-icons">
+                           <!-- <i id="chat-icon" style="color: crimson;" class="fa fa-fw fa-heart"
+                               onclick="heartButton()"></i> -->
+                           <i id="chat-icon" style="color: #333;" class="fa fa-fw fa-send"
+                               onclick="sendButton()"></i>
+                       </div>
+                   </div>
+
+                   <div id="chat-bar-bottom">
+                       <p></p>
+                   </div>
+
+               </div>
+           </div>
+
+       </div>
+   </div>
+
+</div>
+
+{% endblock %}

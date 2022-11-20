@@ -1,0 +1,254 @@
+{% extends 'adminside/adminBase.html' %}
+    
+{%block content%}
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="breadcrumb-holder">
+                        <h1 class="main-title float-left">Admin</h1>
+                        <ol class="breadcrumb float-right">
+                            <li class="breadcrumb-item">Admin</li>
+                            <li class="breadcrumb-item active">Services</li>
+                        </ol>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- end row -->
+
+            <!-- student tracker table  -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="card mb-3">
+                        <div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
+                            <h3><i class="fa fa-table text-warning" aria-hidden="true"></i> Services</h3>
+
+                            <span><a type="button" class="btn btn-warning btn-sm pull-right" data-toggle="modal" data-target="#addService">Add Services</a></span>
+                        </div>
+
+                        <div class="card-body">
+                            <table id="example1" class="table table-hover table-control no-footer">
+                                <thead>
+                                    <tr>
+                                        <th>Service Name</th>
+                                        <th>Service Description</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for services in service %}
+                                        {% if services.service_status == "Active" %}
+                                    <tr>
+                                        <td>{{ services.service_name }}</td>
+                                        <td>{{ services.service_description }}</td>
+                                        <td>{{ services.service_price }}</td>
+                                        <td>{{ services.service_status }}</td>
+                                        <td class="text-white">
+                                            <span><a type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editService{{services.service_id}}">Edit</a></span>
+                                            <span><a type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteService">Delete</a></span>
+                                        </td>
+                                    </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer small text-muted">Updated yesterday at </div>
+                    </div>
+                    <!-- end card-->
+                </div>
+            </div>
+            <!-- end row -->
+        </div>
+    </div>
+</div>
+<!-- end row -->
+
+<!-- Add Products Modal -->
+<div class="modal fade" id="addService" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Service</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Service Name</label>
+                            <input class="form-control" type="text" name="service_name"/>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Service Description</label>
+                            <textarea class="form-control" name="service_description" id="" rows="4"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="">Status</label>
+                            <select class="form-control" name="service_status" id="">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="">Price</label>
+                            <input class="form-control" type="number" name="service_price"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Products Modal -->
+<div class="modal fade" id="viewService" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Service</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Service Name</label>
+                            <input class="form-control" type="text" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Service Description</label>
+                            <textarea class="form-control" name="" id="" rows="4"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="">Status</label>
+                            <select class="form-control" name="" id="">
+                                <option value="">Pending</option>
+                                <option value="">Completed</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="">Price</label>
+                            <input class="form-control" type="number" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% for services in service %}
+    {% if services.service_status == "Active" %}
+<!-- Edit Products Modal -->
+<div class="modal fade" id="editService{{services.service_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Service</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="https://faith-hope-love.herokuapp.com/service/update/{{services.service_id}}" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Service Name</label>
+                            <input class="form-control" name="service_name" type="text" value="{{services.service_name}}" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Service Description</label>
+                            <textarea class="form-control" name="service_description" id="" rows="4" >{{services.service_description}}</textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="">Status</label>
+                            <select class="form-control" name="service_status" id="" value="{{services.service_status}}">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="">Price</label>
+                            <input class="form-control" name="service_price" type="number" value="{{services.service_price}}"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    {% endif %}
+{% endfor %}
+
+<!-- Delete Student Modal -->
+<div class="modal fade" id="deleteService" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Confirm delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete these entry?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-sm btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <span class="text-right"> Copyright <a target="_blank" href="https://www.pup.edu.ph/">Polytechnic University of the Philippines</a> </span>
+    <span class="float-right">
+        Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
+    </span>
+</footer>
+{%endblock%}
+{% block scripts %}
+    <!-- sidebar script -->
+    <script>
+		$(document).ready(function() {
+			// data-tables
+			$('#example1').DataTable();
+					
+			// counter-up
+			$('.counter').counterUp({
+				delay: 10,
+				time: 600
+			});
+		} );		
+	</script>
+
+     <!-- CUSTOM ACTIVE NAVBAR  -->
+     <script>
+		$('.navbar-nav .nav-link').click(function(){
+		$('.navbar-nav .nav-link').removeClass('active');
+		$(this).addClass('active');
+		})
+	   </script>
+{%endblock%}
