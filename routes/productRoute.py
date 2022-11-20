@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, Cookie, status, Response, Request
+from click import File
+from fastapi import APIRouter, Depends, HTTPException, Cookie, UploadFile, status, Response, Request
 from sqlalchemy.orm import Session
 from schemas.productSchema import ProductBase, productUpdate
 from models.productsModel import Product
@@ -6,10 +7,17 @@ from database import get_db
 from dependencies import get_token
 from fastapi.templating import Jinja2Templates
 
+#img
+from fastapi import File, UploadFile
+from fastapi.staticfiles import StaticFiles
+from PIL import Image
+import secrets
+
+
 router = APIRouter(
     prefix='/product',
     tags=['product']
-)
+) 
 
 templates = Jinja2Templates(directory="templates")
 
@@ -30,22 +38,47 @@ def read(id: str, db: Session = Depends(get_db)):
     return {'Product': product}
 
 @router.post('/')
-def store(product: ProductBase, db: Session = Depends(get_db)):
+async def store(request: Request, product: ProductBase = Depends(ProductBase.as_form), file: UploadFile = File(...), db: Session = Depends(get_db)):
 
     if db.query(Product).filter(Product.product_name == product.product_name).first():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create product. Product already exists')
     else: 
+        FILEPATH = "static/images/"
+        filename = file.filename
+        extension = filename.split(".")[1]
+
+        if extension not in ["png", "jpg"]:
+            return {"status" : "Error", "detail": "Image Extension Not Allowed!"}
+        
+        token_name = secrets.token_hex(10)+"."+extension
+        generate_name = FILEPATH + token_name
+        file_content = await file.read()
+
+        with open(generate_name, "wb") as file:
+            file.write(file_content)
+        
+        #pillow
+        img = Image.open(generate_name)
+        img = img.resize(size = (200, 200))
+        img.save(generate_name)
+
+        file.close()
+
+        product_pic = token_name
+
+        # file_url = "localhost:8000" + generate_name[1:]
         to_store = Product(
             product_name = product.product_name,
+            product_pic = product_pic,
             product_price = product.product_price,
             product_quantity = product.product_quantity,
             product_description = product.product_description,
             product_status = "Active"
         )
 
-    db.add(to_store)
-    db.commit()
-    return {'message': 'Product created successfully.'}
+        db.add(to_store)
+        db.commit()
+        return {'message': 'Product created successfully.'}
 
 @router.post('/{id}', response_model=productUpdate)
 def update(id: str, user: productUpdate, db: Session = Depends(get_db)):

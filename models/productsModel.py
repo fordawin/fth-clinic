@@ -8,6 +8,7 @@ class Product(Base):
     __tablename__ = 'product'
 
     product_id = Column(String(36), primary_key=True, default=text('gen_random_uuid()'))
+    product_pic = Column(String(255), nullable=False, unique=True)
     product_name = Column(String(255), nullable=False, unique=True)
     product_price = Column(Integer, nullable=False)
     product_quantity = Column(Integer, nullable=False)
