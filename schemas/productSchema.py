@@ -24,7 +24,6 @@ class ProductBase(BaseModel):
             product_description=product_description,
             product_price=product_price,
             product_quantity=product_quantity,
-
         )
     
 class Service(ProductBase):

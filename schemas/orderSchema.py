@@ -20,3 +20,14 @@ class Order(OrderBase):
 
 class PaymentBase(BaseModel):
     order_payment : Optional[int] | None = None
+
+    @classmethod
+    def as_form(
+        cls,
+        order_payment : int = Form(...)
+    ):
+        return cls(
+            order_payment = order_payment
+        )
+    class Config:
+        orm_mode = True

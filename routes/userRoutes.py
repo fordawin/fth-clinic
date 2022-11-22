@@ -10,6 +10,8 @@ from models.serviceModel import Service
 from models.clientModel import Client
 from models.doctorModel import Doctor
 from models.employeeModel import Employee
+from models.productsModel import Product
+from models.ordersModel import Orders
 from sqlalchemy.orm import Session
 from schemas.userSchema import CreateUser
 from database import get_db
@@ -279,10 +281,27 @@ def shop(request: Request):
         print(e)
 
 @router.get("/product")
-def shop(request: Request):
+def shop(request: Request, db: Session = Depends(get_db)):
     try:
+        query = db.query(Product).all()
         return templates.TemplateResponse('clientside/product.html', {
-            'request': request
+            'request': request,
+            'product_list': query
+        })
+    except Exception as e:
+        print(e)
+
+@router.get("/orders")
+def order(request: Request, token: str = Cookie('token'), db: Session = Depends(get_db)):
+    token = jwt.decode(token, secret, algorithms=['HS256'])
+    query = db.query(Orders).all()
+    id = [token["id"]]
+    lst_all = query + id
+    print(lst_all)
+    try:
+        return templates.TemplateResponse('clientside/orders.html', {
+            'request': request,
+            'order_list': lst_all
         })
     except Exception as e:
         print(e)

@@ -19,9 +19,6 @@
             
                 <!-- end row -->
                     
-
-          
-
             <!-- student tracker table  -->
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
@@ -36,7 +33,7 @@
                             <table id="example1"  class="table table-hover table-control no-footer" >
                                 <thead>
                                     <tr>
-                                        <th>Product ID</th>
+                                        <th>Product Image</th>
                                         <th>Product Name</th>
                                         <th>Product Description</th>
                                         <th>Quantity</th>
@@ -47,9 +44,9 @@
                                 <tbody>
                                     {% for products in product %}
                                     <tr>
-                                        <td>{{ products.product_id }}</td>
+                                        <td><img src = "../static/images/{{ products.product_pic }}" alt = "product image"></td>
                                         <td>{{ products.product_name }}</td>
-                                        <td>Test</td>
+                                        <td>{{ products.product_description }}</td>
                                         <td>{{ products.product_quantity }}</td>
                                         <td>{{ products.product_price }}</td>
                                         <td class="text-white">
@@ -83,33 +80,36 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="">
+          <form action="http://127.0.0.1:8000/product" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-12">
                     <label class="form-label" for="">Product Name</label>
-                    <input class="form-control" type="text">
+                    <input class="form-control" type="text" name="product_name">
                 </div>
                 <div class="col-md-12">
                     <label class="form-label" for="">Product Description</label>
-                    <textarea class="form-control" name="" id="" rows="4"></textarea>
+                    <textarea class="form-control" name="product_description" id="" rows="4"></textarea>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label" for="">Quantity</label>
-                    <input class="form-control" type="number">
+                    <input class="form-control" type="number" name="product_quantity">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label" for="">Price</label>
-                    <input class="form-control" type="number">
+                    <input class="form-control" type="number" name="product_price">
                 </div>
-                
+                <div class="col-md-6">
+                    <label class="form-label" for="">Upload Image</label>
+                    <input type="file" name="file">
+                </div>
+                <div class="col-md-6">
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm" value="Submit">Add Products</button>
+                </div>
             </div>
-           
-            
           </form>
-        </div>
-        <div class="modal-footer">
-          <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary btn-sm">Save changes</button>
         </div>
       </div>
     </div>
@@ -169,7 +169,7 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="">
+                <form method="POST">
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label" for="">Product Name</label>
@@ -189,13 +189,11 @@
                         </div>
                         
                     </div>
-                
-                    
                 </form>
                 </div>
                 <div class="modal-footer">
                 <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary btn-sm">Save changes</button>
+                <button type="button" class="btn btn-primary btn-sm">Save Changes</button>
                 </div>
             </div>
         </div>

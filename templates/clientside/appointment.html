@@ -32,19 +32,16 @@
 				</a>
 				<div class="dropdown-menu dropdown-menu-right profile-dropdown " x-placement="bottom-end" style="position: absolute; transform: translate3d(-108px, 50px, 0px); top: 0px; left: 0px; will-change: transform;">
 				   <!-- item-->
-				   <div class="dropdown-item noti-title">
-					  {%for datas in data %}
-					  <h5 class="text-overflow"><small>Hello,{{data.user_username}}</small> </h5>
-					  {%endfor %}
-				   </div>
-				   <!-- item-->
 				   <a href="/users/profile" class="dropdown-item notify-item">
 				   <i class="fa fa-user"></i> <span>Profile</span>
 				   </a>
 				   <!-- item-->
 				   <a href="/users/appointments" class="dropdown-item notify-item">
-				   <i class="fa fa-user"></i> <span>My Appointments</span>
+				   <i class="fa fa-address-book-o"></i> <span>My Appointments</span>
 				   </a>
+				   <a href="/users/orders" class="dropdown-item notify-item">
+					<i class="fa fa-address-book-o"></i> <span>Order List</span>
+					</a>
 				   <!-- item-->
 				   <a href="/users/logout" class="dropdown-item notify-item">
 				   <i class="fa fa-power-off"></i> <span>Logout</span>

@@ -7,6 +7,7 @@ from schemas.paymentSchema import PaymentBase, PaymentUpdate
 from models.paymentModel import Payment
 from models.serviceModel import Service
 from models.timeSlotModel import Timeslot
+from models.ordersModel import Orders
 from models.appointmentModel import Appointment
 from database import get_db
 from dependencies import get_token
@@ -140,6 +141,42 @@ def store(form_data: PaymentBase = Depends(PaymentBase.as_form), db: Session = D
 
     return response
 
+@router.get('/pending')
+def employee(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Orders).all()
+        return templates.TemplateResponse('employeeside/employeeOrderPending.html', {
+            'request': request,
+            'order_list': query
+        })
+        
+    except Exception as e:
+        print(e)
+
+@router.get('/accepted')
+def employee(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Orders).all()
+        return templates.TemplateResponse('employeeside/employeeOrderAccepted.html', {
+            'request': request,
+            'order_list': query
+        })
+        
+    except Exception as e:
+        print(e)
+
+@router.get('/cancelled')
+def employee(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Orders).all()
+        return templates.TemplateResponse('employeeside/employeeOrderCancelled.html', {
+            'request': request,
+            'order_list': query
+        })
+        
+    except Exception as e:
+        print(e)
+
 @router.post('/{id}', response_model=PaymentUpdate)
 def update(id: str, user: PaymentUpdate, db: Session = Depends(get_db)):
     verify = db.query(Payment).filter(Payment.payment_id == id).first()
@@ -166,3 +203,36 @@ def deactivate(id: str, db: Session = Depends(get_db)):
         
     db.commit()
 
+@router.get('/accept/{id}')
+def deactivate(id: str, db: Session = Depends(get_db)):
+    cancel = db.query(Orders).filter(Orders.order_id == id).first()
+
+    if not cancel:
+        raise HTTPException(404, 'Appointment to cancel is not found')
+    else:
+        db.query(Orders).filter(Orders.order_id == id).update({'order_status': "For Pick-up"})
+
+    db.commit()
+
+    time.sleep(1)
+
+    response = RedirectResponse(url='/payment/pending', status_code=302)
+
+    return response
+
+@router.get('/deny/{id}')
+def deactivate(id: str, db: Session = Depends(get_db)):
+    cancel = db.query(Orders).filter(Orders.order_id == id).first()
+
+    if not cancel:
+        raise HTTPException(404, 'Appointment to cancel is not found')
+    else:
+        db.query(Orders).filter(Orders.order_id == id).update({'order_status': "Cancelled"})
+
+    db.commit()
+
+    time.sleep(1)
+
+    response = RedirectResponse(url='/payment/pending', status_code=302)
+
+    return response

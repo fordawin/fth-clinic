@@ -13,6 +13,7 @@ class Orders(Base):
     order_productid = Column(String(255), ForeignKey('product.product_id'), nullable=True)
     order_userid = Column(String(255), ForeignKey('user_credential.user_id'), nullable=True)
     order_remarks = Column(String(255), nullable=False)
+    order_user = Column(String(255), nullable=False)
     order_status = Column(String(255), nullable=False, default="Pending")
     order_created_at = Column(DateTime, default=text('NOW()'))
     order_updated_at = Column(DateTime, onupdate=text('NOW()'))

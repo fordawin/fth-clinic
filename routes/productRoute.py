@@ -6,6 +6,8 @@ from models.productsModel import Product
 from database import get_db
 from dependencies import get_token
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import RedirectResponse
+
 
 #img
 from fastapi import File, UploadFile
@@ -78,7 +80,9 @@ async def store(request: Request, product: ProductBase = Depends(ProductBase.as_
 
         db.add(to_store)
         db.commit()
-        return {'message': 'Product created successfully.'}
+        response = RedirectResponse(url='/admin/products', status_code=302)
+
+        return response
 
 @router.post('/{id}', response_model=productUpdate)
 def update(id: str, user: productUpdate, db: Session = Depends(get_db)):
