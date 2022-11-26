@@ -12,8 +12,57 @@
 <link rel="stylesheet" href="{{url_for('static', path='/assets/css/contact.css')}}" type="text/css">	
 {% endblock %}
 
+{% block navcontent %}
+<nav class="navbar navbar-expand-lg navbar-light">
+	<div class="container-fluid">
+	<a class="navbar-brand" href="home.html">
+	<img src="../static/assets/images/logo.png" alt="">
+	</a>
+	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+			<li class="nav-item">
+				<a class="nav-link active" aria-current="page" href="/users/home2">Home</a>
+			</li>
+			<li class="nav">
+				<a class="nav-link" href="about2">About</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="product2">Shop</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="contact2">Contact</a>
+			</li>
+			<!-- PROFILE NAVBAR -->
+			<li class="list-inline-item dropdown notif show">
+				<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="true">Profile
+				</a>
+				<div class="dropdown-menu dropdown-menu-right profile-dropdown " x-placement="bottom-end" style="position: absolute; transform: translate3d(-108px, 50px, 0px); top: 0px; left: 0px; will-change: transform;">
+				<!-- item-->
+				<a href="/users/profile" class="dropdown-item notify-item">
+				<i class="fa fa-user"></i> <span>Profile</span>
+				</a>
+				<!-- item-->
+				<a href="/users/appointments" class="dropdown-item notify-item">
+				<i class="fa fa-address-book-o"></i> <span>My Appointments</span>
+				</a>
+				<a href="/users/orders" class="dropdown-item notify-item">
+				<i class="fa fa-address-book-o"></i> <span>Order List</span>
+				</a>
+				<!-- item-->
+				<a href="/users/logout" class="dropdown-item notify-item">
+				<i class="fa fa-power-off"></i> <span>Logout</span>
+				</a>
+				</div>
+			</li>
+		</ul>
+	</div>
+	</div>
+</nav>
+{% endblock %}
 
-<!--End Header	-->
 {% block content %}
 <hr>
 <section class = "contact-section">

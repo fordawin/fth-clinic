@@ -78,26 +78,33 @@ def login(request: Request):
 def about(request: Request):
     return templates.TemplateResponse("clientside/about.html", {"request": request})
 
+@router.get("/about2")
+def about(request: Request):
+    return templates.TemplateResponse("clientside/about_after_login.html", {"request": request})
+
 
 @router.post('/login', response_class=HTMLResponse)
-async def verify(response: Response, form_data: LoginForm = Depends(LoginForm.as_form), db: Session = Depends(get_db)):
-    try:
-        user = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
-        if user:
-            match = password_verify(form_data.user_password, user.user_password)
-            if match:
-                data = TokenData(id = user.user_id, email = user.user_email, type = user.user_type)
-                token = jwt.encode(dict(data), secret)
-                response = RedirectResponse(url='appointments', status_code=302)
-                response.set_cookie('token', token, httponly=True)
+async def login(response: Response, form_data: LoginForm, db: Session = Depends(get_db)):
+    user = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
+    if user:
+        match = password_verify(form_data.user_password, user.user_password)
+        if match:
+            data = TokenData(id = user.user_id, email = user.user_email, type = user.user_type)
+            token = jwt.encode(dict(data), secret)
+            # response = RedirectResponse(url='appointments', status_code=302)
+            response.set_cookie('token', token, httponly=True)
+            response.status_code = 200
 
-                return response
-                
-    except Exception as e:
-        print(e)
+            return
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Incorrect Username or Password",
+        headers={"WWW-Authenticate": "Bearer"}
+    )
 
 @router.get("/home2")
-def registration(request: Request, db: Session = Depends(get_db)):
+def home(request: Request, db: Session = Depends(get_db)):
     try:
         query = db.query(Appointment).all()
         query1 = db.query(Service).all()
@@ -119,7 +126,7 @@ def registration(request: Request, db: Session = Depends(get_db)):
     
 
 @router.post('/home2', response_class=HTMLResponse)
-async def store(form_data: AppointmentBase = Depends(AppointmentBase.as_form), token: str = Cookie('token'), db: Session = Depends(get_db)):
+async def home(form_data: AppointmentBase = Depends(AppointmentBase.as_form), token: str = Cookie('token'), db: Session = Depends(get_db)):
     token = jwt.decode(token, secret, algorithms=['HS256'])
 
     serbisyo = db.query(Service).filter(Service.service_id == form_data.ap_serviceType).first()
@@ -175,7 +182,7 @@ def register(request: Request):
     return templates.TemplateResponse("clientside/register.html", {"request": request})
 
 @router.post('/register', response_class=HTMLResponse)
-async def createClient(response: Response, form_data: ClientBase = Depends(ClientBase.as_form), db: Session = Depends(get_db)):
+async def register(response: Response, form_data: ClientBase = Depends(ClientBase.as_form), db: Session = Depends(get_db)):
     print(form_data)
     user_duplicate = db.query(User_credential).filter(User_credential.user_username == form_data.user_username).first()
     user_email_dup = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
@@ -272,9 +279,18 @@ def profile(request: Request, token: str = Cookie('token'), db: Session = Depend
         print(e)
 
 @router.get("/contact")
-def shop(request: Request):
+def contact(request: Request):
     try:
         return templates.TemplateResponse('clientside/contact.html', {
+            'request': request
+        })
+    except Exception as e:
+        print(e)
+
+@router.get("/contact2")
+def contact(request: Request):
+    try:
+        return templates.TemplateResponse('clientside/contact_after_login.html', {
             'request': request
         })
     except Exception as e:
@@ -285,6 +301,17 @@ def shop(request: Request, db: Session = Depends(get_db)):
     try:
         query = db.query(Product).all()
         return templates.TemplateResponse('clientside/product.html', {
+            'request': request,
+            'product_list': query
+        })
+    except Exception as e:
+        print(e)
+
+@router.get("/product2")
+def shop(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Product).all()
+        return templates.TemplateResponse('clientside/product_after_login.html', {
             'request': request,
             'product_list': query
         })

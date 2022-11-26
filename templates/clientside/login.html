@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                            <div class="card-body p-4 p-lg-5 text-black">
-                            <form method="POST">
+                            <form action="http://127.0.0.1:8000/users/login" method="POST" id="loginForm">
                               <div class="d-flex align-items-center mb-3 pb-1">
                                 <span class="h1 fw-bold mb-0">
                                   <img src="../static/assets/images/clinic_logo.png" width="200px" alt="">
@@ -53,4 +53,45 @@
          </div>
       </section>
 
+<script type="text/javascript">
+$("#loginForm").submit(function(e) {
+    e.preventDefault();
+    var frm = $("#loginForm");
+    var data = {};
+    $.each(this, function(i, v){
+        var input = $(v);
+        data[input.attr("name")] = input.val();
+        delete data["undefined"];
+    });
+    $.ajax({
+        contentType:"application/json; charset=utf-8",
+        type:frm.attr("method"),
+        url:frm.attr("action"),
+        dataType:'text',
+        data: JSON.stringify(data),
+        success: function(data) {
+         window.open("appointments", "_self").reload()
+        },
+        error: function() {
+         alert('Incorrect Email or Password')
+        }
+    })
+});
+   // function Login(){
+
+   //    const promise = $.ajax({
+   //     type: 'POST',
+   //     url: 'http://127.0.0.1:8000/users/login',
+   //     contentType: "application/json",
+   //     dataType: "json",
+   //     data: JSON.stringify( {"user_email": $("#user_email").val(), "user_password": $("#user_password").val()})
+   //    })
+   //    promise.then(function (data){
+   //       console.log(data);
+   //       window.open("appointments.html", "_self").reload(),
+   //       alert("Login Successfully")
+   //    })
+   // }
+</script>
+      
 {% endblock %}
