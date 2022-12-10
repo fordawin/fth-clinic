@@ -118,7 +118,7 @@
         </div>
         <div class="modal-footer border-top-0 d-flex justify-content-between">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success">Checkout</button>
+          <button type="button" class="btn btn-success"  onclick="alert()" >Checkout</button>
         </div>
       </div>
     </div>
@@ -198,4 +198,10 @@
  });
  
  </script>
+<script>
+  function alert(){
+    window.open("login", "_self").reload()
+    alert("Please Log in");
+  }
+</script>
 {% endblock %}

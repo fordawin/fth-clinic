@@ -93,8 +93,8 @@ async def login(response: Response, form_data: LoginForm, db: Session = Depends(
             token = jwt.encode(dict(data), secret)
             # response = RedirectResponse(url='appointments', status_code=302)
             response.set_cookie('token', token, httponly=True)
-            response.status_code = 200
-
+            
+            print(token)
             return
 
     raise HTTPException(

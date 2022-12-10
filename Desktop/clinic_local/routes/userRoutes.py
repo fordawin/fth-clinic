@@ -174,7 +174,7 @@ def register(request: Request):
 
 @router.post('/register', response_class=HTMLResponse)
 async def createClient(response: Response, form_data: ClientBase = Depends(ClientBase.as_form), db: Session = Depends(get_db)):
-    print(form_data)
+    
     user_duplicate = db.query(User_credential).filter(User_credential.user_username == form_data.user_username).first()
     user_email_dup = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
     user_num_cl = db.query(Client).filter(Client.cl_contactNo == form_data.cl_contactNo).first()
@@ -243,7 +243,7 @@ def appointment(request: Request, token: str = Cookie('token'), db: Session = De
     query1 = db.query(Prescription).all()
     id = [token["id"]]
     lst_all = query + query1 + id
-    print(lst_all)
+
     try:
         return templates.TemplateResponse('clientside/appointment.html', {
             'request': request,
@@ -260,7 +260,7 @@ def profile(request: Request, token: str = Cookie('token'), db: Session = Depend
     token = jwt.decode(token, secret, algorithms=['HS256'])
     id = [token["id"]]
     lst_all = query + query1 + query2 + id
-    print(lst_all)
+
     try:
         return templates.TemplateResponse('clientside/profile.html', {
                 'request': request,

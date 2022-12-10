@@ -2,11 +2,10 @@
 {% block title %}
 <title>Home - Acupuncture and Herbal Medicine with Dr. Lee</title>
 {% endblock %}
-{% block chatcontent%}
-<!-- CHATBOT SRC -->
-<link rel="stylesheet" href="{{url_for('static', path='/assets/css/chatStyle.css')}}" />
-<script src="{{url_for('static', path='/assets/js/chatbotservice.js')}}" defer></script>
-<script src="{{url_for('static', path='/assets/js/app.js')}}" defer></script>
+{% block linkcontent %}
+<link rel="stylesheet" href="{{url_for('static', path='/assets/css/price.css')}}" type="text/css">
+<link rel="stylesheet" href="{{url_for('static', path='/assets/css/service.css')}}" type="text/css">
+<link rel="stylesheet" href="{{url_for('static', path='/assets/css/style.css')}}" type="text/css">
 {% endblock %}
 
 {% block navcontent %}
@@ -107,7 +106,7 @@
             </div>
          </div>
          <div class="col-md-6 color-3 p-4">
-            <h3 class="mb-2">Make an Appointment</h3>
+            <h3 class="mb-2">Book an Appointment</h3>
             <hr>
             <form action="#" class="appointment-form" method="POST">
                <div class="row">
@@ -163,7 +162,7 @@
                <div class="form-group">
                   <!-- Button trigger modal -->
                   <button type="submit" class="btn btn-success" >
-                  Make an Appointment
+                  Book an Appointment
                   </button>
                </div>
             </form>
@@ -194,123 +193,166 @@
 
 		  
 <!--Start services Section-->
+<center>
 	<section class="services-section" id="services-section">
-	     <div class="container">
-		     <div class="row">
-				 <div class="col-md-12">
-				     <h2 class="section-title text-center">Specializes In:</h2>
-				 </div>
-				 <div class="col-md-4">
-				      <div class="services-box">
-						  <h3>Hypertensiony</h3>
-						  <p>
-							Your blood pressure changes throughout the day based on your activities. Having blood pressure measures consistently above normal may result in a diagnosis of high blood pressure</p><br>
-					 </div>
-				 </div>
-				 <div class="col-md-4">
-				      <div class="services-box">
-						  <h3>Diabetes</h3>
-						  <p>Diabetes is a chronic (long-lasting) health condition that affects how your body turns food into energy. Your body breaks down most of the food you eat into sugar (glucose) and releases it into your bloodstream.</p>
-					 </div>
-				 </div> 
-				<div class="col-md-4">
-				      <div class="services-box">
-						  <h3>Asthma & Emphysema</h3>
-						  <p>Both asthma and chronic obstructive pulmonary disease (COPD), including emphysema and chronic bronchitis, make breathing difficult. In fact, they share many similarities. However, they are different lung diseases</p>
-					 </div>
-				 </div> 
-				 <div class="col-md-4">
-				      <div class="services-box">
-					    <!--abang <img src="" alt="">-->
-						  <h3>Migraine</h3>
-						  <p>A migraine is a headache that can cause severe throbbing pain or a pulsing sensation, usually on one side of the head. It’s often accompanied by nausea, vomiting, and extreme sensitivity to light and sound.</p>
-					 </div>
-				 </div>  	 
-				  <div class="col-md-4">
-				      <div class="services-box">
-						  <h3>Dysmenorrhea</h3>
-						  <p>Menstrual cramps (dysmenorrhea) are throbbing or cramping pains in the lower abdomen. Many women have menstrual cramps just before and during their menstrual periods. For some women, the discomfort is merely annoying</p>
-					 </div>
-				 </div>
-				 
-				   <div class="col-md-4">
-				      <div class="services-box">
-						  <h3>Hepatology</h3>
-						  <p>Insomnia is a common sleep disorder that can make it hard to fall asleep, hard to stay asleep, or cause you to wake up too early and not be able to get back to sleep. You may still feel tired when you wake up</p>
-					 </div>
-				 </div>
-				 <div class="col-md-4">
-					<div class="services-box">
-						<h3>Rheumatism Arthritis</h3>
-						<p>Rheumatoid arthritis, or RA, is an autoimmune and inflammatory disease, which means that your immune system attacks healthy cells in your body by mistake, causing inflammation (painful swelling) in the affected parts of the body. RA mainly attacks the joints, usually many joints at once.</p>
+	   <div class="wrapper">
+		  <h2>Specializes In:</h2>
+		  <hr>
+		  <div class="cols">
+			 <div class="col" ontouchstart="this.classList.toggle('hover');">
+				<div class="container">
+				   <div class="front" style="background-image: url(https://searhc.org/wp-content/uploads/2019/05/Hypertension-900x500.jpg)">
+					  <div class="inner">
+						 <b>
+							<p>Hypertension</p>
+						 </b>
+						 <span></span>
+					  </div>
 				   </div>
-			   </div>
-			   <div class="col-md-4">
-				<div class="services-box">
-					<h3>Parkinson’s Disease</h3>
-					<p>Parkinson’s disease is a brain disorder that causes unintended or uncontrollable movements, such as shaking, stiffness, and difficulty with balance and coordination. </p><br><br>
-			   </div>
-		   </div>
-		   <div class="col-md-4">
-			<div class="services-box">
-				<h3>Eye & Skin Disease</h3>
-				<p>There are hundreds of different eye diseases and vision problems. Some have no cure, but many others are treatable.Skin disorders vary greatly in symptoms and severity. They can be temporary or permanent, and may be painless or painful.</p><Br>
-		   </div>
-
-
-				 
+				   <div class="back">
+					  <div class="inner">
+						 <p>Your blood pressure changes throughout the day based on your activities. Having blood pressure measures consistently above normal may result in a diagnosis of high blood pressure
+						 </p>
+					  </div>
+				   </div>
+				</div>
 			 </div>
-		</div>
+			 <div class="col" ontouchstart="this.classList.toggle('hover');">
+				<div class="container">
+				   <div class="front" style="background-image: url(https://t4.ftcdn.net/jpg/02/48/54/39/360_F_248543951_y8g0rPBppDUr4BA6cKDMoaXJf504gcuV.jpg)">
+					  <div class="inner">
+						 <p><b>Diabetes</b></p>
+						 <span></span>
+					  </div>
+				   </div>
+				   <div class="back">
+					  <div class="inner">
+						 <p>Diabetes is a chronic (long-lasting) health condition that affects how your body turns food into energy. Your body breaks down most of the food you eat into sugar (glucose) and releases it into your bloodstream.</p>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+			 <div class="col" ontouchstart="this.classList.toggle('hover');">
+				<div class="container">
+				   <div class="front" style="background-image: url(https://media.istockphoto.com/id/1131684906/vector/pulmonary-medication-concept-in-flat-style-vector.jpg?s=612x612&w=0&k=20&c=ORiQ5mrKcqP3oyhoDJvCLV8rgauFg6jnXH-quHK7DJ0=)">
+					  <div class="inner">
+						 <p><b>Asthma <br>&<Br> Emphysema</b></p>
+						 <span></span>
+					  </div>
+				   </div>
+				   <div class="back">
+					  <div class="inner">
+						 <p>Both asthma and chronic obstructive pulmonary disease (COPD), including emphysema and chronic bronchitis, make breathing difficult. In fact, they share many similarities. However, they are different lung diseases</p>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+		  </div>
+	   </div>
+	   <div class="wrapper">
+		  <div class="cols">
+			 <div class="col" ontouchstart="this.classList.toggle('hover');">
+				<div class="container">
+				   <div class="front" style="background-image: url(https://t4.ftcdn.net/jpg/02/82/12/99/360_F_282129985_4pPu8qWD4C5eSeQNdrPVQAT4df9ZPGeJ.jpg)">
+					  <div class="inner">
+						 <p><b>Migraine</b></p>
+						 <span></span>
+					  </div>
+				   </div>
+				   <div class="back">
+					  <div class="inner">
+						 <p>A migraine is a headache that can cause severe throbbing pain or a pulsing sensation, usually on one side of the head. It’s often accompanied by nausea, vomiting, and extreme sensitivity to light and sound.
+						 </p>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+			 <div class="col" ontouchstart="this.classList.toggle('hover');">
+				<div class="container">
+				   <div class="front" style="background-image: url(https://media.istockphoto.com/id/1364090812/vector/painful-menstruation-concept-trendy-flat-illustration-uterus-inflammation-endometriosis.jpg?s=612x612&w=0&k=20&c=YIAWEug3qjEdEaj1f4_TtWEecIQdUzR5Lgm4qO3enXI=)">
+					  <div class="inner">
+						 <p><b>Dysmenorrhea</b></p>
+						 <span></span>
+					  </div>
+				   </div>
+				   <div class="back">
+					  <div class="inner">
+						 <br>
+						 <p>Menstrual cramps (dysmenorrhea) are throbbing or cramping pains in the lower abdomen. Many women have menstrual cramps just before and during their menstrual periods.</p>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+			 <div class="col" ontouchstart="this.classList.toggle('hover');">
+				<div class="container">
+				   <div class="front" style="background-image: url(https://www.mkmedicine.in/site_control/uploads/sub_category_image/1529127204_2018_06_16.jpg)">
+					  <div class="inner">
+						 <p><b>Hepatology</b></p>
+						 <span></span>
+					  </div>
+				   </div>
+				   <div class="back">
+					  <div class="inner">
+						 <p>Insomnia is a common sleep disorder that can make it hard to fall asleep, hard to stay asleep, or cause you to wake up too early and not be able to get back to sleep. You may still feel tired when you wake up</p>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+		  </div>
+	   </div>
+	   <div class="wrapper">
+		  <div class="cols">
+			 <div class="col" ontouchstart="this.classList.toggle('hover');">
+				<div class="container">
+				   <div class="front" style="background-image: url(https://media.sciencephoto.com/c0/24/43/83/c0244383-800px-wm.jpg)">
+					  <div class="inner">
+						 <p><b>Rheumatism Arthritis</b></p>
+						 <span></span>
+					  </div>
+				   </div>
+				   <div class="back">
+					  <div class="inner">
+						 <p>Rheumatoid arthritis, or RA, is an autoimmune and inflammatory disease, which means that your immune system attacks healthy cells in your body by mistake, causing inflammation (painful swelling) in the affected parts of the body.
+						 </p>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+			 <div class="col" ontouchstart="this.classList.toggle('hover');">
+				<div class="container">
+				   <div class="front" style="background-image: url(https://medlineplus.gov/images/PX000174_PRESENTATION.jpeg)">
+					  <div class="inner">
+						 <p><b>Parkinson’s Disease</b></p>
+						 <span></span>
+					  </div>
+				   </div>
+				   <div class="back">
+					  <div class="inner">
+						 <p>Parkinson’s disease is a brain disorder that causes unintended or uncontrollable movements, such as shaking, stiffness, and difficulty with balance and coordination.</p>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+			 <div class="col" ontouchstart="this.classList.toggle('hover');">
+				<div class="container">
+				   <div class="front" style="background-image: url(https://img.freepik.com/premium-vector/man-skin-problems-vector-illustration-male-face-with-pimples-dark-spots-wrinkles-acne_81894-1998.jpg)">
+					  <div class="inner">
+						 <p><b>Eye & Skin Disease</b></p>
+						 <span></span>
+					  </div>
+				   </div>
+				   <div class="back">
+					  <div class="inner">
+						 <p>There are hundreds of different eye diseases and vision problems. Some have no cure, but many others are treatable.Skin disorders vary greatly in symptoms and severity. They can be temporary or permanent, and may be painless or painful.</p>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+		  </div>
+	   </div>
 	</section>
+ </center>
 <!--End services Section-->
-<section class="services-section" id="services-section">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<h2 class="section-title text-center">No Operation</h2>
-			</div>
-			<div class="col-md-4">
-				 <div class="services-box">
-					 <h3>Sinusitisy</h3>
-					 <p>
-						Sinusitis is an inflammation, or swelling, of the tissue lining the sinuses. The sinuses are four paired cavities (spaces) in the head. They are connected by narrow channels.</p><br>
-				</div>
-			</div>
-			<div class="col-md-4">
-				 <div class="services-box">
-					 <h3>Prostatitis</h3>
-					 <p>Prostatitis is inflammation (swelling) of the prostate gland. It can be very painful and distressing, but will often get better eventually. </p><br><br>
-				</div>
-			</div> 
-		   <div class="col-md-4">
-				 <div class="services-box">
-					 <h3>Gallstones</h3>
-					 <p>Gallstones are hardened deposits of digestive fluid that can form in your gallbladder. Your gallbladder is a small, pear-shaped organ on the right side of your abdomen, just beneath your liver. </p><br>
-				</div>
-			</div> 
-			<div class="col-md-4">
-				 <div class="services-box">
-				   <!--abang <img src="" alt="">-->
-					 <h3>Kidney Stones</h3>
-					 <p>Kidney stones (also called renal calculi, nephrolithiasis or urolithiasis) are hard deposits made of minerals and salts that form inside your kidneys.</p><br><br><Br>
-				</div>
-			</div>  	 
-			 <div class="col-md-4">
-				 <div class="services-box">
-					 <h3>Bladder Stones</h3>
-					 <p>Bladder stones usually form when you can’t completely empty your bladder of urine. A common reason for this in men is having an enlarged prostate gland that blocks the flow of urine. If urine sits in the bladder for a long time, chemicals in the urine form crystals, which harden into bladder stones.</p>
-				</div>
-			</div>
-			
-			  <div class="col-md-4">
-				 <div class="services-box">
-					 <h3>Hemorrhoids</h3>
-					 <p>Hemorrhoids are swollen veins in your lower rectum. Internal hemorrhoids are usually painless, but tend to bleed. External hemorrhoids may cause pain.</p><br><br><br>
-				</div>
-			</div>
-		</div>
-   </div>
-</section>
 <section class="services-section" id="services-section">
 	<div class="container">
 		<div class="row">
@@ -343,73 +385,4 @@
 	   </div>
    </div>
 </section>
-	
-	<!--cut dito-->
-	<div class="blockart-section blockart-section-6cffd591">
-		<div class="blockart-column blockart-column-263dd468"><div class="blockart-column-inner">
-		<h4 style="color: white;">Have Any Questions?</h4><br>
-		
-		
-		
-		<p style="color:rgb(255, 255, 255)" >Dr. Lee Wu Chun Mei is a renowned ACUPUNCTURIST who belongs to an ancestral family of acupuncturists.<br> She holds an international medical license.</p>
-		</div></div>
-		
-		
-		<p align="center"><a href="#"  class="btn btn-white" style="color: white;">Contact us</a></p>
-		</div></div>
-		</div></div></div>
-	<br>
-	<div class="blockart-column blockart-column-716dcbed"><div class="blockart-column-inner">
-	<div class="blockart-image blockart-image-41c122c1"><a href="https://www.facebook.com/faithhopelovemedicalcenter"><img src="https://faithhopeloveclinic.com/wp-content/uploads/2021/12/fav_icon1.png" alt=""></a></div>
-	</div>
-	</div>
-	<hr>	
-	<div class="copyright">
-		Copyright © 2022 Faith Hope Love Medical Center. <a href="#" target="_blank">
-		</a>
-	</div>
-	<div class="chat-bar-collapsible">
-        <button id="chat-button" type="button" class="collapsible">Customer Service
-            <i id="chat-icon" style="color: #fff;" class="fa fa-fw fa-comments-o"></i>
-        </button>
-
-        <div class="content">
-            <div class="full-chat-block">
-                <!-- Message Container -->
-                <div class="outer-container">
-                    <div class="chat-container">
-                        <!-- Messages -->
-                        <div id="chatbox">
-                            <h5 id="chat-timestamp"></h5>
-                            <p id="botStarterMessage" class="botText"><span>Loading...</span></p>
-                        </div>
-
-                        <!-- User input box -->
-                        <div class="chat-bar-input-block">
-                            <div id="userInput">
-                                <input id="textInput" class="input-box" type="text" name="msg"
-                                    placeholder="Tap 'Enter' to send a message">
-                                <p></p>
-                            </div>
-
-                            <div class="chat-bar-icons">
-                                <!-- <i id="chat-icon" style="color: crimson;" class="fa fa-fw fa-heart"
-                                    onclick="heartButton()"></i> -->
-                                <i id="chat-icon" style="color: #333;" class="fa fa-fw fa-send"
-                                    onclick="sendButton()"></i>
-                            </div>
-                        </div>
-
-                        <div id="chat-bar-bottom">
-                            <p></p>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-
 {% endblock %}
