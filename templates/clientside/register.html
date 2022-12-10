@@ -15,7 +15,7 @@
          <br>
          <div class="container">
            <div class="card" style="border-radius: 00rem 0 0 0rem; z-index:10">
-             <form method="POST" class="form">
+             <form action="http://127.0.0.1:8000/users/register" method="POST" class="form" id="registerForm">
                <h4 class="text-center">Registration Form</h4>
                <!-- Progress bar -->
                <center>
@@ -138,8 +138,8 @@
                    <button type="submit" class="btn btn-outline-success">Register </a>
                  </div>
                </div>
+               </form>
            </div>
-           </form>
          </div>
        </div>
      </div>
@@ -219,5 +219,45 @@ function updateProgressbar() {
 		((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
 }
  </script>
-
+<script type="text/javascript">
+  $("#registerForm").submit(function(e) {
+      e.preventDefault();
+      var frm = $("#registerForm");
+      var data = {};
+      $.each(this, function(i, v){
+          var input = $(v);
+          data[input.attr("name")] = input.val();
+          delete data["undefined"];
+      });
+      $.ajax({
+          contentType:"application/json; charset=utf-8",
+          type:frm.attr("method"),
+          url:frm.attr("action"),
+          dataType:'text',
+          data: JSON.stringify(data),
+          success: function(data) {
+           window.open("home", "_self").reload()
+          },
+          error: function(error) {
+            resAlert = error.responseText.slice(11,-2)
+            alert(resAlert)
+          }
+      })
+  });
+     // function Login(){
+  
+     //    const promise = $.ajax({
+     //     type: 'POST',
+     //     url: 'http://127.0.0.1:8000/users/login',
+     //     contentType: "application/json",
+     //     dataType: "json",
+     //     data: JSON.stringify( {"user_email": $("#user_email").val(), "user_password": $("#user_password").val()})
+     //    })
+     //    promise.then(function (data){
+     //       console.log(data);
+     //       window.open("appointments.html", "_self").reload(),
+     //       alert("Login Successfully")
+     //    })
+     // }
+  </script>
 {% endblock %}

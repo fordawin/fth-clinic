@@ -70,14 +70,14 @@ class AdminBase(BaseModel):
 class ClientBase(UserBase):
     cl_pic : Optional[str]
     cl_firstName : str
-    cl_middleName : Optional[str] = None
+    cl_middleName : Optional[str]
     cl_lastName : str
-    cl_fullName : str
+    cl_fullName : Optional[str]
     cl_houseNo : str
     cl_street : str
     cl_brgy : str
     cl_city : str
-    cl_address : str
+    cl_address : Optional[str]
     cl_status : Optional[str]
     cl_maritalStatus : str
     cl_birthdate : d

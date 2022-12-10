@@ -72,8 +72,10 @@ $("#loginForm").submit(function(e) {
         success: function(data) {
          window.open("appointments", "_self").reload()
         },
-        error: function() {
-         alert('Incorrect Email or Password')
+        error: function(error) {
+         // console.log(error.responseText.slice(11,-2))
+         resAlert = error.responseText.slice(11,-2)
+         alert(resAlert)
         }
     })
 });

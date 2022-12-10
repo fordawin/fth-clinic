@@ -99,8 +99,7 @@ async def login(response: Response, form_data: LoginForm, db: Session = Depends(
 
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Incorrect Username or Password",
-        headers={"WWW-Authenticate": "Bearer"}
+        detail="Incorrect Username or Password"
     )
 
 @router.get("/home2")
@@ -182,7 +181,7 @@ def register(request: Request):
     return templates.TemplateResponse("clientside/register.html", {"request": request})
 
 @router.post('/register', response_class=HTMLResponse)
-async def register(response: Response, form_data: ClientBase = Depends(ClientBase.as_form), db: Session = Depends(get_db)):
+async def register(response: Response, form_data: ClientBase, db: Session = Depends(get_db)):
     print(form_data)
     user_duplicate = db.query(User_credential).filter(User_credential.user_username == form_data.user_username).first()
     user_email_dup = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
