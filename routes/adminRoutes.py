@@ -123,7 +123,7 @@ def services(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/services', response_class=HTMLResponse)
-def store(response: Response, form_data: ServiceBase = Depends(ServiceBas.as_form), db: Session = Depends(get_db)):
+def store(response: Response, form_data: ServiceBase, db: Session = Depends(get_db)):
 
     if db.query(Service).filter(Service.service_name == form_data.service_name).first():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create service. Service already exists')
@@ -137,11 +137,11 @@ def store(response: Response, form_data: ServiceBase = Depends(ServiceBas.as_for
 
     db.add(to_store)
     db.commit()
-    time.sleep(1)
+    # time.sleep(1)
 
-    response = RedirectResponse(url='/admin/services', status_code=302)
+    # response = RedirectResponse(url='/admin/services', status_code=302)
 
-    return response
+    return
 
 @router.get('/doctor', response_class=HTMLResponse)
 def doctor(request: Request, db: Session = Depends(get_db)):
@@ -156,7 +156,7 @@ def doctor(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/doctor', response_class=HTMLResponse)
-def createDoctor(response: Response, form_data: DoctorBase = Depends(DoctorBase.as_form), db: Session = Depends(get_db)):
+def createDoctor(response: Response, form_data: DoctorBase, db: Session = Depends(get_db)):
     user_duplicate = db.query(User_credential).filter(User_credential.user_username == form_data.user_username).first()
     user_email_dup = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
 
@@ -199,11 +199,11 @@ def createDoctor(response: Response, form_data: DoctorBase = Depends(DoctorBase.
                         db.commit()
                         db.refresh(to_employee)
 
-                        time.sleep(1)
+                        # time.sleep(1)
 
-                        response = RedirectResponse(url='/admin/doctor', status_code=302)
+                        # response = RedirectResponse(url='/admin/doctor', status_code=302)
 
-                        return response
+                        return
                     else:
                         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create user. Email already exists')       
                 else:
@@ -229,7 +229,7 @@ def employee(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/employee', response_class=HTMLResponse)
-def createEmployee(response: Response, form_data: EmployeeBase = Depends(EmployeeBase.as_form), db: Session = Depends(get_db)):
+def createEmployee(response: Response, form_data: EmployeeBase, db: Session = Depends(get_db)):
     user_duplicate = db.query(User_credential).filter(User_credential.user_username == form_data.user_username).first()
     user_email_dup = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
 
@@ -272,11 +272,11 @@ def createEmployee(response: Response, form_data: EmployeeBase = Depends(Employe
                         db.commit()
                         db.refresh(to_employee)
 
-                        time.sleep(1)
+                        # time.sleep(1)
 
-                        response = RedirectResponse(url='/admin/employee', status_code=302)
+                        # response = RedirectResponse(url='/admin/employee', status_code=302)
 
-                        return response
+                        return
                     else:
                         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create user. Email already exists')       
                 else:
@@ -301,7 +301,7 @@ def createClient(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/client', response_class=HTMLResponse)
-async def createClient(response: Response, form_data: ClientBase = Depends(ClientBase.as_form), db: Session = Depends(get_db)):
+async def createClient(response: Response, form_data: ClientBase, db: Session = Depends(get_db)):
     print(form_data)
     user_duplicate = db.query(User_credential).filter(User_credential.user_username == form_data.user_username).first()
     user_email_dup = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
@@ -350,9 +350,9 @@ async def createClient(response: Response, form_data: ClientBase = Depends(Clien
 
                         # await send_email([form_data.user_email], form_data.user_username)
 
-                        time.sleep(3)
-                        response = RedirectResponse(url='/admin/client', status_code=302)
-                        return response
+                        # time.sleep(3)
+                        # response = RedirectResponse(url='/admin/client', status_code=302)
+                        return 
                     else:
                         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create user. Email already exists')       
                 else:
@@ -364,45 +364,45 @@ async def createClient(response: Response, form_data: ClientBase = Depends(Clien
     else:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create user. Mobile Number already exists')
 
-@router.post("/update/{employees.em_id}",response_class=HTMLResponse)
+@router.post("/update/employee/{employees.em_id}",response_class=HTMLResponse)
 async def updateEmployee(response: Response, form_data: EmployeeBase = Depends(EmployeeBase.as_form), db: Session = Depends(get_db)):
     
     id = db.query(EmployeeBase).filter(EmployeeBase.em_id == form_data.em_id).first()
 
-    update(id)
+    # update(id)
     time.sleep(1)
     response = RedirectResponse(url='/admin/client', status_code=302)
     return response
 
-@router.post('/{id}', response_model=clientUpdate)
-async def update(id: str, user: clientUpdate, db: Session = Depends(get_db)):
-    verify = db.query(Client).filter(Client.cl_id == id).first()
+# @router.post('/update/client/{id}', response_class=clientUpdate)
+# async def update(id: str, user: clientUpdate, db: Session = Depends(get_db)):
+#     verify = db.query(Client).filter(Client.cl_id == id).first()
     
-    if not verify:
-        raise HTTPException(404, 'User to update is not found')
+#     if not verify:
+#         raise HTTPException(404, 'User to update is not found')
 
-    user_num_cl = db.query(Client).filter(Client.cl_contactNo == user.cl_contactNo).first()
-    user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == user.cl_contactNo).first()
-    user_num_em = db.query(Employee).filter(Employee.em_contactNo == user.cl_contactNo).first()
+#     user_num_cl = db.query(Client).filter(Client.cl_contactNo == user.cl_contactNo).first()
+#     user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == user.cl_contactNo).first()
+#     user_num_em = db.query(Employee).filter(Employee.em_contactNo == user.cl_contactNo).first()
     
-    if not user_num_cl: 
-        if not user_num_doc: 
-            if not user_num_em:
-                    user_data = user.dict(exclude_unset=True)
-                    for key, value in user_data.items():
-                        setattr(verify, key, value)
-                        # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
-                    db.add(verify)
-                    db.commit()
+#     if not user_num_cl: 
+#         if not user_num_doc: 
+#             if not user_num_em:
+#                     user_data = user.dict(exclude_unset=True)
+#                     for key, value in user_data.items():
+#                         setattr(verify, key, value)
+#                         # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+#                     db.add(verify)
+#                     db.commit()
 
-            else:
-                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
-        else:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
-    else:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
+#             else:
+#                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
+#         else:
+#             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
+#     else:
+#         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
         
-    return {'message': 'Client updated successfully.'} 
+#     return {'message': 'Client updated successfully.'} 
 
 @router.get('/appointment')
 def appointments(request: Request, db: Session = Depends(get_db)):

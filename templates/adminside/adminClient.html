@@ -50,7 +50,7 @@
                                     {% for usercred, clients in client %}
                                       {% if usercred.user_status == 'Active' %}
                                     <tr>
-                                        <td>{{ clients.cl_fullName }}</td>
+                                        <td>{{ clients.cl_fullName }}</td> 
                                         <td>{{ usercred.user_email }}</td>
                                         <td>{{ clients.cl_contactNo }}</td>
                                         <td>{{ clients.cl_address }}</td>
@@ -88,7 +88,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form method="POST">
+          <form action="http://127.0.0.1:8000/admin/client" method="POST" class="form" id="clientAdd">
             <div class="row">
                 <div class="col-md-6">
                   <label class="form-label" for="">Username</label>
@@ -157,8 +157,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-              <button type="reset" class="btn btn-secondary btn-sm" onclick="confirm()">Close</button>
-              <button type="submit" class="btn btn-primary btn-sm" onclick="confirm()">Save changes</button>
+              <button type="reset" class="btn btn-secondary btn-sm">Close</button>
+              <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
             </div>
           </form>
         </div>
@@ -178,8 +178,9 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="https://faith-hope-love.herokuapp.com/client/admin/{{clients.cl_id}}" method="POST">
+          <form action="http://127.0.0.1:8000/client/admin/{{clients.cl_id}}" method="POST" class="form" id="clientEdit">
             <div class="row">
+              <input class="form-control" type="text" value="{{clients.cl_user_credential}}" name="cl_user_credential" hidden>
               <div class="col-md-4">
                   <label class="form-label" for="">First Name</label>
                   <input class="form-control" type="text" value="{{clients.cl_firstName}}" name="cl_firstName">
@@ -227,7 +228,7 @@
             </div>
             <div class="modal-footer">
               <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary btn-sm" onclick="edit()">Save changes</button>
+              <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
             </div>
           </form>
         </div>
@@ -270,11 +271,12 @@
 {% block scripts %}
     <script>
       function confirm() {
-        Swal.fire(
-          'Client Added!',
-          '',
-          'success'
-        )
+        Swal.fire({
+          icon: 'success',
+          title: 'Client Successfully Added',
+          showConfirmButton: true,
+          timer: 1000
+      })
       }
 
       function delet() {
@@ -291,6 +293,15 @@
             'success'
             )
       }
+      function sweetError(message) {
+        Swal.fire({
+        icon: 'error',
+        title: 'Try Again',
+        text: message,
+        footer: ''
+    })
+      }
+
     </script>
     <!-- sidebar script -->
     <script>
@@ -312,4 +323,64 @@
     $(this).addClass('active');
     })
    </script>
+   <script type="text/javascript">
+
+  function windowsOpen(message) {
+      window.open("client", "_self").reload()
+      }
+  
+    $("#clientAdd").submit(function(e) {
+        e.preventDefault();
+        var frm = $("#clientAdd");
+        var data = {};
+        $.each(this, function(i, v){
+            var input = $(v);
+            data[input.attr("name")] = input.val();
+            delete data["undefined"];
+        });
+        $.ajax({
+            contentType:"application/json; charset=utf-8",
+            type:frm.attr("method"),
+            url:frm.attr("action"),
+            dataType:'text',
+            data: JSON.stringify(data),
+            success: function(data) {
+              confirm();
+              const myTimeout = setTimeout(windowsOpen, 0);
+            },
+            error: function(error) {
+              resAlert = error.responseText.slice(11,-2)
+              sweetError(resAlert);
+            }
+        })
+    });
+
+    $("#clientEdit").submit(function(e) {
+        e.preventDefault();
+        var frm = $("#clientEdit");
+        var data = {};
+        $.each(this, function(i, v){
+            var input = $(v);
+            data[input.attr("name")] = input.val();
+            delete data["undefined"];
+        });
+        $.ajax({
+            contentType:"application/json; charset=utf-8",
+            type:frm.attr("method"),
+            url:frm.attr("action"),
+            dataType:'text',
+            data: JSON.stringify(),
+            success: function(data) {
+              edit();
+              const myTimeout = setTimeout(windowsOpen, 0);
+            },
+            error: function(error) {
+              console.log(data)
+              resAlert = error.responseText.slice(11,-2)
+              sweetError(resAlert);
+            }
+        })
+    });
+    </script>
+   
 {%endblock%}

@@ -80,7 +80,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST">
+                <form action="http://127.0.0.1:8000/admin/services" method="POST" class="form" id="serviceAdd">
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label" for="">Service Name</label>
@@ -230,6 +230,38 @@
 </footer>
 {%endblock%}
 {% block scripts %}
+<script>
+    function confirm() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Service Successfully Added',
+      showConfirmButton: true,
+      timer: 2000
+  })
+    }
+    function delet() {
+        Swal.fire(
+        'Doctor Deleted!',
+        '',
+        'success'
+        )
+  }
+  function edit() {
+        Swal.fire(
+        'Saved Changes!',
+        '',
+        'success'
+        )
+  }
+  function sweetError(message) {
+    Swal.fire({
+    icon: 'error',
+    title: 'Try Again',
+    text: message,
+    footer: ''
+  })
+  }
+  </script>
     <!-- sidebar script -->
     <script>
 		$(document).ready(function() {
@@ -251,4 +283,36 @@
 		$(this).addClass('active');
 		})
 	   </script>
+       <script type="text/javascript">
+
+        function windowsOpen(message) {
+            window.open("services", "_self").reload()
+            }
+        
+          $("#serviceAdd").submit(function(e) {
+              e.preventDefault();
+              var frm = $("#serviceAdd");
+              var data = {};
+              $.each(this, function(i, v){
+                  var input = $(v);
+                  data[input.attr("name")] = input.val();
+                  delete data["undefined"];
+              });
+              $.ajax({
+                  contentType:"application/json; charset=utf-8",
+                  type:frm.attr("method"),
+                  url:frm.attr("action"),
+                  dataType:'text',
+                  data: JSON.stringify(data),
+                  success: function(data) {
+                    confirm();
+                    const myTimeout = setTimeout(windowsOpen, 2000);
+                  },
+                  error: function(error) {
+                    resAlert = error.responseText.slice(11,-2)
+                    sweetError(resAlert);
+                  }
+              })
+          });
+    </script>
 {%endblock%}
