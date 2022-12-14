@@ -178,7 +178,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="https://faith-hope-love.herokuapp.com/client/admin/{{clients.cl_id}}" method="POST">
+          <form action="http://127.0.0.1:8000/client/admin/{{clients.cl_id}}" class="form" method="POST" id="clientUpdate">
             <div class="row">
               <div class="col-md-4">
                   <label class="form-label" for="">First Name</label>
@@ -227,7 +227,7 @@
             </div>
             <div class="modal-footer">
               <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary btn-sm" onclick="edit()">Save changes</button>
+              <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
             </div>
           </form>
         </div>
@@ -268,7 +268,7 @@
 </footer>
 {% endblock %}
 {% block scripts %}
-    <script>
+    <script type="text/javascript">
       function confirm() {
         Swal.fire(
           'Client Added!',
@@ -284,13 +284,37 @@
           'success'
         )
       }
-      function edit() {
-            Swal.fire(
-            'Saved Changes!',
-            '',
-            'success'
-            )
-      }
+
+      $("#clientUpdate").submit(function(e) {
+          e.preventDefault();
+          var frm = $("#clientUpdate");
+          var data = {};
+          $.each(this, function(i, v){
+              var input = $(v);
+              data[input.attr("name")] = input.val();
+              delete data["undefined"];
+          });
+          var zl_address = "cl_address";
+          var zl_fullName = "cl_fullName";
+          data[zl_address] = data["cl_houseNo"] + " " + data["cl_street"] + " " + data["cl_brgy"] + " " + data["cl_city"]
+          data[zl_fullName] = data["cl_firstName"] + " " + data["cl_middleName"] + " " + data["cl_lastName"]
+          console.log(data)
+          $.ajax({
+              contentType:"application/json; charset=utf-8",
+              type:frm.attr("method"),
+              url:frm.attr("action"),
+              dataType:'text',
+              data: JSON.stringify(data),
+              success: function(data) {
+              window.open("http://127.0.0.1:8000/admin/client", "_self").reload()
+              },
+              error: function(error) {
+                console.log(error)
+                resAlert = error.responseText.slice(11,-2)
+                alert(resAlert);
+              }
+          })
+      });
     </script>
     <!-- sidebar script -->
     <script>

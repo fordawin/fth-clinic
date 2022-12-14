@@ -76,7 +76,6 @@ function alertLoginFailure(message) {
    )
 }
 
-
 $("#loginForm").submit(function(e) {
     e.preventDefault();
     var frm = $("#loginForm");
@@ -93,7 +92,18 @@ $("#loginForm").submit(function(e) {
         dataType:'text',
         data: JSON.stringify(data),
         success: function(data) {
-         window.open("appointments", "_self").reload()
+         const type = document.cookie
+         console.log(document.cookie);
+
+         if (type == 'type=Client'){
+            window.open("appointments", "_self").reload()
+         }
+
+         if (type == 'type=Admin'){
+            window.open("http://127.0.0.1:8000/admin", "_self").reload()
+         }
+
+         // window.open("appointments", "_self").reload()
         },
         error: function(error) {
          // console.log(error.responseText.slice(11,-2))

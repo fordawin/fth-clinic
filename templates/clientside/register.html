@@ -38,7 +38,7 @@
                  </div>
                  <br>
                  <!-- Steps -->
-                 <div id="failedLogin"></div>
+                 <div id="failedRegister"></div>
                  <div class="form-step form-step-active">
                    <div class="input-group">
                      <label for="userID">
@@ -234,15 +234,18 @@ function updateProgressbar() {
  </script>
 <script type="text/javascript">
 
-  function alertLoginFailure(message) {
-    $('#failedLogin').append(
-        '<div class="alert alert-danger d-flex align-items-center" role="alert">' + 
+  function alertRegisterFailure(message) {
+    $('#failedRegister').append(
+        '<div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">' + 
           '<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/>' + '</svg>' +
-          '<div>' + message + '</div>' + '</div>'
+          '<div>' + message + '</div>' + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">' + '</button>' + '</div>'
     )
   }
 
-
+  setTimeout(function() {
+        bootstrap.Alert.getOrCreateInstance(document.querySelector(".alert")).close();
+    }, 3000)
+    
   $("#registerForm").submit(function(e) {
       e.preventDefault();
       var frm = $("#registerForm");
@@ -263,7 +266,7 @@ function updateProgressbar() {
           },
           error: function(error) {
             resAlert = error.responseText.slice(11,-2)
-            alertLoginFailure(resAlert);
+            alertRegisterFailure(resAlert);
           }
       })
   });

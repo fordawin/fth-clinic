@@ -115,57 +115,18 @@
                         <div class="row text-center">
                            <input id="myID" type="hidden" style="display: none;" name="date" value="date">
                         </div>
-                        <div class="container mt-3" id="time_slot">
-                           <div class="card  time_slot" >
-                              <div class="card-header" style="background-color: #23ab70; color:white">
-                                 <strong>Pick a Time Slot</strong> 
-                              </div>
-                              <div class="card-body">
-                                 <div class="row">
-                                    <div class="col-md-6">
-										<select class="form-control" name="ap_slotID" id="">
-											{% for timeslot in appointments[appointments[-3] + appointments[-2]:-3] %}
-											<option value="{{timeslot.slot_id}}">{{timeslot.slot_time}}</option>
-											{% endfor %}
-										</select>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="card mt-3">
-                              <div class="card-header" style="background-color: #23ab70; color:white">
-                                 <strong>Input fields below</strong> 
-                              </div>
-                              <div class="card-body">
-                                 <div class="row">
-                                    <label for=""><strong>Commorbidities/Symptoms</strong> </label>
-                                    <div class="col-md-12">
-                                       <textarea class="form-control" name="ap_comorbidity" id=""  rows="5"></textarea>
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-md-12 mt-3">
-                                       <label class="form-label" for=""><strong>Service</strong> </label>
-                                       <select class="form-control" name="ap_serviceType" id="">
-										{% for service in appointments[appointments[-3]:-appointments[-1] - appointments[-2]] %}
-										<option value="{{service.service_id}}">{{service.service_name}}</option>
-										{% endfor %}
-                                       </select>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
                      </div>
                   </div>
                </div>
-               <div class="form-group">
-                  <!-- Button trigger modal -->
-                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+               <!-- <div class="form-group">
+                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#appointmentModal">
                   Book an Appointment
                   </button>
-               </div>
+               </div> -->
             </form>
+			<a type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#appointmentModal">
+				Book an Appointment
+			</a>
          </div>
       </div>
    </div>
@@ -173,70 +134,66 @@
  <!--dito len end -->
 
  <!-- Modal -->
- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
-	  <div class="modal-content">
-		<div class="modal-header">
-			<div class="col-md-12">
-				<h3>Booking Form </h3>
-				<p>Fill the form below and we will get back soon to you for more updates.</p>
-			</div>	
-		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		</div>
-		<div class="modal-body">
-			<form action="" class="needs-validation" novalidate>
-			<div class="container">
-				<div class="row mt-2">
-					<div class="col-md-4" style="vertical-align: text-top;">
-						<b>Cormordibidities / Symptoms</b>
-					</div>
-					<div class="col-md-8">
-						<textarea name="" id=""  rows="4" class="form-control" name="ap_comorbidity"  placeholder="type here . . . " required></textarea>
-						<div class="invalid-feedback">
-							This field is required.
-						</div>
-					</div>
-				</div>
-				<div class="row mt-2">
-					<div class="col-md-4" style="vertical-align: text-top;">
-						<b>Services</b>
-					</div>
-					<div class="col-md-8">
-						<select name="ap_serviceType" id="" class="form-control" required>
-							{% for service in appointments[appointments[-3]:-appointments[-1] - appointments[-2]] %}
-							<option value="{{service.service_id}}">{{service.service_name}}</option>
-							{% endfor %}
-						</select>
-						<div class="invalid-feedback">
-							This field is required.
-						</div>
-					</div>
-				</div>
-				<div class="row mt-2">
-					<div class="col-md-4" style="vertical-align: text-top;">
-						<b>Appointment Time</b>
-					</div>
-					<div class="col-md-8">
-						<select class="form-control" name="ap_slotID" id="" required>
-							{% for timeslot in appointments[appointments[-3] + appointments[-2]:-3] %}
-							<option value="{{timeslot.slot_id}}">{{timeslot.slot_time}}</option>
-							{% endfor %}
-						</select>
-						<div class="invalid-feedback">
-							This field is required.
-						</div>
-					</div>
-				</div>
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="col-md-12">
+					<h3>Booking Form </h3>
+					<p>Fill the form below and we will get back soon to you for more updates.</p>
+				</div>	
 			</div>
+		<div class="modal-body">
+			<form action="http://127.0.0.1:8000/users/home2" method="POST" id="appointmentForm">
+				<div class="container">
+					<div class="row mt-2">
+						<div class="col-md-4" style="vertical-align: text-top;">
+							<b>Cormordibidities / Symptoms</b>
+						</div>
+						<div class="col-md-8">
+							<textarea name="ap_comorbidity" id=""  rows="4" class="form-control" placeholder="type here . . . "></textarea>
+						</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-md-4" style="vertical-align: text-top;">
+							<b>Services</b>
+						</div>
+						<div class="col-md-8">
+							<select name="ap_serviceType" id="" class="form-control" required>
+								{% for service in appointments[appointments[-3]:-appointments[-1] - appointments[-2]] %}
+								<option value="{{service.service_id}}">{{service.service_name}}</option>
+								{% endfor %}
+							</select>
+							<div class="invalid-feedback">
+								This field is required.
+							</div>
+						</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-md-4" style="vertical-align: text-top;">
+							<b>Appointment Time</b>
+						</div>
+						<div class="col-md-8">
+							<select class="form-control" name="ap_slotID" id="" required>
+								{% for timeslot in appointments[appointments[-3] + appointments[-2]:-3] %}
+								<option value="{{timeslot.slot_id}}">{{timeslot.slot_time}}</option>
+								{% endfor %}
+							</select>
+							<div class="invalid-feedback">
+								This field is required.
+							</div>
+						</div>
+					</div>
+				</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary btn-sm">Submit</button>
+			</div>
+			</form>
 		</div>
-		<div class="modal-footer">
-		  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-		  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
 		</div>
-	</form>
-	  </div>
 	</div>
-  </div>
+</div>
 
 		  
 <!--Start services Section-->
@@ -432,4 +389,34 @@
 	   </div>
    </div>
 </section>
+
+<script type="text/javascript">
+$("#appointmentForm").submit(function(e) {
+    e.preventDefault();
+    var frm = $("#appointmentForm");
+    var data = {};
+    $.each(this, function(i, v){
+        var input = $(v);
+        data[input.attr("name")] = input.val();
+        delete data["undefined"];
+    });
+    $.ajax({
+        contentType:"application/json; charset=utf-8",
+        type:frm.attr("method"),
+        url:frm.attr("action"),
+        dataType:'text',
+        data: JSON.stringify(data),
+        success: function(data) {
+			alert("appointment booked")
+			window.open("appointments", "_self").reload()
+         // window.open("appointments", "_self").reload()
+        },
+        error: function(error) {
+         // console.log(error.responseText.slice(11,-2))
+         resAlert = error.responseText.slice(11,-2);
+         alert(resAlert);
+        }
+    })
+});
+</script>
 {% endblock %}

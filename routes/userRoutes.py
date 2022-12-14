@@ -93,8 +93,7 @@ async def login(response: Response, form_data: LoginForm, db: Session = Depends(
             token = jwt.encode(dict(data), secret)
             # response = RedirectResponse(url='appointments', status_code=302)
             response.set_cookie('token', token, httponly=True)
-            
-            print(token)
+            response.set_cookie('type', user.user_type, httponly=False)
             return
 
     raise HTTPException(
@@ -125,7 +124,7 @@ def home(request: Request, db: Session = Depends(get_db)):
     
 
 @router.post('/home2', response_class=HTMLResponse)
-async def home(form_data: AppointmentBase = Depends(AppointmentBase.as_form), token: str = Cookie('token'), db: Session = Depends(get_db)):
+async def home(form_data: AppointmentBase, token: str = Cookie('token'), db: Session = Depends(get_db)):
     token = jwt.decode(token, secret, algorithms=['HS256'])
 
     serbisyo = db.query(Service).filter(Service.service_id == form_data.ap_serviceType).first()

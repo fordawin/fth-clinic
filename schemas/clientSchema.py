@@ -15,8 +15,7 @@ class clientUpdate(BaseModel):
     cl_brgy : Optional[str] | None = None
     cl_city : Optional[str] | None = None
     cl_maritalStatus : Optional[str] | None = None
-    cl_validId : Optional[str] | None = None
-    cl_validIdNumber : Optional[str] | None = None
+    cl_address : Optional[str] | None = None
     cl_contactNo : Optional[str] | None = None
 
     @classmethod
