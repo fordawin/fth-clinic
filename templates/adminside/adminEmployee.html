@@ -81,7 +81,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form method="POST">
+          <form action="http://127.0.0.1:8000/admin/employee" method="POST" class="form" id="employeeAdd">
             <div class="row">
               <div class="col-md-6">
                 <label class="form-label" for="">Username</label>
@@ -134,7 +134,7 @@
             </div>
             <div class="modal-footer">
                 <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary btn-sm" onclick="confirm()">Save changes</button>
+                <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
               </div>
           </form>
         </div>
@@ -236,22 +236,38 @@
 </footer>
 {% endblock %}
 {% block scripts %}
-    <script>
-      function confirm() {
-        Swal.fire(
-          'Employee successfully added!',
-          '',
-          'success'
-        )
-      }
-      function delet() {
-        Swal.fire(
-          'Employee Deleted!',
-          '',
-          'success'
-        )
-      }
-    </script>
+<script>
+  function confirm() {
+  Swal.fire({
+    icon: 'success',
+    title: 'Client Successfully Added',
+    showConfirmButton: true,
+    timer: 2000
+})
+  }
+  function delet() {
+      Swal.fire(
+      'Doctor Deleted!',
+      '',
+      'success'
+      )
+}
+function edit() {
+      Swal.fire(
+      'Saved Changes!',
+      '',
+      'success'
+      )
+}
+function sweetError(message) {
+  Swal.fire({
+  icon: 'error',
+  title: 'Try Again',
+  text: message,
+  footer: ''
+})
+}
+</script>
 
     <!-- sidebar script -->
     <script>
@@ -273,5 +289,37 @@
         $(this).addClass('active');
         })
    </script>
+   <script type="text/javascript">
+
+    function windowsOpen(message) {
+        window.open("employee", "_self").reload()
+        }
+    
+      $("#employeeAdd").submit(function(e) {
+          e.preventDefault();
+          var frm = $("#employeeAdd");
+          var data = {};
+          $.each(this, function(i, v){
+              var input = $(v);
+              data[input.attr("name")] = input.val();
+              delete data["undefined"];
+          });
+          $.ajax({
+              contentType:"application/json; charset=utf-8",
+              type:frm.attr("method"),
+              url:frm.attr("action"),
+              dataType:'text',
+              data: JSON.stringify(data),
+              success: function(data) {
+                confirm();
+                const myTimeout = setTimeout(windowsOpen, 2000);
+              },
+              error: function(error) {
+                resAlert = error.responseText.slice(11,-2)
+                sweetError(resAlert);
+              }
+          })
+      });
+</script>
 
 {% endblock %}

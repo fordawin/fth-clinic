@@ -18,10 +18,6 @@
             </div>
             
                 <!-- end row -->
-                    
-
-          
-
             <!-- student tracker table  -->
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
@@ -83,7 +79,7 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form method="POST">
+                <form action="http://127.0.0.1:8000/admin/doctor" method="POST" class="form" id="doctorAdd">
                     <div class="row">
                         <div class="col-md-6">
                             <label class="form-label" for="">Username</label>
@@ -132,7 +128,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-sm" onclick="confirm()">Save changes</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
                     </div>
                 </form>
                 </div>
@@ -221,7 +217,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete these entry?</p>
+          <p>Are you sure you want to the information of Doctor {{doctors.dt_fullName}}? </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -244,11 +240,12 @@
 {% block scripts %}
     <script>
         function confirm() {
-          Swal.fire(
-            'Doctor successfully added!',
-            '',
-            'success'
-          )
+        Swal.fire({
+          icon: 'success',
+          title: 'Client Successfully Added',
+          showConfirmButton: true,
+          timer: 2000
+      })
         }
         function delet() {
             Swal.fire(
@@ -263,6 +260,14 @@
             '',
             'success'
             )
+      }
+      function sweetError(message) {
+        Swal.fire({
+        icon: 'error',
+        title: 'Try Again',
+        text: message,
+        footer: ''
+    })
       }
     </script>
 
@@ -286,4 +291,36 @@
     $(this).addClass('active');
     })
    </script>
+<script type="text/javascript">
+
+        function windowsOpen(message) {
+            window.open("doctor", "_self").reload()
+            }
+        
+          $("#doctorAdd").submit(function(e) {
+              e.preventDefault();
+              var frm = $("#doctorAdd");
+              var data = {};
+              $.each(this, function(i, v){
+                  var input = $(v);
+                  data[input.attr("name")] = input.val();
+                  delete data["undefined"];
+              });
+              $.ajax({
+                  contentType:"application/json; charset=utf-8",
+                  type:frm.attr("method"),
+                  url:frm.attr("action"),
+                  dataType:'text',
+                  data: JSON.stringify(data),
+                  success: function(data) {
+                    confirm();
+                    const myTimeout = setTimeout(windowsOpen, 2000);
+                  },
+                  error: function(error) {
+                    resAlert = error.responseText.slice(11,-2)
+                    sweetError(resAlert);
+                  }
+              })
+          });
+    </script>
 {% endblock %}

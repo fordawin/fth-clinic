@@ -69,20 +69,20 @@ class AdminBase(BaseModel):
 
 class ClientBase(UserBase):
     cl_pic : Optional[str]
-    cl_firstName : str
+    cl_firstName : Optional[str]
     cl_middleName : Optional[str]
-    cl_lastName : str
+    cl_lastName : Optional[str]
     cl_fullName : Optional[str]
-    cl_houseNo : str
-    cl_street : str
-    cl_brgy : str
-    cl_city : str
+    cl_houseNo : Optional[str]
+    cl_street : Optional[str]
+    cl_brgy : Optional[str]
+    cl_city : Optional[str]
     cl_address : Optional[str]
     cl_status : Optional[str]
-    cl_maritalStatus : str
+    cl_maritalStatus : Optional[str]
     cl_birthdate : d
-    cl_gender : str
-    cl_contactNo : str
+    cl_gender : Optional[str]
+    cl_contactNo : Optional[str]
     cl_user_credential : Optional[str]
     # cl_created_by : str
     # cl_updated_by : str
@@ -129,17 +129,17 @@ class ClientBase(UserBase):
 class EmployeeBase(UserBase):
     em_id : Optional[str] = None
     em_pic : Optional[str] = None
-    em_firstName : str
+    em_firstName : Optional[str] = None
     em_middleName : Optional[str] = None 
-    em_lastName : str
-    em_fullName : str
-    em_houseNo : str
-    em_street : str
-    em_brgy : str
-    em_city : str
-    em_address : str
+    em_lastName : Optional[str] = None
+    em_fullName : Optional[str] = None
+    em_houseNo : Optional[str] = None
+    em_street : Optional[str] = None
+    em_brgy : Optional[str] = None
+    em_city : Optional[str] = None
+    em_address : Optional[str] = None
     em_status : Optional[str] = None
-    em_contactNo : str
+    em_contactNo : Optional[str] = None
     # em_created_by : str
     # em_updated_by : str
 
@@ -180,17 +180,17 @@ class EmployeeBase(UserBase):
 
 class DoctorBase(UserBase):
     dt_pic : Optional[str] = None 
-    dt_firstName : str
-    dt_middleName : str
-    dt_lastName : str
-    dt_fullName : str
-    dt_houseNo : str
-    dt_street : str
-    dt_brgy : str
-    dt_city : str
-    dt_address : str
+    dt_firstName : Optional[str] = None 
+    dt_middleName : Optional[str] = None 
+    dt_lastName : Optional[str] = None 
+    dt_fullName : Optional[str] = None 
+    dt_houseNo : Optional[str] = None 
+    dt_street : Optional[str] = None 
+    dt_brgy : Optional[str] = None 
+    dt_city : Optional[str] = None 
+    dt_address : Optional[str] = None 
     dt_status : Optional[str] = None 
-    dt_contactNo : str
+    dt_contactNo : Optional[str] = None 
     # dt_created_by: str
     # dt_updated_by: str
     @classmethod

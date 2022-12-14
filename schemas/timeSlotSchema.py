@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 class TimeSlotBase(BaseModel):
-    slot_capacity: str
+    slot_capacity: Optional[str]
     slot_date: d
 
 # Schema for request body
