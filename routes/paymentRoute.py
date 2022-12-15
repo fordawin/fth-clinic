@@ -122,7 +122,9 @@ def store(form_data: PaymentBase = Depends(PaymentBase.as_form), db: Session = D
 
     babayaran = int(query.ap_amount)
 
-    if form_data.payment_amount < babayaran:
+    bayad = int(form_data.payment_amount)
+
+    if bayad < babayaran:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Kulang bayad mo lods')
     else:
         db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).update({"ap_status": "Paid"})
@@ -135,11 +137,11 @@ def store(form_data: PaymentBase = Depends(PaymentBase.as_form), db: Session = D
     db.add(to_store)
     db.commit()
 
-    time.sleep(1)
+    # time.sleep(1)
 
-    response = RedirectResponse(url='/payment/base', status_code=302)
+    # response = RedirectResponse(url='/payment/base', status_code=302)
 
-    return response
+    return
 
 @router.get('/pending')
 def employee(request: Request, db: Session = Depends(get_db)):
