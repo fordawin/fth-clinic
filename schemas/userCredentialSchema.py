@@ -80,7 +80,7 @@ class ClientBase(UserBase):
     cl_address : Optional[str]
     cl_status : Optional[str]
     cl_maritalStatus : Optional[str]
-    cl_birthdate : d
+    cl_birthdate : Optional[d]
     cl_gender : Optional[str]
     cl_contactNo : Optional[str]
     cl_user_credential : Optional[str]
