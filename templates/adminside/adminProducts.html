@@ -288,32 +288,33 @@
             window.open("services", "_self").reload()
             }
         
-          $("#productAdd").submit(function(e) {
-              e.preventDefault();
-              var frm = $("#productAdd");
-              var data = {};
-              $.each(this, function(i, v){
-                  var input = $(v);
-                  data[input.attr("name")] = input.val();
-                  delete data["undefined"];
-              });
-              var formData = new FormData(data);
-              $.ajax({
-                type:'POST',
-                url: $(this).attr('action'),
-                data:formData,
-                cache:false,
-                contentType: false,
-                processData: false,
-                  success: function(data) {
-                    confirm();
-                    const myTimeout = setTimeout(windowsOpen, 2000);
-                  },
-                  error: function(error) {
-                    resAlert = error.responseText.slice(11,-2)
+            $("#productAdd").submit(function(e) {
+                e.preventDefault();
+                var frm = $("#productAdd");
+                var data = {};
+                $.each(this, function(i, v){
+                    var input = $(v);
+                    data[input.attr("name")] = input.val();
+                    delete data["undefined"];
+                });
+                var file = document.getElementById("file").value;
+                console.log(data);
+                $.ajax({
+                    contentType:"multipart/form-data",
+                    type:frm.attr("method"),
+                    url:frm.attr("action"),
+                    dataType:'text',
+                    data: JSON.stringify(data, file),
+                    success: function(data) {
+                        confirm();
+                        const myTimeout = setTimeout(windowsOpen, 2000);
+                    },
+                    error: function(error) {
+                    // console.log(error.responseText.slice(11,-2))
+                    resAlert = error.responseText.slice(11,-2);
                     sweetError(resAlert);
-                  }
-              })
-          });
+                    }
+                })
+            });
     </script>
 {%endblock%}

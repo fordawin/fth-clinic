@@ -116,7 +116,7 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/base')
-def store(form_data: PaymentBase = Depends(PaymentBase.as_form), db: Session = Depends(get_db)):
+def store(form_data: PaymentBase, db: Session = Depends(get_db)):
 
     query = db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).first()
 
@@ -135,11 +135,7 @@ def store(form_data: PaymentBase = Depends(PaymentBase.as_form), db: Session = D
     db.add(to_store)
     db.commit()
 
-    time.sleep(1)
-
-    response = RedirectResponse(url='/payment/base', status_code=302)
-
-    return response
+    return 
 
 @router.get('/pending')
 def employee(request: Request, db: Session = Depends(get_db)):

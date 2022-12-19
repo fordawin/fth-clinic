@@ -40,7 +40,7 @@ def read(id: str, db: Session = Depends(get_db)):
     return {'Product': product}
 
 @router.post('/')
-async def store(request: Request, product: ProductBase, file: UploadFile, db: Session = Depends(get_db)):
+async def store(product: ProductBase, file: UploadFile = File(...), db: Session = Depends(get_db)):
 
     if db.query(Product).filter(Product.product_name == product.product_name).first():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create product. Product already exists')

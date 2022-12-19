@@ -164,7 +164,7 @@ def findOne(id: str, db: Session = Depends(get_db)):
 #     return
 
 @router.post('/admin/{id}', response_model=clientUpdate)
-async def update(id: str, form_data: clientUpdate, db: Session = Depends(get_db)):
+def update(id: str, form_data: clientUpdate, db: Session = Depends(get_db)):
     verify = db.query(Client).filter(Client.cl_id == id).first()
     user_num_cl = db.query(Client).filter(Client.cl_contactNo == form_data.cl_contactNo).first()
     user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == form_data.cl_contactNo).first()
@@ -181,20 +181,19 @@ async def update(id: str, form_data: clientUpdate, db: Session = Depends(get_db)
         db.add(verify)
         db.commit()
         
-        return
-        
     else:
         if not user_num_cl: 
             if not user_num_doc: 
                 if not user_num_em:
-                    user_data = form_data.dict(exclude_unset=True)
-                    for key, value in user_data.items():
-                        setattr(verify, key, value)
-                        # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
-                    db.add(verify)
-                    db.commit()
+                        user_data = form_data.dict(exclude_unset=True)
+                        for key, value in user_data.items():
+                            setattr(verify, key, value)
+                            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+                        db.add(verify)
+                        db.commit()
 
-                    return
+                        return {'message': 'Client updated successfully.'} 
+
                 else:
                     raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
             else:
@@ -204,9 +203,9 @@ async def update(id: str, form_data: clientUpdate, db: Session = Depends(get_db)
 
     # time.sleep(1)
 
-    response = RedirectResponse(url='/admin/client', status_code=302)
+    # response = RedirectResponse(url='/admin/client', status_code=302)
 
-    return response
+    return
   
 @router.get('/deactivate/{id}')
 def deactivate(id: str, db: Session = Depends(get_db)):

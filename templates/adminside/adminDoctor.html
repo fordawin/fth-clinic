@@ -44,7 +44,7 @@
                                     {% for usercred, doctors in doctor %}
                                         {% if usercred.user_status == 'Active' %}
                                     <tr>
-                                        <td>{{ doctors.dt_fullName }}</td>
+                                        <td>{{ doctors.dt_firstName }} {{ doctors.dt_middleName }} {{ doctors.dt_lastName }}</td>
                                         <td>{{ usercred.user_email }}</td>
                                         <td>{{ doctors.dt_contactNo }}</td>
                                         <td>{{ doctors.dt_address }}</td>
@@ -148,7 +148,7 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="https://faith-hope-love.herokuapp.com/doctor/{{doctors.cl_id}}" method="POST">
+                <form action="http://127.0.0.1:8000/doctor/{{doctors.dt_id}}" id="doctorUpdate" method="POST">
                     <div class="row">
                         <div class="col-md-4">
                             <label class="form-label" for="">First Name</label>
@@ -197,7 +197,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-sm" onclick="edit()">Save changes</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
                     </div>
                 </form>
                 </div>
@@ -307,7 +307,34 @@
                   delete data["undefined"];
               });
               $.ajax({
-                  contentType:"application/json; charset=utf-8",
+                  contentType:"application/json",
+                  type:frm.attr("method"),
+                  url:frm.attr("action"),
+                  dataType:'text',
+                  data: JSON.stringify(data),
+                  success: function(data) {
+                    confirm();
+                    const myTimeout = setTimeout(windowsOpen, 2000);
+                  },
+                  error: function(error) {
+                    resAlert = error.responseText.slice(11,-2)
+                    sweetError(resAlert);
+                  }
+              })
+          });
+
+          $("#doctorUpdate").submit(function(e) {
+              e.preventDefault();
+              var frm = $("#doctorUpdate");
+              var data = {};
+              $.each(this, function(i, v){
+                  var input = $(v);
+                  data[input.attr("name")] = input.val();
+                  delete data["undefined"];
+              });
+              console.log(data);
+              $.ajax({
+                  contentType:"application/json",
                   type:frm.attr("method"),
                   url:frm.attr("action"),
                   dataType:'text',
