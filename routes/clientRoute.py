@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from dotenv import dotenv_values
 from schemas.userCredentialSchema import LoginForm, TokenData
 from models.userCredentialModel import User_credential
-from schemas.clientSchema import clientUpdate
+from schemas.clientSchema import clientUpdate, clientUpdate2
 from models.clientModel import Client
 from models.doctorModel import Doctor
 from models.employeeModel import Employee
@@ -163,60 +163,43 @@ def findOne(id: str, db: Session = Depends(get_db)):
 
 #     return
 
-@router.post('/admin/{id}', response_model=clientUpdate)
-def update(id: str, form_data: clientUpdate, db: Session = Depends(get_db)):
+@router.post('/admin/{id}')
+def update(id: str, user: clientUpdate, db: Session = Depends(get_db)):
     verify = db.query(Client).filter(Client.cl_id == id).first()
-    user_num_cl = db.query(Client).filter(Client.cl_contactNo == form_data.cl_contactNo).first()
-    user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == form_data.cl_contactNo).first()
-    user_num_em = db.query(Employee).filter(Employee.em_contactNo == form_data.cl_contactNo).first()
+    user_num_cl = db.query(Client).filter(Client.cl_contactNo == user.cl_contactNo).first()
+    user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == user.cl_contactNo).first()
+    user_num_em = db.query(Employee).filter(Employee.em_contactNo == user.cl_contactNo).first()
 
     if not verify:
         raise HTTPException(404, 'User to update is not found')
-    
-    # if form_data.cl_contactNo == verify.cl_contactNo:
-    #     user_data = form_data.dict(exclude_unset=True)
-    #     for key, value in user_data.items():
-    #         setattr(verify, key, value)
-    #         # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
-    #     db.add(verify)
-    #     db.commit()
+
+    if user.cl_contactNo == verify.cl_contactNo:
+        user_data = user.dict(exclude_unset=True)
+        for key, value in user_data.items():
+            setattr(verify, key, value)
+            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+        db.add(verify)
+        db.commit()
         
-    #     return
-        
-    # else:
-    if not user_num_cl: 
-        if not user_num_doc: 
-            if not user_num_em:
-                user_data = form_data.dict(exclude_unset=True)
-                for key, value in user_data.items():
-                    setattr(verify, key, value)
-                        # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
-                db.add(verify)
-                db.commit()
     else:
         if not user_num_cl: 
             if not user_num_doc: 
                 if not user_num_em:
-                        user_data = form_data.dict(exclude_unset=True)
+                        user_data = user.dict(exclude_unset=True)
                         for key, value in user_data.items():
                             setattr(verify, key, value)
                             # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
                         db.add(verify)
                         db.commit()
 
-                return
+                        return {'message': 'Client updated successfully.'} 
+                else:
+                    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
             else:
-                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
         else:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
-    else:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
 
-    # time.sleep(1)
-
-    # response = RedirectResponse(url='/admin/client', status_code=302)
-
-    return
   
 @router.get('/deactivate/{id}')
 def deactivate(id: str, db: Session = Depends(get_db)):

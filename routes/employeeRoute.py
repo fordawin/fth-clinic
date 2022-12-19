@@ -72,8 +72,8 @@ def findOne(id: str, db: Session = Depends(get_db)):
 
     return {'user': user}
 
-@router.post('/{id}', response_model=employeeUpdate)
-def update(id: str, user: employeeUpdate = Depends(employeeUpdate.as_form), db: Session = Depends(get_db)):
+@router.post('/{id}')
+def update(id: str, user: employeeUpdate, db: Session = Depends(get_db)):
     verify = db.query(Employee).filter(Employee.em_id == id).first()
     user_num_cl = db.query(Client).filter(Client.cl_contactNo == user.em_contactNo).first()
     user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == user.em_contactNo).first()
@@ -107,12 +107,6 @@ def update(id: str, user: employeeUpdate = Depends(employeeUpdate.as_form), db: 
                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Employee. Mobile Number already exists')
         else:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Employee. Mobile Number already exists')
-
-    time.sleep(1)
-
-    response = RedirectResponse(url='/admin/employee', status_code=302)
-
-    return response
 
 @router.post('/home')
 async def createEmployee(request: Request, db: Session = Depends(get_db)):

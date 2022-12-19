@@ -153,15 +153,10 @@
                         <div class="col-md-4">
                             <label class="form-label" for="">First Name</label>
                             <input class="form-control" type="text" value="{{doctors.dt_firstName}}" name="dt_firstName">
-                            <input class="form-control" type="text" value="{{doctors.dt_fullName}}"  name="dt_fullName" hidden>
-                            <input class="form-control" type="text" value="{{doctors.dt_address}}" name="dt_address" hidden>
-                            <input class="form-control" type="text" value="{{doctors.dt_status}}" name="dt_status" hidden>
-                            <input class="form-control" type="text" value="{{doctors.dt_pic}}"  name="dt_pic" hidden>
-                            <input class="form-control" type="text" value="{{doctors.dt_user_credential}}" name="dt_user_credential" hidden>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label" for="">Middle Name</label>
-                            <input class="form-control" type="text" value="{{doctors.dt_middleName}}" placeholder = "{{doctors.dt_middleName}}" name="dt_middleName">
+                            <input class="form-control" type="text" value="{{doctors.dt_middleName}}" name="dt_middleName">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label" for="">Last Name</label>
@@ -247,7 +242,7 @@
         function confirm() {
         Swal.fire({
           icon: 'success',
-          title: 'Doctor Successfully Added',
+          title: 'Client Successfully Added',
           showConfirmButton: true,
           timer: 2000
       })
@@ -340,37 +335,6 @@
               console.log(data);
               $.ajax({
                   contentType:"application/json",
-                  type:frm.attr("method"),
-                  url:frm.attr("action"),
-                  dataType:'text',
-                  data: JSON.stringify(data),
-                  success: function(data) {
-                    confirm();
-                    const myTimeout = setTimeout(windowsOpen, 2000);
-                  },
-                  error: function(error) {
-                    resAlert = error.responseText.slice(11,-2)
-                    sweetError(resAlert);
-                  }
-              })
-          });
-
-          $("#doctorUpdate").submit(function(e) {
-              e.preventDefault();
-              var frm = $("#doctorUpdate");
-              var data = {};
-              $.each(this, function(i, v){
-                  var input = $(v);
-                  data[input.attr("name")] = input.val();
-                  delete data["undefined"];
-              });
-              var zl_address = "cl_address";
-                var zl_fullName = "cl_fullName";
-                data[zl_address] = data["cl_houseNo"] + " " + data["cl_street"] + " " + data["cl_brgy"] + " " + data["cl_city"]
-                data[zl_fullName] = data["cl_firstName"] + " " + data["cl_middleName"] + " " + data["cl_lastName"]
-                console.log(data)
-              $.ajax({
-                  contentType:"application/json; charset=utf-8",
                   type:frm.attr("method"),
                   url:frm.attr("action"),
                   dataType:'text',

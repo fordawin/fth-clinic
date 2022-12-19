@@ -5,19 +5,19 @@ from pydantic import BaseModel
 from fastapi import Form
 
 class employeeUpdate(BaseModel):
-    em_pic : Optional[str] | None = None
-    em_firstName : Optional[str] | None = None
-    em_middleName : Optional[str] | None = None
-    em_lastName : Optional[str] | None = None
-    em_fullName : Optional[str] | None = None
-    em_houseNo : Optional[str] | None = None
-    em_street : Optional[str] | None = None
-    em_brgy : Optional[str] | None = None
-    em_city : Optional[str] | None = None
-    em_address : Optional[str] | None = None
-    em_status : Optional[str] | None = None
-    em_email : Optional[str] | None = None
-    em_contactNo : Optional[str] | None = None
+    em_pic : Optional[str]
+    em_firstName : Optional[str]
+    em_middleName : Optional[str]
+    em_lastName : Optional[str]
+    em_fullName : Optional[str] 
+    em_houseNo : Optional[str]
+    em_street : Optional[str]
+    em_brgy : Optional[str]
+    em_city : Optional[str]
+    em_address : Optional[str]
+    em_status : Optional[str]
+    em_email : Optional[str]
+    em_contactNo : Optional[str]
 
     @classmethod
     def as_form(

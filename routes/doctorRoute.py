@@ -40,7 +40,7 @@ def findOne(id: str, db: Session = Depends(get_db)):
 
     return {'user': user}
 
-@router.post('/{id}', response_model=doctorUpdate)
+@router.post('/{id}')
 def update(id: str, user: doctorUpdate, db: Session = Depends(get_db)):
     verify = db.query(Doctor).filter(Doctor.dt_id == id).first()
     user_num_cl = db.query(Client).filter(Client.cl_contactNo == user.dt_contactNo).first()
@@ -76,12 +76,6 @@ def update(id: str, user: doctorUpdate, db: Session = Depends(get_db)):
                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
         else:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
-    
-    # time.sleep(1)
-
-    # response = RedirectResponse(url='admin/doctor', status_code=302)
-
-    return 
 
 @router.post('/uploadProfile/{id}', status_code=status.HTTP_202_ACCEPTED)
 async def upload_profile(id: str, file: UploadFile = File(...), db: Session = Depends(get_db)):

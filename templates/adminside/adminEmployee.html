@@ -46,7 +46,7 @@
                                 <tbody>
                                   {% for usercred, employees in employee %}
                                    <tr>
-                                        <td>{{ employees.em_fullName }}</td>
+                                        <td>{{ employees.em_firstName }} {{ employees.em_middleName }} {{ employees.em_lastName }}</td>
                                         <td>{{ usercred.user_email }}</td>
                                         <td>{{ employees.em_contactNo }}</td>
                                         <td>{{ employees.em_address }}</td>
@@ -154,7 +154,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="https://faith-hope-love.herokuapp.com/employee/{{employees.em_id}}" method="POST">
+          <form action="http://127.0.0.1:8000/employee/{{employees.em_id}}" id="employeeUpdate" method="POST">
             <div class="row">
               <div class="col-md-4">
                   <label class="form-label" for="">First Name</label>
@@ -320,6 +320,33 @@ function sweetError(message) {
               }
           })
       });
+
+      $("#employeeUpdate").submit(function(e) {
+              e.preventDefault();
+              var frm = $("#employeeUpdate");
+              var data = {};
+              $.each(this, function(i, v){
+                  var input = $(v);
+                  data[input.attr("name")] = input.val();
+                  delete data["undefined"];
+              });
+              console.log(data);
+              $.ajax({
+                  contentType:"application/json",
+                  type:frm.attr("method"),
+                  url:frm.attr("action"),
+                  dataType:'text',
+                  data: JSON.stringify(data),
+                  success: function(data) {
+                    confirm();
+                    const myTimeout = setTimeout(windowsOpen, 2000);
+                  },
+                  error: function(error) {
+                    resAlert = error.responseText.slice(11,-2)
+                    sweetError(resAlert);
+                  }
+              })
+        });
 </script>
 
 {% endblock %}

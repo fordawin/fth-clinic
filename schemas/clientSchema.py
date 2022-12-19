@@ -1,23 +1,40 @@
 from datetime import datetime as dt
 from datetime import date as d
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, validator, ValidationError
 from fastapi import Form
 
+class clientUpdate2(BaseModel):
+    cl_pic : Optional[str]
+    cl_firstName : Optional[str]
+    cl_middleName : Optional[str]
+    cl_lastName : Optional[str]
+    cl_fullName : Optional[str]
+    cl_houseNo : Optional[str]
+    cl_street : Optional[str]
+    cl_brgy : Optional[str]
+    cl_city : Optional[str]
+    cl_address : Optional[str]
+    cl_status : Optional[str]
+    cl_maritalStatus : Optional[str]
+    cl_contactNo : Optional[str]
+    cl_user_credential: Optional[str]
+
 class clientUpdate(BaseModel):
-    cl_pic : Optional[str] = ...
-    cl_firstName : Optional[str] = ...
-    cl_middleName : Optional[str] = ...
-    cl_lastName : Optional[str] = ...
-    cl_fullName : Optional[str] = ...
-    cl_houseNo : Optional[str] = ...
-    cl_street : Optional[str] = ...
-    cl_brgy : Optional[str] = ...
-    cl_city : Optional[str] = ...
-    cl_maritalStatus : Optional[str] = ...
-    cl_validId : Optional[str] = ...
-    cl_validIdNumber : Optional[str] = ...
-    cl_contactNo : Optional[str] = ...
+    cl_pic : Optional[str]
+    cl_firstName : Optional[str]
+    cl_middleName : Optional[str]
+    cl_lastName : Optional[str]
+    cl_fullName : Optional[str]
+    cl_houseNo : Optional[str]
+    cl_street : Optional[str]
+    cl_brgy : Optional[str]
+    cl_city : Optional[str]
+    cl_maritalStatus : Optional[str]
+    cl_validId : Optional[str]
+    cl_validIdNumber : Optional[str]
+    cl_contactNo : Optional[str]
+    cl_user_credential: Optional[str]
 
     @classmethod
     def as_form(
