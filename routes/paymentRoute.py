@@ -122,7 +122,9 @@ def store(form_data: PaymentBase, db: Session = Depends(get_db)):
 
     babayaran = int(query.ap_amount)
 
-    if form_data.payment_amount < babayaran:
+    bayad = int(form_data.payment_amount)
+
+    if bayad < babayaran:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Kulang bayad mo lods')
     else:
         db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).update({"ap_status": "Paid"})

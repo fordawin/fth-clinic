@@ -91,7 +91,7 @@ async def store(form_data: AppointmentBase = Depends(AppointmentBase.as_form), t
     kumpara = int(oras.slot_capacity)
 
     if bilang > kumpara-1:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot schedule Appointment. Reached maximum capacity')
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot schedule appointment. Reached maximum capacity')
 
     to_store = Appointment(
         ap_number = randoms(),

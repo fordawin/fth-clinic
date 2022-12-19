@@ -6,15 +6,15 @@ from pydantic import BaseModel
 from fastapi import Request, Form
 
 class PaymentBase(BaseModel):
-    payment_mode : str
-    payment_amount : int
-    payment_appointmentID : str
+    payment_mode : Optional[str]
+    payment_amount : Optional[str]
+    payment_appointmentID : Optional[str]
 
     @classmethod
     def as_form(
         cls,
         payment_mode : str = Form(...),
-        payment_amount : int = Form(...),
+        payment_amount : str = Form(...),
         payment_appointmentID : str = Form(...)
     ):
         return cls(

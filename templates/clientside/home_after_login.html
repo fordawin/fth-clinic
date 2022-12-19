@@ -391,6 +391,55 @@
 </section>
 
 <script type="text/javascript">
+
+function confirm() {
+        Swal.fire({
+          icon: 'success',
+          title: 'Appointment Success',
+          showConfirmButton: true,
+          timer: 2000
+      })
+        }
+        function delet() {
+            Swal.fire(
+            'Doctor Deleted!',
+            '',
+            'success'
+            )
+      }
+      function edit() {
+            Swal.fire(
+            'Saved Changes!',
+            '',
+            'success'
+            )
+      }
+      function sweetError(message) {
+        Swal.fire({
+        icon: 'error',
+        title: 'Try Again',
+        text: message,
+        footer: ''
+    })
+      }
+
+
+function alertLoginFailure(message) {
+    $('#failedLogin').append(
+        '<div class="alert alert-danger d-flex align-items-center" role="alert">' + 
+          '<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/>' + '</svg>' +
+          '<div>' + message + '</div>' + '</div>'
+    )
+  }
+
+  setTimeout(function() {
+        bootstrap.Alert.getOrCreateInstance(document.querySelector(".alert")).close();
+    }, 3000)
+
+	function windowsOpen(){
+		window.open("appointments", "_self").reload()
+	}
+
 $("#appointmentForm").submit(function(e) {
     e.preventDefault();
     var frm = $("#appointmentForm");
@@ -407,14 +456,14 @@ $("#appointmentForm").submit(function(e) {
         dataType:'text',
         data: JSON.stringify(data),
         success: function(data) {
-			alert("appointment booked")
-			window.open("appointments", "_self").reload()
-         // window.open("appointments", "_self").reload()
+			confirm();
+			const myTimeout = setTimeout(windowsOpen, 2000);
+         
         },
         error: function(error) {
          // console.log(error.responseText.slice(11,-2))
          resAlert = error.responseText.slice(11,-2);
-         alert(resAlert);
+         sweetError(resAlert);
         }
     })
 });

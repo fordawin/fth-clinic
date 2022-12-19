@@ -5,25 +5,25 @@ from pydantic import BaseModel
 from fastapi import Form
 
 class clientUpdate(BaseModel):
-    cl_pic : Optional[str] | None = None
-    cl_firstName : Optional[str] | None = None
-    cl_middleName : Optional[str] | None = None
-    cl_lastName : Optional[str] | None = None
-    cl_fullName : Optional[str] | None = None
-    cl_houseNo : Optional[str] | None = None
-    cl_street : Optional[str] | None = None
-    cl_brgy : Optional[str] | None = None
-    cl_city : Optional[str] | None = None
-    cl_maritalStatus : Optional[str] | None = None
-    cl_validId : Optional[str] | None = None
-    cl_validIdNumber : Optional[str] | None = None
-    cl_contactNo : Optional[str] | None = None
+    cl_pic : Optional[str] = ...
+    cl_firstName : Optional[str] = ...
+    cl_middleName : Optional[str] = ...
+    cl_lastName : Optional[str] = ...
+    cl_fullName : Optional[str] = ...
+    cl_houseNo : Optional[str] = ...
+    cl_street : Optional[str] = ...
+    cl_brgy : Optional[str] = ...
+    cl_city : Optional[str] = ...
+    cl_maritalStatus : Optional[str] = ...
+    cl_validId : Optional[str] = ...
+    cl_validIdNumber : Optional[str] = ...
+    cl_contactNo : Optional[str] = ...
 
     @classmethod
     def as_form(
         cls,
         cl_firstName : Optional[str] = Form(...),
-        cl_middleName : Optional[str] = Form(""),
+        cl_middleName : Optional[str] = Form(...),
         cl_lastName : Optional[str] = Form(...),
         cl_houseNo : Optional[str] = Form(...),
         cl_street : Optional[str] = Form(...),
@@ -36,12 +36,12 @@ class clientUpdate(BaseModel):
             cl_firstName = cl_firstName,
             cl_middleName = cl_middleName,
             cl_lastName = cl_lastName,
-            cl_fullName = cl_firstName + " " + cl_middleName + " " + cl_lastName,
+            # cl_fullName = cl_firstName + " " + cl_middleName + " " + cl_lastName,
             cl_houseNo = cl_houseNo,
             cl_street = cl_street,
             cl_brgy = cl_brgy,
             cl_city = cl_city,
-            cl_address = cl_houseNo + cl_street + cl_brgy + cl_city,
+            # cl_address = cl_houseNo + cl_street + cl_brgy + cl_city,
             cl_maritalStatus = cl_maritalStatus,
             cl_contactNo = cl_contactNo,
         )

@@ -173,14 +173,26 @@ def update(id: str, form_data: clientUpdate, db: Session = Depends(get_db)):
     if not verify:
         raise HTTPException(404, 'User to update is not found')
     
-    if form_data.cl_contactNo == verify.cl_contactNo:
-        user_data = form_data.dict(exclude_unset=True)
-        for key, value in user_data.items():
-            setattr(verify, key, value)
-            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
-        db.add(verify)
-        db.commit()
+    # if form_data.cl_contactNo == verify.cl_contactNo:
+    #     user_data = form_data.dict(exclude_unset=True)
+    #     for key, value in user_data.items():
+    #         setattr(verify, key, value)
+    #         # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+    #     db.add(verify)
+    #     db.commit()
         
+    #     return
+        
+    # else:
+    if not user_num_cl: 
+        if not user_num_doc: 
+            if not user_num_em:
+                user_data = form_data.dict(exclude_unset=True)
+                for key, value in user_data.items():
+                    setattr(verify, key, value)
+                        # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+                db.add(verify)
+                db.commit()
     else:
         if not user_num_cl: 
             if not user_num_doc: 
@@ -192,14 +204,13 @@ def update(id: str, form_data: clientUpdate, db: Session = Depends(get_db)):
                         db.add(verify)
                         db.commit()
 
-                        return {'message': 'Client updated successfully.'} 
-
-                else:
-                    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
+                return
             else:
                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
         else:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
+    else:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
 
     # time.sleep(1)
 

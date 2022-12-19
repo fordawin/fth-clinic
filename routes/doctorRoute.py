@@ -81,7 +81,7 @@ def update(id: str, user: doctorUpdate, db: Session = Depends(get_db)):
 
     # response = RedirectResponse(url='admin/doctor', status_code=302)
 
-    return
+    return 
 
 @router.post('/uploadProfile/{id}', status_code=status.HTTP_202_ACCEPTED)
 async def upload_profile(id: str, file: UploadFile = File(...), db: Session = Depends(get_db)):

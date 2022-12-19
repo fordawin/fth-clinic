@@ -262,7 +262,7 @@ function updateProgressbar() {
           dataType:'text',
           data: JSON.stringify(data),
           success: function(data) {
-           window.open("home", "_self").reload()
+           window.open("users", "_self").reload()
           },
           error: function(error) {
             resAlert = error.responseText.slice(11,-2)
