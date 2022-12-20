@@ -114,54 +114,57 @@ def findOne(id: str, db: Session = Depends(get_db)):
 
     return {'user': user}
 
-# @router.post('/admin/{id}', response_model=clientUpdate)
-# def update(id: str, form_data: clientUpdate, db: Session = Depends(get_db)):
-#     verify = db.query(Client).filter(Client.cl_id == id).first()
-#     user_num_cl = db.query(Client).filter(Client.cl_contactNo == form_data.cl_contactNo).first()
-#     user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == form_data.cl_contactNo).first()
-#     user_num_em = db.query(Employee).filter(Employee.em_contactNo == form_data.cl_contactNo).first()
+@router.get('/{id}', status_code=status.HTTP_202_ACCEPTED)
+def findOne(id: str, db: Session = Depends(get_db)):
 
-#     if not verify:
-#         raise HTTPException(404, 'User to update is not found')
+    user = db.query(Client).filter(Client.cl_id == id).first()
 
-#     listss = [form_data.cl_firstName, " ", form_data.cl_middleName, " ", form_data.cl_lastName]
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f'CLient does not exists')
+
+    return {'user': user}
+
+@router.post('/{id}', response_model=clientUpdate)
+def update(id: str, form_data: clientUpdate = Depends(clientUpdate.as_form), db: Session = Depends(get_db)):
+    verify = db.query(Client).filter(Client.cl_id == id).first()
+    user_num_cl = db.query(Client).filter(Client.cl_contactNo == form_data.cl_contactNo).first()
+    user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == form_data.cl_contactNo).first()
+    user_num_em = db.query(Employee).filter(Employee.em_contactNo == form_data.cl_contactNo).first()
+
+    if not verify:
+        raise HTTPException(404, 'User to update is not found')
     
-#     form_data.cl_fullName = f"{form_data.cl_firstName}{form_data.cl_middleName}{form_data.cl_lastName}"
-#     form_data.cl_address = f"{form_data.cl_houseNo}{form_data.cl_street}{form_data.cl_brgy}{form_data.cl_brgy}"
-    
-#     # print (form_data.cl_fullName)
-    
-#     if form_data.cl_contactNo == verify.cl_contactNo:
-#         user_data = form_data.dict(exclude_unset=True)
-#         for key, value in user_data.items():
-#             setattr(verify, key, value)
-#             # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
-#         db.add(verify)
-#         db.commit()
+    if form_data.cl_contactNo == verify.cl_contactNo:
+        user_data = form_data.dict(exclude_unset=True)
+        for key, value in user_data.items():
+            setattr(verify, key, value)
+            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+        db.add(verify)
+        db.commit()
         
-#     else:
-#         if not user_num_cl: 
-#             if not user_num_doc: 
-#                 if not user_num_em:
-#                         user_data = form_data.dict(exclude_unset=True)
-#                         for key, value in user_data.items():
-#                             setattr(verify, key, value)
-#                             # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
-#                         db.add(verify)
-#                         db.commit()
+    else:
+        if not user_num_cl: 
+            if not user_num_doc: 
+                if not user_num_em:
+                        user_data = form_data.dict(exclude_unset=True)
+                        for key, value in user_data.items():
+                            setattr(verify, key, value)
+                            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+                        db.add(verify)
+                        db.commit()
 
-#                 else:
-#                     raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
-#             else:
-#                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
-#         else:
-#             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
+                else:
+                    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
+            else:
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
+        else:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
 
-#     # time.sleep(1)
+    time.sleep(1)
 
-#     # response = RedirectResponse(url='/users/profile', status_code=302)
+    response = RedirectResponse(url='/users/profile', status_code=302)
 
-#     return
+    return response
 
 @router.post('/admin/{id}')
 def update(id: str, user: clientUpdate, db: Session = Depends(get_db)):
