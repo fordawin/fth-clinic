@@ -118,7 +118,7 @@ async def store(form_data: AppointmentBase = Depends(AppointmentBase.as_form), t
 
     return response
 
-@router.post('/{id}', response_model=AppointmentUpdate)
+@router.post('/{id}')
 def update(id: str, user: AppointmentUpdate, db: Session = Depends(get_db)):
     verify = db.query(Appointment).filter(Appointment.ap_id == id).first()
 

@@ -221,7 +221,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-danger" href="https://faith-hope-love.herokuapp.com/doctor/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
+          <a class="btn btn-danger" href="http://127.0.0.1:8000/doctor/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
         </div>
       </div>
     </div>
@@ -242,7 +242,7 @@
         function confirm() {
         Swal.fire({
           icon: 'success',
-          title: 'Client Successfully Added',
+          title: 'Doctor Successfully Added',
           showConfirmButton: true,
           timer: 2000
       })

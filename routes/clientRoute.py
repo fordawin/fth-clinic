@@ -181,24 +181,24 @@ def update(id: str, user: clientUpdate, db: Session = Depends(get_db)):
         db.add(verify)
         db.commit()
         
-    else:
-        if not user_num_cl: 
-            if not user_num_doc: 
-                if not user_num_em:
-                        user_data = user.dict(exclude_unset=True)
-                        for key, value in user_data.items():
-                            setattr(verify, key, value)
-                            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
-                        db.add(verify)
-                        db.commit()
+    # else:
+    #     if not user_num_cl: 
+    #         if not user_num_doc: 
+    #             if not user_num_em:
+    #                     user_data = user.dict(exclude_unset=True)
+    #                     for key, value in user_data.items():
+    #                         setattr(verify, key, value)
+    #                         # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+    #                     db.add(verify)
+    #                     db.commit()
 
-                        return {'message': 'Client updated successfully.'} 
-                else:
-                    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
-            else:
-                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
-        else:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
+    #                     return {'message': 'Client updated successfully.'} 
+    #             else:
+    #                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
+    #         else:
+    #             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
+    #     else:
+    #         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
 
   
 @router.get('/deactivate/{id}')

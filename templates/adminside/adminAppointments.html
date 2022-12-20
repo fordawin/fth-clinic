@@ -174,20 +174,20 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="">
+                <form action="http://127.0.0.1:8000/admin/appointment/{{appointments.ap_id}}" id="appUpdate" method="POST">
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label" for="">Client's Name</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" value="{{appointment.ap_fullName}}">
                         </div>
                         <div class="col-md-12">
                             <label class="form-label" for="">Comorbidity</label>
-                            <textarea class="form-control" name="" id="" rows="4"></textarea>
+                            <textarea class="form-control" value="{{appointment.ap_comorbidity}}" rows="4"></textarea>
                         </div>
                         
                         <div class="col-md-6">
                             <label class="form-label" for="">Type</label>
-                            <select class="form-control" name="" id="">
+                            <select class="form-control" value="{{appointments.ap_type}}">
                                 <option value="">Covid-19</option>
                                 <option value="">Anti-Rabies</option>
                                 <option value="">Laboratory</option>
@@ -196,20 +196,20 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="">Date</label>
-                            <input class="form-control" type="date">
+                            <input class="form-control" type="date" value="{{appointments.ap_date}}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="">Start Time</label>
-                            <input class="form-control" type="time">
+                            <input class="form-control" type="time" value="{{appointments.ap_startTime}}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="">End Time</label>
-                            <input class="form-control" type="time">
+                            <input class="form-control" type="time" value="{{appointments.ap_endTime}}">
                         </div>
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                             <label class="form-label" for="">Doctor's Name</label>
-                            <input class="form-control" type="number">
-                        </div>
+                            <input class="form-control" type="number" value="{{appointments.ap_}}">
+                        </div> -->
                         
                     </div>
                 
@@ -278,4 +278,95 @@
 		$(this).addClass('active');
 		})
 	</script>
+    <script>
+        function confirm() {
+        Swal.fire({
+          icon: 'success',
+          title: 'Doctor Successfully Added',
+          showConfirmButton: true,
+          timer: 2000
+      })
+        }
+        function delet() {
+            Swal.fire(
+            'Doctor Deleted!',
+            '',
+            'success'
+            )
+      }
+      function edit() {
+            Swal.fire(
+            'Saved Changes!',
+            '',
+            'success'
+            )
+      }
+      function sweetError(message) {
+        Swal.fire({
+        icon: 'error',
+        title: 'Try Again',
+        text: message,
+        footer: ''
+    })
+      }
+    </script>
+    <script type="text/javascript">
+
+        function windowsOpen(message) {
+            window.open("appointment", "_self").reload()
+            }
+        
+          $("#doctorAdd").submit(function(e) {
+              e.preventDefault();
+              var frm = $("#doctorAdd");
+              var data = {};
+              $.each(this, function(i, v){
+                  var input = $(v);
+                  data[input.attr("name")] = input.val();
+                  delete data["undefined"];
+              });
+              $.ajax({
+                  contentType:"application/json",
+                  type:frm.attr("method"),
+                  url:frm.attr("action"),
+                  dataType:'text',
+                  data: JSON.stringify(data),
+                  success: function(data) {
+                    confirm();
+                    const myTimeout = setTimeout(windowsOpen, 2000);
+                  },
+                  error: function(error) {
+                    resAlert = error.responseText.slice(11,-2)
+                    sweetError(resAlert);
+                  }
+              })
+          });
+
+          $("#appUpdate").submit(function(e) {
+              e.preventDefault();
+              var frm = $("#appUpdate");
+              var data = {};
+              $.each(this, function(i, v){
+                  var input = $(v);
+                  data[input.attr("name")] = input.val();
+                  delete data["undefined"];
+              });
+              console.log(data);
+              $.ajax({
+                  contentType:"application/json",
+                  type:frm.attr("method"),
+                  url:frm.attr("action"),
+                  dataType:'text',
+                  data: JSON.stringify(data),
+                  success: function(data) {
+                    confirm();
+                    const myTimeout = setTimeout(windowsOpen, 2000);
+                  },
+                  error: function(error) {
+                    resAlert = error.responseText.slice(11,-2)
+                    sweetError(resAlert);
+                  }
+              })
+          });
+    </script>
 {% endblock %}

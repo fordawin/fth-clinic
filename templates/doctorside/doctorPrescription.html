@@ -79,26 +79,26 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Payment</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Prescription</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
                 <div class="modal-body">
-                <form method="POST">
+                <form action="http://127.0.0.1:8000/prescription/base" method="POST" id="prescAdd">
                     <div class="row">
-                        <input class="form-control" value="{{appointment.ap_id}}" name="presc_appointmentID" type="hidden" />
+                        <input class="form-control" value="{{appointment.ap_id}}" name='presc_appointmentID' type="hidden" />
                         <div class="col-md-8">
                             <label class="form-label" for="">Prescrition treatment</label>
-                            <textarea class="form-control" name="presc_treatment" id="" rows="4"></textarea>
+                            <textarea class="form-control" name='presc_treatment' id="" rows="4"></textarea>
                         </div>
                         <div class="col-md-8">
                             <label class="form-label" for="">Prescription Medication</label>
-                            <textarea class="form-control" name="presc_medication" id="" rows="4"></textarea>
+                            <textarea class="form-control" name='presc_medication' id="" rows="4"></textarea>
                         </div>
                         <div class="col-md-12">
                             <label class="form-label" for="">Prescription Remarks</label>
-                            <textarea class="form-control" name="presc_remarks" id="" rows="4"></textarea>
+                            <textarea class="form-control" name='presc_remarks' id="" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -144,4 +144,70 @@
 		$(this).addClass('active');
 		})
 	</script>
+
+<script>
+    function confirm() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Prescription Successfully Added',
+      showConfirmButton: true,
+      timer: 2000
+  })
+    }
+    function delet() {
+        Swal.fire(
+        'Doctor Deleted!',
+        '',
+        'success'
+        )
+  }
+  function edit() {
+        Swal.fire(
+        'Saved Changes!',
+        '',
+        'success'
+        )
+  }
+  function sweetError(message) {
+    Swal.fire({
+    icon: 'error',
+    title: 'Try Again',
+    text: message,
+    footer: ''
+})
+  }
+</script>
+
+<script type="text/javascript">
+
+    function windowsOpen(message) {
+        window.open("prescription/base", "_self").reload()
+        }
+    
+      $("#prescAdd").submit(function(e) {
+          e.preventDefault();
+          var frm = $("#prescAdd");
+          var data = {};
+          $.each(this, function(i, v){
+              var input = $(v);
+              data[input.attr("name")] = input.val();
+              delete data["undefined"];
+          });
+          $.ajax({
+              contentType:"application/json",
+              type:frm.attr("method"),
+              url:frm.attr("action"),
+              dataType:'text',
+              data: JSON.stringify(data),
+              success: function(data) {
+                confirm();
+                const myTimeout = setTimeout(windowsOpen, 2000);
+              },
+              error: function(error) {
+                resAlert = error.responseText.slice(11,-2)
+                sweetError(resAlert);
+              }
+          })
+      });
+      </script>
 {% endblock %}

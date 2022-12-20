@@ -7,10 +7,10 @@ from typing import Optional
 from schemas.userCredentialSchema import UserBase
 
 class PrescriptionBase(BaseModel):
-    presc_appointmentID : str
-    presc_medication : str
-    presc_treatment : str
-    presc_remarks : str
+    presc_appointmentID : Optional[str]
+    presc_medication : Optional[str]
+    presc_treatment : Optional[str]
+    presc_remarks : Optional[str]
 
     @classmethod
     def as_form(

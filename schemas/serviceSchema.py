@@ -33,4 +33,6 @@ class ServiceBas(ServiceBase):
 
 class updateService(BaseModel):
     service_name : Optional[str]
+    service_description: Optional[str]
     service_price: Optional[int]
+    service_status: Optional[str]

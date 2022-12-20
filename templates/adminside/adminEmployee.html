@@ -338,7 +338,7 @@ function sweetError(message) {
                   dataType:'text',
                   data: JSON.stringify(data),
                   success: function(data) {
-                    confirm();
+                    edit();
                     const myTimeout = setTimeout(windowsOpen, 2000);
                   },
                   error: function(error) {

@@ -485,7 +485,7 @@ def profile(request: Request):
 
 @router.get('/logout')
 def logout(response: Response):
-    response = RedirectResponse(url='/auth', status_code=307)
+    response = RedirectResponse(url='/users', status_code=307)
     response.delete_cookie('token')
     return response
 # @router.get('/logout', response_class=HTMLResponse)

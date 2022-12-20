@@ -167,7 +167,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="https://faith-hope-love.herokuapp.com/service/update/{{services.service_id}}" method="POST">
+                <form action="http://127.0.0.1:8000/service/update/{{services.service_id}}" method="POST" id="serviceUpdate">
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label" for="">Service Name</label>
@@ -175,7 +175,7 @@
                         </div>
                         <div class="col-md-12">
                             <label class="form-label" for="">Service Description</label>
-                            <textarea class="form-control" name="service_description" id="" rows="4" >{{services.service_description}}</textarea>
+                            <textarea class="form-control" name="service_description" id="" rows="4" value ="{{services.service_description}}" >{{services.service_description}}</textarea>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="">Status</label>
@@ -298,6 +298,7 @@
                   data[input.attr("name")] = input.val();
                   delete data["undefined"];
               });
+              
               $.ajax({
                   contentType:"application/json; charset=utf-8",
                   type:frm.attr("method"),
@@ -314,5 +315,32 @@
                   }
               })
           });
+
+          $("#serviceUpdate").submit(function(e) {
+              e.preventDefault();
+              var frm = $("#serviceUpdate");
+              var data = {};
+              $.each(this, function(i, v){
+                  var input = $(v);
+                  data[input.attr("name")] = input.val();
+                  delete data["undefined"];
+              });
+              console.log(data)
+              $.ajax({
+                  contentType:"application/json",
+                  type:frm.attr("method"),
+                  url:frm.attr("action"),
+                  dataType:'text',
+                  data: JSON.stringify(data),
+                  success: function(data) {
+                    edit();
+                    const myTimeout = setTimeout(windowsOpen, 2000);
+                  },
+                  error: function(error) {
+                    resAlert = error.responseText.slice(11,-2)
+                    sweetError(resAlert);
+                  }
+              })
+        });
     </script>
 {%endblock%}

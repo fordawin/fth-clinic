@@ -74,11 +74,15 @@
             </button>
             </div>
             <div class="modal-body">
-            <form action="http://127.0.0.1:8000/slot" method="POST" class="form" id="scheduleAdd">
+            <form action="http://127.0.0.1:8000/slot/" method="POST" id="scheduleAdd">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label class="form-label" for="">Date</label>
                         <input class="form-control" type="date">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="">Capacity</label>
+                        <input class="form-control" type="number">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" for="">Start Time</label>
@@ -213,14 +217,14 @@
     function confirm() {
     Swal.fire({
       icon: 'success',
-      title: 'Product Successfully Added',
+      title: 'Schedule Successfully Added',
       showConfirmButton: true,
       timer: 2000
   })
     }
     function delet() {
         Swal.fire(
-        'Doctor Deleted!',
+        'Schedule Deleted!',
         '',
         'success'
         )
@@ -264,7 +268,7 @@
        <script type="text/javascript">
 
         function windowsOpen(message) {
-            window.open("services", "_self").reload()
+            window.open("schedules", "_self").reload()
             }
         
           $("#scheduleAdd").submit(function(e) {

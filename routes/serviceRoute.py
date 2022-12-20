@@ -1,7 +1,7 @@
 from xmlrpc.client import Server
 from fastapi import APIRouter, Depends, HTTPException, Cookie, status, Response, Request
 from sqlalchemy.orm import Session
-from schemas.serviceSchema import ServiceBase, ServiceBas
+from schemas.serviceSchema import ServiceBase, ServiceBas, updateService
 from models.serviceModel import Service
 from database import get_db
 from dependencies import get_token
@@ -53,8 +53,8 @@ def store(service: ServiceBase, db: Session = Depends(get_db)):
     db.commit()
     return {'message': 'Service created successfully.'}
 
-@router.post('/update/{id}', response_model=ServiceBas)
-def update(id: str, user: ServiceBas = Depends(ServiceBas.as_form), db: Session = Depends(get_db)):
+@router.post('/update/{id}')
+def update(id: str, user: updateService, db: Session = Depends(get_db)):
     verify = db.query(Service).filter(Service.service_id == id).first()
 
     if not verify:
@@ -62,19 +62,12 @@ def update(id: str, user: ServiceBas = Depends(ServiceBas.as_form), db: Session 
     
     # if db.query(Service).filter(Service.service_name == user.service_name).first():
     #     raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Service. Service already exists')
-    # else:
-
-    user_data = user.dict(exclude_unset=True)
-    for key, value in user_data.items():
-        setattr(verify, key, value)
-    db.add(verify)
-    db.commit()
-
-    time.sleep(1)
-
-    response = RedirectResponse(url='/admin/service', status_code=302)
-
-    return response
+    else:
+        user_data = user.dict(exclude_unset=True)
+        for key, value in user_data.items():
+            setattr(verify, key, value)
+        db.add(verify)
+        db.commit()
 
 @router.post('/{id}')
 def deactivate(id: str, db: Session = Depends(get_db)):
