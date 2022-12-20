@@ -40,7 +40,7 @@ def read(id: str, db: Session = Depends(get_db)):
     return {'Product': product}
 
 @router.post('/')
-async def store(request: Request, product: ProductBase, file: UploadFile = File(...), db: Session = Depends(get_db)):
+async def store(request: Request, product: ProductBase = Depends(ProductBase.as_form), file: UploadFile = File(...), db: Session = Depends(get_db)):
 
     if db.query(Product).filter(Product.product_name == product.product_name).first():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create product. Product already exists')
@@ -80,9 +80,10 @@ async def store(request: Request, product: ProductBase, file: UploadFile = File(
 
         db.add(to_store)
         db.commit()
-        # response = RedirectResponse(url='/admin/products', status_code=302)
 
-        return 
+        response = RedirectResponse(url='/admin/products', status_code=302)
+
+        return response
 
 @router.post('/{id}', response_model=productUpdate)
 def update(id: str, user: productUpdate, db: Session = Depends(get_db)):

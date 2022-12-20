@@ -234,3 +234,10 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     response = RedirectResponse(url='/payment/pending', status_code=302)
 
     return response
+
+@router.get('/logout')
+def logout(response: Response):
+    response = RedirectResponse(url='/users/login', status_code=307)
+    response.delete_cookie('token')
+    response.delete_cookie('type')
+    return response

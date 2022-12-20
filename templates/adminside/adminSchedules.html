@@ -44,8 +44,8 @@
                                         <td>{{ schedule.slot_time }}</td>
                                         <td>{{ schedule.slot_capacity }}</td>
                                         <td class="text-white">
-                                            <span><a type="button" class="btn btn-warning btn-sm " data-toggle="modal" data-target="#viewSchedule">View</a></span>
-                                            <span><a type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editSchedule">Edit</a></span>
+                                            <span><a type="button" class="btn btn-warning btn-sm " data-toggle="modal" data-target="#viewSchedule{{ schedule.slot_id }}">View</a></span>
+                                            <span><a type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editSchedule{{ schedule.slot_id }}">Edit</a></span>
                                             <span><a type="button" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#deleteSchedule">Delete</a></span>
                                         </td>
                                     </tr>
@@ -78,33 +78,33 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label class="form-label" for="">Date</label>
-                        <input class="form-control" type="date">
+                        <input class="form-control" name="slot_date" type="date">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" for="">Capacity</label>
-                        <input class="form-control" type="number">
+                        <input class="form-control" name="slot_capacity" type="number">
                     </div>
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                         <label class="form-label" for="">Start Time</label>
                         <input class="form-control" type="time">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" for="">End Time</label>
                         <input class="form-control" type="time">
-                    </div>
-                    
+                    </div> -->
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
                 </div>
             </form>
-            </div>
-            <div class="modal-footer">
-            <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary btn-sm">Save changes</button>
-            </div>
         </div>
         </div>
   </div>
   <!-- View Schedules Modal -->
-    <div class="modal fade" id="viewSchedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  {% for schedule in schedules %}
+    <div class="modal fade" id="viewSchedule{{ schedule.slot_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -114,36 +114,31 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST" class="form" id="scheduleUpdate">
+                    <form class="form">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label class="form-label" for="">Date</label>
-                            <input class="form-control" type="date">
+                            <input class="form-control" value="{{ schedule.slot_date }}" name="slot_date" type="date">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label" for="">Start Time</label>
-                            <input class="form-control" type="time">
+                            <label class="form-label" for="">Capacity</label>
+                            <input class="form-control" value="{{ schedule.slot_capacity }}" name="slot_capacity" type="number">
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label" for="">End Time</label>
-                            <input class="form-control" type="time">
-                        </div>
-                        
                     </div>
-                
-                    
+                    </div>
+                        <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                    </div>
                 </form>
-                </div>
-                <div class="modal-footer">
-                <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary btn-sm">Save changes</button>
                 </div>
             </div>
         </div>
   </div>
-
+  {% endfor %}
+  {% for schedule in schedules %}
     <!-- Edit Schedules Modal -->
-    <div class="modal fade" id="editSchedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="editSchedule{{ schedule.slot_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -153,34 +148,27 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="">
+                <form action="http://127.0.0.1:8000/slot/{{ schedule.slot_id }}" method="POST" id="scheduleUpdate">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label class="form-label" for="">Date</label>
-                            <input class="form-control" type="date">
+                            <input class="form-control" value="{{ schedule.slot_date }}" name="slot_date" type="date">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label" for="">Start Time</label>
-                            <input class="form-control" type="time">
+                            <label class="form-label" for="">Capacity</label>
+                            <input class="form-control" value="{{ schedule.slot_capacity }}" name="slot_capacity" type="number">
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label" for="">End Time</label>
-                            <input class="form-control" type="time">
-                        </div>
-                        
                     </div>
-                
-                    
+                    </div>
+                        <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                    </div>
                 </form>
-                </div>
-                <div class="modal-footer">
-                <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary btn-sm">Save changes</button>
-                </div>
             </div>
         </div>
     </div>
-
+    {% endfor %}
   <!-- Delete Schedule Modal -->
 <div class="modal fade" id="deleteSchedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -230,11 +218,12 @@
         )
   }
   function edit() {
-        Swal.fire(
-        'Saved Changes!',
-        '',
-        'success'
-        )
+    Swal.fire({
+      icon: 'success',
+      title: 'Schedule Successfully Updated',
+      showConfirmButton: true,
+      timer: 2000
+  })
   }
   function sweetError(message) {
     Swal.fire({
@@ -280,6 +269,7 @@
                   data[input.attr("name")] = input.val();
                   delete data["undefined"];
               });
+              console.log(data);
               $.ajax({
                   contentType:"application/json; charset=utf-8",
                   type:frm.attr("method"),
@@ -288,6 +278,33 @@
                   data: JSON.stringify(data),
                   success: function(data) {
                     confirm();
+                    const myTimeout = setTimeout(windowsOpen, 2000);
+                  },
+                  error: function(error) {
+                    resAlert = error.responseText.slice(11,-2)
+                    sweetError(resAlert);
+                  }
+              })
+          });
+
+          $("#scheduleUpdate").submit(function(e) {
+              e.preventDefault();
+              var frm = $("#scheduleUpdate");
+              var data = {};
+              $.each(this, function(i, v){
+                  var input = $(v);
+                  data[input.attr("name")] = input.val();
+                  delete data["undefined"];
+              });
+              console.log(data);
+              $.ajax({
+                  contentType:"application/json; charset=utf-8",
+                  type:frm.attr("method"),
+                  url:frm.attr("action"),
+                  dataType:'text',
+                  data: JSON.stringify(data),
+                  success: function(data) {
+                    edit();
                     const myTimeout = setTimeout(windowsOpen, 2000);
                   },
                   error: function(error) {

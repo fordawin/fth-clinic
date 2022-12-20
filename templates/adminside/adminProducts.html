@@ -102,13 +102,12 @@
                     <label class="form-label" for="">Upload Image</label>
                     <input type="file" name="file">
                 </div>
-                <div class="col-md-6">
-                </div>
+                <br>
+            </div>
                 <div class="modal-footer">
                     <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary btn-sm" value="Submit">Add Products</button>
+                    <button type="submit" class="btn btn-primary btn-sm" value="Submit" onclick="confirm()" >Add Products</button>
                 </div>
-            </div>
           </form>
         </div>
       </div>
@@ -144,10 +143,7 @@
                             <label class="form-label" for="">Price</label>
                             <input class="form-control" type="number">
                         </div>
-                        
                     </div>
-                
-                    
                 </form>
                 </div>
                 <div class="modal-footer">
@@ -219,6 +215,8 @@
     </div>
   </div>
 </div>
+
+
 <footer class="footer">
     <span class="text-right">
     Copyright <a target="_blank" href="#">Polytechnic University of the Philippines</a>
@@ -282,39 +280,36 @@
 		$(this).addClass('active');
 		})
 	   </script>
-       <script type="text/javascript">
+       <!-- <script type="text/javascript">
 
         function windowsOpen(message) {
             window.open("services", "_self").reload()
             }
         
             $("#productAdd").submit(function(e) {
-                e.preventDefault();
-                var frm = $("#productAdd");
-                var data = {};
-                $.each(this, function(i, v){
-                    var input = $(v);
-                    data[input.attr("name")] = input.val();
-                    delete data["undefined"];
-                });
-                var file = document.getElementById("file").value;
-                console.log(data);
-                $.ajax({
-                    contentType:"multipart/form-data",
-                    type:frm.attr("method"),
-                    url:frm.attr("action"),
-                    dataType:'text',
-                    data: JSON.stringify(data, file),
-                    success: function(data) {
-                        confirm();
-                        const myTimeout = setTimeout(windowsOpen, 2000);
-                    },
-                    error: function(error) {
-                    // console.log(error.responseText.slice(11,-2))
-                    resAlert = error.responseText.slice(11,-2);
+              e.preventDefault();
+              var frm = $("#productAdd");
+              var data = {};
+              $.each(this, function(i, v){
+                  var input = $(v);
+                  data[input.attr("name")] = input.val();
+                  delete data["undefined"];
+              });
+              $.ajax({
+                  contentType:"application/json",
+                  type:frm.attr("method"),
+                  url:frm.attr("action"),
+                  dataType:'text',
+                  data: JSON.stringify(data),
+                  success: function(data) {
+                    confirm();
+                    const myTimeout = setTimeout(windowsOpen, 2000);
+                  },
+                  error: function(error) {
+                    resAlert = error.responseText.slice(11,-2)
                     sweetError(resAlert);
-                    }
-                })
-            });
-    </script>
+                  }
+              })
+          });
+    </script> -->
 {%endblock%}

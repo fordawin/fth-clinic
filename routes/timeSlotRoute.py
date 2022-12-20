@@ -40,7 +40,7 @@ def store(user: TimeSlotBase, db: Session = Depends(get_db)):
     # makikita ni user yung inadd
     
 
-@router.post('/{id}', response_model=TimeSlotUpdate)
+@router.post('/{id}')
 def update(id: str, user: TimeSlotUpdate, db: Session = Depends(get_db)):
     verify = db.query(Timeslot).filter(Timeslot.slot_id == id).first()
 
