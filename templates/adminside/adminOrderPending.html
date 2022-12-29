@@ -1,0 +1,117 @@
+{% extends 'adminside/adminBase.html' %}
+    
+{%block content%}
+        <!-- End Sidebar -->
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="breadcrumb-holder">
+                        <h1 class="main-title float-left">Admin</h1>
+                        <ol class="breadcrumb float-right">
+                            <li class="breadcrumb-item">Admin</li>
+                            <li class="breadcrumb-item active">Appointments</li>
+                        </ol>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- student tracker table  -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
+                    <div class="card mb-3">
+                        <div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
+                            <h3><i class="fa fa-table text-warning" aria-hidden="true"></i> Appointments</h3>
+                        </div>
+                            
+                        <div class="card-body">
+                            <table id="example1"  class="table table-hover table-control no-footer" >
+                                <thead>
+                                    <tr>
+                                        <th>Client Name</th>
+                                        <th>Product Name</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in order_list %}
+                                        {% if order.order_status == 'Pending' %}
+                                    <tr>
+                                        <td>{{ order.order_user }}</td>
+                                        <td>{{ order.order_remarks }}</td>
+                                        <td>{{ order.order_quantity }}</td>
+                                        <td>{{ order.order_total }}</td> 
+                                        <td><a class="btn btn-warning btn-sm">{{ order.order_status }}</a></td>
+                                        <td class="text-white">
+                                            <span><a class="btn btn-success btn-sm" href="http://127.0.0.1:8000/payment/accept/{{ order.order_id }}" onclick="accept()" >Accept</a></span>
+                                            <span><a class="btn btn-danger btn-sm" href="http://127.0.0.1:8000/payment/deny/{{ order.order_id }}" onclick="deny()" >Delete</a></span>
+                                        </td>
+                                    </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>							
+                        <div class="card-footer small text-muted"> Updated yesterday at 11:59 PM</div>
+                    </div><!-- end card-->					
+                </div>
+            </div>
+    <!-- end row -->
+        </div>
+    </div>
+</div>
+   <!-- end row -->
+<footer class="footer">
+    <span class="text-right">
+    Copyright <a target="_blank" href="#">Polytechnic University of the Philippines</a>
+    </span>
+    <span class="float-right">
+    Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
+    </span>
+</footer>
+
+<script>
+    function deny() {
+        Swal.fire(
+          'Cancelled',
+          '',
+          'success'
+        )
+    }
+    function accept() {
+        Swal.fire(
+          'Accept!',
+          '',
+          'success'
+        )
+    }
+
+</script>
+{%endblock%}
+
+{% block sidebarscripts%}
+     <!-- sidebar script -->
+     <script>
+		$(document).ready(function() {
+			// data-tables
+			$('#example1').DataTable();
+					
+			// counter-up
+			$('.counter').counterUp({
+				delay: 10,
+				time: 600
+			});
+		} );		
+	</script>
+     <!-- CUSTOM ACTIVE NAVBAR  -->
+     <script>
+		$('.navbar-nav .nav-link').click(function(){
+		$('.navbar-nav .nav-link').removeClass('active');
+		$(this).addClass('active');
+		})
+	</script>
+{% endblock %}

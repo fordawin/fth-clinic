@@ -12,6 +12,7 @@ from schemas.serviceSchema import ServiceBas, ServiceBase
 from models.userCredentialModel import User_credential
 from models.clientModel import Client
 from models.doctorModel import Doctor
+from models.ordersModel import Orders
 from models.employeeModel import Employee
 from models.productsModel import Product
 from models.serviceModel import Service
@@ -478,6 +479,93 @@ async def store(form_data: AppointmentBase = Depends(AppointmentBase.as_form), t
     response = RedirectResponse(url='appointment', status_code=302)
 
     return response
+
+@router.get('/orderPending')
+def employee(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Orders).all()
+        return templates.TemplateResponse('adminside/adminOrderPending.html', {
+            'request': request,
+            'order_list': query
+        })
+        
+    except Exception as e:
+        print(e)
+
+@router.get('/orderAccepted')
+def employee(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Orders).all()
+        return templates.TemplateResponse('adminside/adminOrderAccepted.html', {
+            'request': request,
+            'order_list': query
+        })
+        
+    except Exception as e:
+        print(e)
+
+@router.get('/orderCancelled')
+def employee(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Orders).all()
+        return templates.TemplateResponse('adminside/adminOrderCancelled.html', {
+            'request': request,
+            'order_list': query
+        })
+        
+    except Exception as e:
+        print(e)
+
+@router.get('/paymentPending')
+def appointments(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Appointment).all()
+        query1 = db.query(Service).all()
+        query2 = db.query(Timeslot).all()
+        applen = int(len(query))
+        serlen = int(len(query1))
+        serlist = [(serlen)]
+        applist = [(applen)]
+        timlen = int(len(query2))
+        timlist = [(timlen)]
+        print(applist)
+        
+        print(applen)
+        lst_all = query + query1 + query2 + applist + serlist + timlist
+        print(lst_all)
+        return templates.TemplateResponse('adminside/adminPayment.html', {
+            'request': request,
+            'appointments': lst_all
+        })
+        
+    except Exception as e:
+        print(e)
+
+@router.get('/paymentDone')
+def appointments(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Appointment).all()
+        query1 = db.query(Service).all()
+        query2 = db.query(Timeslot).all()
+        applen = int(len(query))
+        serlen = int(len(query1))
+        serlist = [(serlen)]
+        applist = [(applen)]
+        timlen = int(len(query2))
+        timlist = [(timlen)]
+        print(applist)
+        
+        print(applen)
+        lst_all = query + query1 + query2 + applist + serlist + timlist
+        print(lst_all)
+        return templates.TemplateResponse('adminside/adminPaymentDone.html', {
+            'request': request,
+            'appointments': lst_all
+        })
+        
+    except Exception as e:
+        print(e)
+
 
 @router.get('/profile')
 def profile(request: Request):
