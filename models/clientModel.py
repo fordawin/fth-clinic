@@ -18,7 +18,7 @@ class Client(Base):
     cl_city = Column(String(255), nullable=False)
     cl_address = Column(String(255), nullable=True)
     cl_status = Column(String(255), nullable=False)
-    cl_maritalStatus = Column(String(255), nullable=False)
+    cl_maritalStatus = Column(String(255), nullable=True)
     cl_birthdate = Column(String(255), nullable=False)
     cl_gender = Column(String(255), nullable=False)
     cl_contactNo = Column(String(255), nullable=False)

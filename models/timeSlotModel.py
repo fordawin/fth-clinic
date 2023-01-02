@@ -8,7 +8,8 @@ class Timeslot(Base):
 
     slot_id = Column(String(36), primary_key=True, default=text('gen_random_uuid()'))
     slot_capacity = Column(String(255), nullable=True)
-    slot_time = Column(Time, nullable=True)
+    slot_start = Column(Time, nullable=True)
+    slot_end = Column(Time, nullable=True)
     slot_date = Column(Date, nullable=True)
     slot_status = Column(String(255), nullable=True)
 
