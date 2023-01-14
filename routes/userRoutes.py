@@ -133,11 +133,9 @@ async def home(form_data: AppointmentBase, token: str = Cookie('token'), db: Ses
 
     cliente = db.query(Client).filter(Client.cl_user_credential == token["id"]).first()
 
-    simula = oras.slot_time
-
-    umpisa = dt.datetime.strptime(f'{simula}', '%H:%M:%S')
+    simula = oras.slot_start
     
-    hangganan = umpisa + timedelta(hours=1)
+    hangganan = oras.slot_end
 
     sched = db.query(Appointment).filter(Appointment.ap_slotID == form_data.ap_slotID).all()
 
@@ -151,7 +149,7 @@ async def home(form_data: AppointmentBase, token: str = Cookie('token'), db: Ses
     to_store = Appointment(
         ap_number = randoms(),
         ap_clientID = token["id"],
-        ap_startTime = umpisa,
+        ap_startTime = simula,
         ap_clientName = cliente.cl_fullName,
         ap_date = oras.slot_date,
         ap_endTime = hangganan,

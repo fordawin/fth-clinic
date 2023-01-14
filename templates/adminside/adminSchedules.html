@@ -32,8 +32,9 @@
                                 <thead>
                                     <tr>
                                         <th>Date</th>
-                                        <th>Slot Time</th>
+                                        <th>Timeslot</th>
                                         <th>Capacity</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -41,12 +42,12 @@
                                     {% for schedule in schedules %}
                                     <tr>
                                         <td>{{ schedule.slot_date }}</td>
-                                        <td>{{ schedule.slot_time }}</td>
+                                        <td>{{ schedule.slot_start }} - {{ schedule.slot_end }}</td>
                                         <td>{{ schedule.slot_capacity }}</td>
+                                        <td>{{ schedule.slot_status }}</td>
                                         <td class="text-white">
                                             <span><a type="button" class="btn btn-warning btn-sm " data-toggle="modal" data-target="#viewSchedule{{ schedule.slot_id }}">View</a></span>
                                             <span><a type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editSchedule{{ schedule.slot_id }}">Edit</a></span>
-                                            <span><a type="button" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#deleteSchedule">Delete</a></span>
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -74,11 +75,23 @@
             </button>
             </div>
             <div class="modal-body">
-            <form action="http://127.0.0.1:8000/slot/" method="POST" id="scheduleAdd">
+            <form action="http://127.0.0.1:8000/slot/new" method="POST" id="scheduleAdd">
                 <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label" for="">Number of Session</label>
+                        <input class="form-control" name="slot_number" type="number">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="">Appointment Duration</label>
+                        <input class="form-control" name="slot_duration" type="text" id="time">
+                    </div>
                     <div class="col-md-6">
                         <label class="form-label" for="">Date</label>
                         <input class="form-control" name="slot_date" type="date">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="">Opening Hours</label>
+                        <input class="form-control" name="slot_daystart" type="time">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" for="">Capacity</label>
@@ -155,8 +168,23 @@
                             <input class="form-control" value="{{ schedule.slot_date }}" name="slot_date" type="date">
                         </div>
                         <div class="col-md-6">
+                            <label class="form-label" for="">Start</label>
+                            <input class="form-control" value="{{ schedule.slot_start }}" name="slot_start" type="time">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="">End</label>
+                            <input class="form-control" value="{{ schedule.slot_end }}" name="slot_end" type="time">
+                        </div>
+                        <div class="col-md-6">
                             <label class="form-label" for="">Capacity</label>
                             <input class="form-control" value="{{ schedule.slot_capacity }}" name="slot_capacity" type="number">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Status</label>
+                            <select class="form-control" name="slot_status">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
                         </div>
                     </div>
                     </div>
@@ -254,7 +282,18 @@
 		$(this).addClass('active');
 		})
 	   </script>
+
        <script type="text/javascript">
+        var timepicker = new TimePicker('time', {
+            lang: 'en',
+            theme: 'dark'
+            });
+            timepicker.on('change', function(evt) {
+            
+            var value = (evt.hour || '00') + ':' + (evt.minute || '00');
+            evt.element.value = value;
+
+        });
 
         function windowsOpen(message) {
             window.open("schedules", "_self").reload()
@@ -298,7 +337,7 @@
               });
               console.log(data);
               $.ajax({
-                  contentType:"application/json; charset=utf-8",
+                  contentType:"application/json",
                   type:frm.attr("method"),
                   url:frm.attr("action"),
                   dataType:'text',

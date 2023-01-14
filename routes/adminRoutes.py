@@ -17,7 +17,7 @@ from models.employeeModel import Employee
 from models.productsModel import Product
 from models.serviceModel import Service
 import datetime as dt
-from datetime import timedelta
+from datetime import timedelta, date
 from for_email import *
 import random
 import string
@@ -58,8 +58,33 @@ router = APIRouter(
 templates = Jinja2Templates(directory="templates")
 
 @router.get("/")
-def registration(request: Request):
-    return templates.TemplateResponse("adminside/admin.html", {"request": request})
+def dashboard(request: Request, db: Session = Depends(get_db)):
+    try:
+        pending = db.query(Appointment).filter(Appointment.ap_status == "Unpaid").all()
+        paid = db.query(Appointment).filter(Appointment.ap_status == "Paid").all()
+        cancel = db.query(Appointment).filter(Appointment.ap_status == "Cancelled").all()
+        appointment = db.query(Appointment).all()
+        active_users = db.query(User_credential).filter(User_credential.user_status == "Active").all()
+        print(active_users)
+        today = date.today()
+
+        new_pending = db.query(Appointment).filter(Appointment.ap_status == "Unpaid" , Appointment.ap_date == today).all()
+        new_paid = db.query(Appointment).filter(Appointment.ap_status == "Paid" , Appointment.ap_date == today).all()
+        new_cancel = db.query(Appointment).filter(Appointment.ap_status == "Cancelled" , Appointment.ap_date == today).all()
+        return templates.TemplateResponse("adminside/admin.html", {
+            "request": request,
+            "pending": pending,
+            "paid": paid,
+            "active_users": active_users,
+            "cancel": cancel,
+            "appointments": appointment,
+            "new_pending": new_pending,
+            "new_paid": new_paid,
+            "new_cancel": new_cancel
+        })
+
+    except Exception as e:
+        print(e)
 
 @router.get('/user_credentials', response_class=HTMLResponse)
 def user_credentials(request: Request, db: Session = Depends(get_db)):

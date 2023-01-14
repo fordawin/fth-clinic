@@ -176,7 +176,7 @@
 						<div class="col-md-8">
 							<select class="form-control" name="ap_slotID" id="" required>
 								{% for timeslot in appointments[appointments[-3] + appointments[-2]:-3] %}
-								<option value="{{timeslot.slot_id}}">{{timeslot.slot_time}}</option>
+								<option value="{{timeslot.slot_id}}">{{timeslot.slot_start}} - {{timeslot.slot_end}}</option>
 								{% endfor %}
 							</select>
 							<div class="invalid-feedback">

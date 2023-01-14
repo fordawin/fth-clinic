@@ -36,8 +36,9 @@ def store(user: SlotBase, db: Session = Depends(get_db)):
     # durationTotal = list(durationStr.append("0"))
     durationMin = int(durationM)
 
-    t1 = dt.datetime.strptime(timestr, '%H:%M:%S')
+    t1 = dt.datetime.strptime(timestr, '%H:%M')
     while i < user.slot_number-1:
+        format = "%H:%M"
         time = t1 + timedelta(hours=i)
         # timeStart = time + timedelta(hours=i*durationHour)
         # timeEnd = timeStart + timedelta(hours=durationHour, minutes=durationMin)
@@ -45,6 +46,8 @@ def store(user: SlotBase, db: Session = Depends(get_db)):
         if i == 0:
             timeStart = time + timedelta(hours=i*durationHour) #0*0
             timeEnd = timeStart + timedelta(hours=durationHour, minutes=durationMin)
+            timeEnd = timeEnd.strftime(format)
+            timeStart = timeStart.strftime(format)
             to_store = Timeslot(
                 slot_capacity = user.slot_capacity,
                 slot_start = timeStart,
@@ -54,14 +57,16 @@ def store(user: SlotBase, db: Session = Depends(get_db)):
             )
             db.add(to_store)
             db.commit()
-            print(timeStart)
-            print(timeEnd)
-            print("----------------")
+            # print(timeStart)
+            # print(timeEnd)
+            # print("----------------")
         else:
             # timers = time + timedelta(hours=i*durationHour, minutes=durationMin) #0*0
             # time2 = timers + timedelta(hours=durationHour, minutes=durationMin)
             timeStarting = time + timedelta(hours=i*durationHour-i, minutes=i*durationMin)
             timeEnding = timeStarting + timedelta(hours=durationHour, minutes=durationMin)
+            timeEnding = timeEnding.strftime(format)
+            timeStarting = timeStarting.strftime(format)
             to_store = Timeslot(
                 slot_capacity = user.slot_capacity,
                 slot_start = timeStarting,
@@ -71,9 +76,9 @@ def store(user: SlotBase, db: Session = Depends(get_db)):
             )
             db.add(to_store)
             db.commit()
-            print(timeStarting)
-            print(timeEnding)
-            print("----------------")
+            # print(timeStarting)
+            # print(timeEnding)
+            # print("----------------")
 
         # elif i > 1:
         #     timeStarting = time + timedelta(hours=i*durationHour-1, minutes=i*durationMin-30)
@@ -94,7 +99,7 @@ def store(user: SlotBase, db: Session = Depends(get_db)):
 def store(user: TimeSlotBase, db: Session = Depends(get_db)):
 
     i = 1
-    t1 = dt.datetime.strptime('7:00:00', '%H:%M:%S')
+    t1 = dt.datetime.strptime('7:00:00', '%H:%M')
     while i < 9:
         time = t1 + timedelta(hours=i)
         to_store = Timeslot(
@@ -124,13 +129,14 @@ def update(id: str, user: TimeSlotUpdate, db: Session = Depends(get_db)):
     if not verify:
         raise HTTPException(404, 'Timeslot to update is not found')
     
-    user_data = user.dict(exclude_unset=True)
-    for key, value in user_data.items():
-        setattr(verify, key, value)
-        db.add(verify)
-        db.commit()
-        
-    return {'message': 'Updated successfully.'} 
+    else:
+        user_data = user.dict(exclude_unset=True)
+        for key, value in user_data.items():
+            setattr(verify, key, value)
+            db.add(verify)
+            db.commit()
+            
+        return {'message': 'Updated successfully.'} 
 
 @router.post('/deactivate/{id}')
 def deactivate(id: str, db: Session = Depends(get_db)):

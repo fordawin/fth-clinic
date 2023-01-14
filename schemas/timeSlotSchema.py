@@ -9,8 +9,11 @@ class TimeSlotBase(BaseModel):
     slot_date: d
 
 class TimeSlotUpdate(BaseModel):
+    slot_start : Optional[t]
+    slot_end : Optional[t]
     slot_capacity: Optional[str]
     slot_date: Optional[d]
+    slot_status: Optional[str]
 
 class SlotBase(BaseModel):
     slot_number : Optional[int]
