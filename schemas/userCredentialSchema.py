@@ -257,11 +257,11 @@ class Doctor(DoctorBase):
         orm_mode = True
 
 class updateUser(BaseModel):
-    user_username: Optional[str] | None = None
-    user_password: Optional[str] | None = None
-    old_password: Optional[str] | None = None
-    user_passwordre: Optional[str] | None = None
-    user_email: Optional[str] | None = None
+    user_username: Optional[str] = None
+    user_password: Optional[str] = None
+    old_password: Optional[str] = None
+    user_passwordre: Optional[str] = None
+    user_email: Optional[str] = None
 
     @classmethod
     def as_form(
