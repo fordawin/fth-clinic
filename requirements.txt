@@ -18,7 +18,7 @@ datatables
 deta
 dnspython
 ecdsa
-email-validato
+email-validator
 fastapi
 fastapi-mail
 future
