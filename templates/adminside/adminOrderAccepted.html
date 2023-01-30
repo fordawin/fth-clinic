@@ -82,7 +82,7 @@
                </button>
                </div>
                <div class="modal-body">
-               <form action="http://127.0.0.1:8000/orders/payment/{{ order.order_id }}" method="POST" >
+               <form action="http://127.0.0.1:8000/orders/payment/{{ order.order_id }}" id="paymentAccept" method="POST" >
                    <div class="row">
                        <div class="col-md-8">
                            <label class="form-label" for="">Payment Amount</label>
@@ -111,6 +111,14 @@
 </footer>
 
 <script>
+    function confirm() {
+        Swal.fire({
+        icon: 'success',
+        title: 'Payment Paid',
+        showConfirmButton: true,
+        timer: 2000
+    })
+  }
     function deny() {
         Swal.fire(
           'Cancelled',
@@ -125,7 +133,14 @@
           'success'
         )
     }
-
+    function sweetError(message) {
+        Swal.fire({
+        icon: 'error',
+        title: 'Try Again',
+        text: message,
+        footer: ''
+        })
+    }
 </script>
 {%endblock%}
 
@@ -150,4 +165,37 @@
 		$(this).addClass('active');
 		})
 	</script>
+
+<script type="text/javascript">
+        
+    function windowsOpen(message) {
+        window.open("accepted", "_self").reload()
+    }
+    $("#paymentAccept").submit(function(e) {
+    e.preventDefault();
+    var frm = $("#paymentAccept");
+    var data = {};
+    $.each(this, function(i, v){
+        var input = $(v);
+        data[input.attr("name")] = input.val();
+        delete data["undefined"];
+    });
+    console.log(data)
+    $.ajax({
+        contentType:"application/json",
+        type:frm.attr("method"),
+        url:frm.attr("action"),
+        dataType:'text',
+        data: JSON.stringify(data),
+        success: function(data) {
+          confirm();
+          const myTimeout = setTimeout(windowsOpen, 2000);
+        },
+        error: function(error) {
+          resAlert = error.responseText.slice(11,-2)
+          sweetError(resAlert);
+        }
+    })
+});
+</script>
 {% endblock %}

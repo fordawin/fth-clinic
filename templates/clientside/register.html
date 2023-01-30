@@ -245,7 +245,15 @@ function updateProgressbar() {
   setTimeout(function() {
         bootstrap.Alert.getOrCreateInstance(document.querySelector(".alert")).close();
     }, 3000)
-    
+  
+  function sweetSuccess(message) {
+    Swal.fire({
+    icon: 'success',
+    title: 'Successfully Registered',
+    text: message,
+    footer: 'Would you like to <a href="http://127.0.0.1:8000/users/register">login?</a>'
+  })
+}  
   $("#registerForm").submit(function(e) {
       e.preventDefault();
       var frm = $("#registerForm");
@@ -262,6 +270,7 @@ function updateProgressbar() {
           dataType:'text',
           data: JSON.stringify(data),
           success: function(data) {
+           sweetSuccess('test')
            window.open("/users", "_self").reload()
           },
           error: function(error) {

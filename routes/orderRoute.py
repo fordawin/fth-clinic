@@ -92,18 +92,13 @@ def pickup(id: str, db: Session = Depends(get_db)):
     return {'message': 'Success.'}
 
 @router.post('/payment/{id}')
-def payment(id: str, pay: PaymentBase = Depends(PaymentBase.as_form), db: Session = Depends(get_db)):
+def payment(id: str, pay: PaymentBase, db: Session = Depends(get_db)):
     payment = db.query(Orders).filter(Orders.order_id == id).first()
 
     if pay.order_payment == payment.order_total:
         db.query(Orders).filter(Orders.order_id == id).update({'order_status': "Paid"})
         db.commit()
 
-        time.sleep(1)
-
-        response = RedirectResponse(url='/payment/accepted', status_code=302)
-
-        return response
-
+        return {'message': 'Success'}
     else:
         raise HTTPException(404, 'Insufficient Payment')

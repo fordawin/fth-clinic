@@ -63,7 +63,7 @@
                       <li class="nav-item" role="presentation">
                           <a class="nav-link rounded-0 active" id="overview-tab" data-bs-toggle="pill" href="#pills-overview" role="tab" aria-controls="pills-overview" aria-selected="true">
                               <div class="text-center pt-1 pb-1">
-                                  <h5 class="title fw-normal mb-0">Past Appointments</h5>
+                                  <h5 class="title fw-normal mb-0">Upcoming Appointments</h5>
                               </div>
                           </a><!--end nav link-->
                       </li><!--end nav item-->
@@ -71,7 +71,7 @@
                       <li class="nav-item" role="presentation">
                           <a class="nav-link rounded-0" id="experience-tab" data-bs-toggle="pill" href="#pills-experience" role="tab" aria-controls="pills-experience" aria-selected="false" tabindex="-1">
                               <div class="text-center pt-1 pb-1">
-                                  <h5 class="title fw-normal mb-0">Upcoming Appointments</h5>
+                                  <h5 class="title fw-normal mb-0">Past Appointments</h5>
                               </div>
                           </a><!--end nav link-->
                       </li><!--end nav item-->
@@ -98,21 +98,22 @@
                                   </thead>
                                   <tbody>
 									{% for appointments in appointment %}
-										{% if appointments.ap_clientID == appointment[-1] and appointments.ap_status == 'Paid' %}
-										<tr>
-											<td>{{ appointments.ap_number }}</td>
-											<td>{{ appointments.ap_date }}</td>
-											<td>{{ appointments.ap_startTime }} - {{ appointments.ap_endTime }}</td>
-											<td>
-												<a type="button" class="btn btn-sm btn-outline-warning rounded-circle" data-toggle="modal" data-target="#invoice{{appointments.ap_id}}"><i class="uil uil-file align-text-bottom text-primary h5 "></i></a>
-											</td>
-											<td>
-												<a type="button" class="btn btn-sm btn-outline-success rounded-circle" data-toggle="modal" data-target="#viewAppointment{{appointments.ap_id}}"><i class="uil uil-eye align-text-bottom text-primary h5 "></i></a>
-											</td>
-										</tr>
-										{% endif %}
-                  					{% endfor %}
-                                  </tbody>
+									  {% if appointments.ap_clientID == appointment[-1] and appointments.ap_status == 'Unpaid' %}
+									  <tr>
+										  <td>{{ appointments.ap_number }}</td>
+										  <td>{{ appointments.ap_date }}</td>
+										  <td>{{ appointments.ap_startTime }} - {{ appointments.ap_endTime }}</td>
+										  <td>
+											  <a type="button" class="btn btn-sm btn-outline-warning rounded-circle" data-toggle="modal" data-target="#invoice{{appointments.ap_id}}"><i class="uil uil-file align-text-bottom text-primary h5 "></i></a>
+										  </td>
+										  <td>
+											  <a type="button" class="btn btn-sm btn-outline-success rounded-circle" data-toggle="modal" data-target="#viewAppointment{{appointments.ap_id}}"><i class="uil uil-eye align-text-bottom text-primary h5 "></i></a>
+											  <a type="button" class="btn btn-sm btn-outline-danger rounded-circle" data-toggle="modal" data-target="#cancelAppointment{{appointments.ap_id}}"><i class="uil uil-times-circle align-text-bottom text-primary h5"></i></a>
+										  </td>
+									  </tr>
+									  {% endif %}
+									{% endfor %}
+								  </tbody>
                                 </table>
                               </div>
                             </div>
@@ -137,23 +138,22 @@
                                     <th>Action</th>
                                   </tr>
                                 </thead>
-                                <tbody>
-								  {% for appointments in appointment %}
-									{% if appointments.ap_clientID == appointment[-1] and appointments.ap_status == 'Unpaid' %}
-									<tr>
-										<td>{{ appointments.ap_number }}</td>
-										<td>{{ appointments.ap_date }}</td>
-										<td>{{ appointments.ap_startTime }} - {{ appointments.ap_endTime }}</td>
-										<td>
-											<a type="button" class="btn btn-sm btn-outline-warning rounded-circle" data-toggle="modal" data-target="#invoice{{appointments.ap_id}}"><i class="uil uil-file align-text-bottom text-primary h5 "></i></a>
-										</td>
-										<td>
-											<a type="button" class="btn btn-sm btn-outline-success rounded-circle" data-toggle="modal" data-target="#viewAppointment{{appointments.ap_id}}"><i class="uil uil-eye align-text-bottom text-primary h5 "></i></a>
-											<a type="button" class="btn btn-sm btn-outline-danger rounded-circle" data-toggle="modal" data-target="#cancelAppointment{{appointments.ap_id}}"><i class="uil uil-times-circle align-text-bottom text-primary h5"></i></a>
-										</td>
-									</tr>
-									{% endif %}
-								  {% endfor %}
+								<tbody>
+									{% for appointments in appointment %}
+										{% if appointments.ap_clientID == appointment[-1] and appointments.ap_status == 'Paid' %}
+										<tr>
+											<td>{{ appointments.ap_number }}</td>
+											<td>{{ appointments.ap_date }}</td>
+											<td>{{ appointments.ap_startTime }} - {{ appointments.ap_endTime }}</td>
+											<td>
+												<a type="button" class="btn btn-sm btn-outline-warning rounded-circle" data-toggle="modal" data-target="#invoice{{appointments.ap_id}}"><i class="uil uil-file align-text-bottom text-primary h5 "></i></a>
+											</td>
+											<td>
+												<a type="button" class="btn btn-sm btn-outline-success rounded-circle" data-toggle="modal" data-target="#viewAppointment{{appointments.ap_id}}"><i class="uil uil-eye align-text-bottom text-primary h5 "></i></a>
+											</td>
+										</tr>
+										{% endif %}
+                  					{% endfor %}
                                 </tbody>
                               </table>
                             </div>

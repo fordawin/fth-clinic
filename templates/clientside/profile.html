@@ -65,7 +65,7 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="rounded shadow overflow-hidden sticky-bar">
                             <div class="card border-0">
-                                <img src="https://images.unsplash.com/photo-1488998527040-85054a85150e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" class="img-fluid" alt="">
+                                <img src="../static/images/{{profiles.cl_pic}}" class="img-fluid" alt="">
                             </div>
             
                             <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
@@ -172,16 +172,15 @@
                                     <h5 class="mb-0">Personal Information :</h5>
                                     <div class="row align-items-center mt-4">
                                         <div class="col-lg-2 col-md-4">
-                                            <img src="https://pics.me.me/thumb_thanks-i-hate-realistic-homer-simpson-72041096.png" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
+                                            <img src="../static/images/{{profiles.cl_pic}}" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
                                         </div><!--end col-->
             
                                         <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                            <h6 class="">Upload your picture</h6>
-                                            <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg or .png format</p>
+                                            <h6 class=""></h6>
                                         </div><!--end col-->
             
                                         <div class="col-lg-5 col-md-12 text-lg-right text-center mt-4 mt-lg-0">
-                                            <form action="https://faith-hope-love.herokuapp.com/client/uploadProfile/{{profiles.cl_id}}" method="POST" enctype="hx-encoding">
+                                            <form action="http://127.0.0.1:8000/client/uploadProfile/{{profiles.cl_id}}" method="POST" enctype="multipart/form-data">
                                                 <input type="file" name="file">
                                                 <input type="submit" value="Upload">
                                             </form>

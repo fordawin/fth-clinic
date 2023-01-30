@@ -65,7 +65,7 @@ templates = Jinja2Templates(directory="templates")
 #     except Exception as e:
 #         print(e)
 
-@router.get('/uploadProfile/{id}', status_code=status.HTTP_202_ACCEPTED)
+@router.post('/uploadProfile/{id}', status_code=status.HTTP_202_ACCEPTED)
 async def upload_profile(id: str, file: UploadFile = File(...), db: Session = Depends(get_db)):
     verify = db.query(Client).filter(Client.cl_id == id).first()
 
@@ -94,8 +94,11 @@ async def upload_profile(id: str, file: UploadFile = File(...), db: Session = De
     db.add(verify)
     db.commit()
 
-    file_url = "localhost:8000" + generate_name[1:]
-    return {"status": "ok", "filename": file_url}
+    # file_url = "localhost:8000" + generate_name[1:]
+
+    response = RedirectResponse(url='/users/profile', status_code=302)
+
+    return response
 
 
 @router.get('/')
