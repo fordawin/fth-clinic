@@ -5,78 +5,112 @@
 
 {% block linkcontent %}
 <!-- Fontawesome icon -->
-<link rel="stylesheet" href="{{url_for('static', path='/assets/css/aboutCss.css')}}" type="text/css">	
+<link rel="stylesheet" href="{{url_for('static', path='/assets/css/aboutCss.css')}}" type="text/css">
+<style>
+	.circle {
+	  display: block;
+	  width: 489px;
+	  height: 380px;
+	  margin: 3em;
+	  background-size: cover;
+	  background-repeat: no-repeat;
+	  background-position: left;
+	  -webkit-border-radius: 99em;
+	  -moz-border-radius: 99em;
+	  border-radius:6em;
+	  float:left;
+	  box-shadow: 0 8px 5px rgba(0, 0, 0, 0.3);
+	}
+  
+  p{
+	  color: #51585f;
+	  font-size: 17px;
+	  margin: 1%;
+	  padding: 1%;
+  
+  }
+   h2{
+	  color: #111;
+	  font-family: 'Lora';
+	  font-weight: 700;
+	  font-size: 38px;
+  }
+  
+  </style>
 {% endblock %}
 {%block content%}
-<div class="about-section">
-	<div class="inner-container">
-	   <h1>Certifications/Affiliations</h1>
-	   <p class="text">
-		  Dr. Lee Wu Chun Mei is a licensed Obstetrician-Gynecologist who earned her degree from the Taiwan Chinese Medical School, but specializes in the practice of the ancient Chinese science of acupuncture. According to Dr. Lee, our body has 365 different nerve points which respond to the direct pressure of a needle. Each nerve point corresponds to a different organ, such as the gall bladder, the heart and the kidneys. She emphasizes that acupuncture is different and more effective than reflexology. 
-	   </p>
-	   <div class="skills">
-		  <span></span>
-		  <span></span>
-		  <span></span>
-	   </div>
-	</div>
- </div>
- <br><br><br><br><br><br><br><br><br><br><br>
- <div class="demo">
-	<div class="container">
-	   <div class="row">
-		  <center>
-		  <div class="col-md-8">
-			 <div id="testimonial-slider" class="owl-carousel">
-				<div class="testimonial">
-				   <div class="pic">
-					  <img src="">
-				   </div>
-				   <h3 class="title">Testimonies</h3>
-				   <span class="post"></span>
-				   <p class="description">
-					  “People came to me with all sorts of complaints, some had to see me secretly because they had sons and daughters who were doctors and who were prescribing medicines, but they were not getting any better. They were tired of taking medicines for seemingly incurable diseases, after trying acupuncture and taking Chinese medicines, most patients show remarkable improvements. Those who have been healed pass the word around, which won her the heart and trust of many.”
-				   </p>
-				</div>
-				<div class="testimonial">
-				   <div class="pic">
-					  <img src="">
-				   </div>
-				   <h3 class="title">Testimonies</h3>
-				   <span class="post"></span>
-				   <p class="description">
-					  Dr. Lee cited one of the many documented cases of patients whose condition showed a marked response to acupuncture treatment, “Zamboanga 1987. A professor of a certain university had been diagnosed as having brain tumor. For three years from 1984 to 1987, she had been suffering excruciating pain. Medical doctors routinely told her an operation was needed but she could not afford it. It was a Muslim community. Many Muslim patients were treated and naturally word about my skill fell upon the professor’s ear and she also came to me. After three or four treatments, her condition improved. When all ten treatments were done, the headache disappeared! She was able to sleep normally so much so that she has decided to return to work.”
-				   </p>
-				</div>
-				<div class="testimonial">
-				   <div class="pic">
-					  <img src="">
-				   </div>
-				   <h3 class="title">Testimonies</h3>
-				   <span class="post"></span>
-				   <p class="description">
-					  If acupuncture can cure people of such medically hopeless cases it surely has medical value and is worthy of in-depth research. After all drugs are invented to lessen the patients’ suffering.
-				   </p>
-				</div>
-			 </div>
-		  </div>
-		  </center>
-	   </div>
-	</div>
- </div>
+<section class="about-us">
+    <div class="about">
+      <img src="../static/assets/images/colcert.png" class="pic"><br>
+      <div class="text"><br>
+        <h4>Dr.  Lee Wu Chun Mei: Asia’s Top Acupuncturist</h4>
+        <h5><span></span></h5><br>
+          <p>Dr. Lee Wu Chun Mei is a licensed Obstetrician-Gynecologist who earned her degree from the Taiwan Chinese Medical School, but specializes in the practice of the ancient Chinese science of acupuncture. <br><br>According to Dr. Lee, our body has 365 different nerve points which respond to the direct pressure of a needle. Each nerve point corresponds to a different organ, such as the gall bladder, the heart and the kidneys. She emphasizes that acupuncture is different and more effective than reflexology.<br><br> “In acupuncture, the needle actually touches the nerve point,” she says in Chinese-accented English though she’s been in the country for over three decades. “There’s a big difference between acupuncture and reflexology, or acupressure, you just press down on it, and since there’s a layer of skin between the nerve point and your fingers, it takes longer for the pressure to reach the nerve point and longer for the healing to start.”</p>
+        <div class="data">
+       <!-- <a href="#" class="hire"></a>-->
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+    <div class="demo">
+        <div class="container">
+            <div class="row">
+				<center>
+                <div class="col-md-8">
+                    <div id="testimonial-slider" class="owl-carousel">
+                        <div class="testimonial">
+                            <div class="pic">
+                                <img src="">
+                            </div>
+                            <h3 class="title">Testimonies</h3>
+                            <span class="post"></span>
+                            <p class="description">
+								“People came to me with all sorts of complaints, some had to see me secretly because they had sons and daughters who were doctors and who were prescribing medicines, but they were not getting any better. They were tired of taking medicines for seemingly incurable diseases, after trying acupuncture and taking Chinese medicines, most patients show remarkable improvements. Those who have been healed pass the word around, which won her the heart and trust of many.”
+                            </p>
+                        </div>
+                        <div class="testimonial">
+                            <div class="pic">
+                                <img src="">
+                            </div>
+                            <h3 class="title">Testimonies</h3>
+                            <span class="post"></span>
+                            <p class="description">
+								Dr. Lee cited one of the many documented cases of patients whose condition showed a marked response to acupuncture treatment, “Zamboanga 1987. A professor of a certain university had been diagnosed as having brain tumor. For three years from 1984 to 1987, she had been suffering excruciating pain. Medical doctors routinely told her an operation was needed but she could not afford it. It was a Muslim community. Many Muslim patients were treated and naturally word about my skill fell upon the professor’s ear and she also came to me. After three or four treatments, her condition improved. When all ten treatments were done, the headache disappeared! She was able to sleep normally so much so that she has decided to return to work.”
+                            </p>
+                        </div>
+       
+    <div class="testimonial">
+        <div class="pic">
+            <img src="">
+        </div>
+        <h3 class="title">Testimonies</h3>
+        <span class="post"></span>
+        <p class="description">
+			If acupuncture can cure people of such medically hopeless cases it surely has medical value and is worthy of in-depth research. After all drugs are invented to lessen the patients’ suffering.
+        </p>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</center>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
 <script>
-$(document).ready(function(){
-	$("#testimonial-slider").owlCarousel({
-		items:1,
-		itemsDesktop:[1000,1],
-		itemsDesktopSmall:[979,1],
-		itemsTablet:[768,1],
-		pagination:true,
-		transitionStyle:"backSlide",
-		autoPlay:true
+	$(document).ready(function(){
+		$("#testimonial-slider").owlCarousel({
+			items:1,
+			itemsDesktop:[1000,1],
+			itemsDesktopSmall:[979,1],
+			itemsTablet:[768,1],
+			pagination:true,
+			transitionStyle:"backSlide",
+			autoPlay:true
+		});
 	});
-});
-</script>
+	</script>
 {%endblock%}

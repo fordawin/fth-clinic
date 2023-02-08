@@ -3,14 +3,31 @@
 <title>Home - Acupuncture and Herbal Medicine with Dr. Lee</title>
 {% endblock %}
 {% block linkcontent %}
+<link rel="stylesheet" href="{{url_for('static', path='/assets/css/style.css')}}" type="text/css">
 <link rel="stylesheet" href="{{url_for('static', path='/assets/css/price.css')}}" type="text/css">
 <link rel="stylesheet" href="{{url_for('static', path='/assets/css/service.css')}}" type="text/css">
-<link rel="stylesheet" href="{{url_for('static', path='/assets/css/style.css')}}" type="text/css">
 {% endblock %}
 {%block content%}
 
 <!--Start Hero Banner	-->
-	<div class="hero-banner container-fluid" id="home-section" >
+<div class="hero-banner container-fluid" id="home-section">
+	<div class="image" alt="banner" style="  position: absolute; margin-left: 1000px; margin-top: -100px">
+		<img src="../static/assets/images/banner.jpg">
+	</div>
+	 <div class="container">
+		 <div class="row">
+			  <div class="col-md-12">
+				  <div class="banner-text-wrap">
+					   <h2 class="text-white"> <p style="color:rgb(255, 255, 255)">Acupuncture and<br>
+						Herbal Medicine</p></h2>
+						<p style="color:rgb(255, 255, 255)">Dr. Lee of Faith Hope Love Medical Center has <br>practiced traditional Chinese Medicine in the <br>Philippines for 40 years and still continues to serve<br> patients to this day.</p><br>
+					  <a href="#" class="btn" style="color: white;">GET STARTED</a>
+					  </div>
+				  </div>
+			 </div>
+		 </div>
+	</div>
+	<!-- <div class="hero-banner container-fluid" id="home-section" >
 		<div class="image"  alt="banner" style="  position: absolute; margin-left: 1000px; margin-top: -100px">
 			<img src="../static/assets/images/banner.jpg" >
 		</div>
@@ -27,7 +44,7 @@
 				 </div>
 			 </div>
 		</div>
-	</section>
+	</section> -->
 <!--End Hero Banner	-->
         <!--dito len-->
 	<section class="ftco-intro">
@@ -268,75 +285,31 @@
 			<span class="main-color"><p style="color:black" >Service </p></span> <hr>
 		<div class="pricing-list">
 			<div class="row">
+				{% for services in service %}
 				<div class="col-4 col-md-12 col-sm-12">
 					<div class="pricing-box">
 						<div class="pricing-box-header">
 							<div class="pricing-name">
-								<p style="color:rgb(255, 255, 255)" > </p>
+								<p style="color:rgb(255, 255, 255)" > {{services.service_name}} </p>
 							</div>
 							<div class="pricing-price">
-								<p style="color:rgb(255, 255, 255)" >₱950 </p>
+								<p style="color:rgb(255, 255, 255)" >₱ {{services.service_price}} </p>
 							</div>
 						</div>
 						<div class="pricing-box-content">
-							<p style="color:rgb(255, 255, 255)" >"Lorem ipsum dolor sit amet, consectetur adipiscing elit," </p>
+							<p style="color:rgb(255, 255, 255)" >{{services.service_description}} </p>
 							<p></p>
 							<p> </p>
 							<p><del></del></p>
 						</div>
 						<div class="pricing-box-action">
 							<a href="#" class="btn btn-hover">
-								<span>Register now</span>
+								<span>Order now</span>
 							</a>
 						</div>
 					</div>
 				</div>
-				<div class="col-4 col-md-12 col-sm-12">
-					<div class="pricing-box hightlight">
-						<div class="pricing-box-header">
-							<div class="pricing-name">
-							
-							</div>
-							<div class="pricing-price">
-								<p style="color:rgb(255, 255, 255)" >₱950 </p>
-							</div>
-						</div>
-						<div class="pricing-box-content">
-							<p><p style="color:rgb(255, 255, 255)" >"Lorem ipsum dolor sit amet, consectetur adipiscing elit," </p></p>
-							<p></p>
-							<p><del></del></p>
-							<p><del></del></p>
-						</div>
-						<div class="pricing-box-action">
-							<a href="#" class="btn btn-hover">
-								<span>Register now</span>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-4 col-md-12 col-sm-12">
-					<div class="pricing-box">
-						<div class="pricing-box-header">
-							<div class="pricing-name">
-							
-							</div>
-							<div class="pricing-price">
-								<p style="color:rgb(255, 255, 255)" >₱950 </p>
-							</div>
-						</div>
-						<div class="pricing-box-content">
-							<p><p style="color:rgb(255, 255, 255)" >"Lorem ipsum dolor sit amet, consectetur adipiscing elit," </p></p>
-							<p></p>
-							<p><del> </del></p>
-							<p><del></del></p>
-						</div>
-						<div class="pricing-box-action">
-							<a href="#" class="btn btn-hover">
-								<span>Register now</span>
-							</a>
-						</div>
-					</div>
-				</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>

@@ -2,9 +2,7 @@
     --main-color: #23ab70;
     --body-bg: #23ab70;
     --box-bg: #353535;
-    --text-color: #ffffff;
-
-    
+    --text-color: #894545;
 }
 
 * {
@@ -102,11 +100,12 @@ img {
 .item-content-wraper {
     padding-left: 5rem;
     width: 100%;
-    background-color: rgba(79, 80, 79, 0.8);
+    background-color: rgb(46 46 46 / 80%);
     display: flex;
     flex-direction: column;
     justify-content: center;
     position: relative;
+    height: inherit;
 }
 
 .item-content-wraper::before {
@@ -190,7 +189,6 @@ img {
     text-align: center;
     margin-top: 60px;
 }
-
 
 .social-list {
     display: flex;

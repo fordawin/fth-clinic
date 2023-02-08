@@ -63,9 +63,11 @@ templates = Jinja2Templates(directory="templates")
 def registration(request: Request, db: Session = Depends(get_db)):
     try:
         query = db.query(Timeslot).all()
+        query1 = db.query(Service).all()
         return templates.TemplateResponse('clientside/home.html', {
             'request': request,
-            'dates': query
+            'dates': query,
+            'service': query1
         })
     except Exception as e:
         print(e)
