@@ -29,7 +29,7 @@
          <br>
          <div class="container">
            <div class="card" style="border-radius: 00rem 0 0 0rem; z-index:10">
-             <form action="http://127.0.0.1:8000/users/register" method="POST" class="form" id="registerForm">
+             <form action="https://clinic-local.herokuapp.com/users/register" method="POST" class="form" id="registerForm">
                <h4 class="text-center">Registration Form</h4>
                <!-- Progress bar -->
                <center>
@@ -253,7 +253,7 @@ function updateProgressbar() {
     icon: 'success',
     title: 'Successfully Registered',
     text: message,
-    footer: 'Would you like to <a href="http://127.0.0.1:8000/users/register">login?</a>'
+    footer: 'Would you like to <a href="https://clinic-local.herokuapp.com/users/register">login?</a>'
   })
 }  
   $("#registerForm").submit(function(e) {

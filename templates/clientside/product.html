@@ -167,7 +167,7 @@
        $.each(products, function(){
          checkoutString += ("\n " + this.id + " \t " + this.name + " \t " + this.summary + " \t " + this.price + " \t " + this.quantity + " \t " + this.image);
          $.ajax({
-                url: "http://127.0.0.1:8000/orders",
+                url: "https://clinic-local.herokuapp.com/orders",
                 type: "post",
                 dataType: "json",
                 contentType: "application/json",
