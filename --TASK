@@ -1,3 +1,28 @@
-Sucess notif when registered
+HOME SIDE
+Sucess notification when registered. (DONE)
+Redirecting to log-in or being automatically logged-in after registration. (DONE)
+X Button when failed log-in attempt or automatically mabubura. (DONE)
+Interactive yung services sa HOME (DONE)
 
-Order Notif
+CLIENT SIDE
+Upcoming and Past appointment should be switched (DONE)
+Order Notification when order is placed. (DONE)
+ABOUT PAGE pending pa kay ibal (DONE)
+Appointment time makikita lang yung selected na dates. MAHIRAP TO
+get started button inside the client side anong purpose. (DONE)
+Profile working yung picture pati yung nasa loob pati profile settings (DONE)
+missing din yung my orders pag nasa profiel page ka. (DONE)
+
+DOCTOR SIDE
+Same with client side profile.
+
+EMPLOYEE SIDE
+Same with client side profile.
+
+ADMIN SIDE
+Same with client side profile.
+Accepting/Cancelling orders will redirect in employee side. (DONE)
+Payments with appointment are not being seen. (PENDING)
+Admin payment throws error. (PENDING)
+Even if cancelled yung orders nakikita parin sa accepted orders. (PENDING)
+

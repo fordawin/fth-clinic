@@ -123,6 +123,21 @@
   </div>
 
 </script>
+<script>
+  Swal.fire({
+  title: '<strong>You must be logged-in <br>before placing an order!</strong>',
+  icon: 'info',
+  html:
+    '<b>You may <b>' +
+    '<b><a href="http://127.0.0.1:8000/users/login">log-in </a><b> ' +
+    '<b>here<b>',
+  showCloseButton: true,
+  focusConfirm: false,
+  confirmButtonText:
+    '<i class="fa fa-thumbs-up"></i> Ok',
+  confirmButtonAriaLabel: 'Thumbs up, great!'
+})
+</script>
 <!-- ROLLEN CART JS  -->
 <script src="{{url_for('static', path='/assets/js/jquery-2.2.3.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', path='/assets/js/jquery.mycart.js')}}"></script>
@@ -167,7 +182,7 @@
        $.each(products, function(){
          checkoutString += ("\n " + this.id + " \t " + this.name + " \t " + this.summary + " \t " + this.price + " \t " + this.quantity + " \t " + this.image);
          $.ajax({
-                url: "https://clinic-local.herokuapp.com/orders",
+                url: "http://127.0.0.1:8000/orders",
                 type: "post",
                 dataType: "json",
                 contentType: "application/json",
