@@ -3,8 +3,6 @@
 <title>Home - Acupuncture and Herbal Medicine with Dr. Lee</title>
 {% endblock %}
 {% block linkcontent %}
-<link rel="stylesheet" href="{{url_for('static', path='/assets/css/price.css')}}" type="text/css">
-<link rel="stylesheet" href="{{url_for('static', path='/assets/css/service.css')}}" type="text/css">
 <link rel="stylesheet" href="{{url_for('static', path='/assets/css/style.css')}}" type="text/css">
 {% endblock %}
 
@@ -363,9 +361,9 @@
 		<div class="pricing-header">
 			<span class="main-color"><p style="color:black" >Service </p></span> <hr>
 		<div class="pricing-list">
-			<div class="row">
+			<div class="row row-3">
 				{% for services in service %}
-				<div class="col-4 col-md-12 col-sm-12">
+				<div class="col">
 					<div class="pricing-box">
 						<div class="pricing-box-header">
 							<div class="pricing-name">
@@ -395,8 +393,6 @@
 </div>
 </div>
 <!-- END PRICING SECTION -->
-
-
 <script type="text/javascript">
 
 function confirm() {
