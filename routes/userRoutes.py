@@ -227,7 +227,7 @@ async def register(response: Response, form_data: ClientBase, db: Session = Depe
                         db.add(to_client)
                         db.commit()
 
-                        await send_email([form_data.user_email], form_data.user_username)
+                        await send_email([form_data.user_email], form_data.cl_firstName, form_data.cl_middleName, form_data.cl_lastName)
 
                         time.sleep(5)
                         response = RedirectResponse(url='login', status_code=302)

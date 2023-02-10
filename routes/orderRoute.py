@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Cookie, status, Response,
 from sqlalchemy.orm import Session
 from schemas.orderSchema import OrderBase, PaymentBase
 from models.ordersModel import Orders
+from models.userCredentialModel import User_credential
 from models.clientModel import Client
 from models.productsModel import Product
 from database import get_db
@@ -10,7 +11,7 @@ from jose import jwt
 import time
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
-
+from for_email import *
 router = APIRouter(
     prefix='/orders',
     tags=['orders'], dependencies=[Depends(get_token)]
@@ -82,13 +83,19 @@ def store(orders: OrderBase, token: str = Cookie('token'),db: Session = Depends(
 #         return {'message': 'Product updated successfully.'} 
     
 @router.post('/{id}')
-def pickup(id: str, db: Session = Depends(get_db)):
+async def pickup(id: str, db: Session = Depends(get_db)):
     # deletion = db.query(Product).filter(Product.product_id == id).first()
 
     if not db.query(Orders).filter(Orders.order_id == id).update({'order_status': "For Pickup"}):
         raise HTTPException(404, 'Order to pickup is not found')
 
+    orderID = db.query(Orders).filter(Orders.order_id == id).first
+
+    users = db.query(User_credential).filter(User_credential.user_id == orderID.order_userid).first
+
     db.commit()
+    await for_pickup(users.user_id)
+    time.sleep(1) 
     return {'message': 'Success.'}
 
 @router.post('/payment/{id}')

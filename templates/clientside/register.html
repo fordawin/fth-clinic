@@ -29,7 +29,7 @@
          <br>
          <div class="container">
            <div class="card" style="border-radius: 00rem 0 0 0rem; z-index:10">
-             <form action="https://clinic-local.herokuapp.com/users/register" method="POST" class="form" id="registerForm">
+             <form action="http://127.0.0.1:8000/users/register" method="POST" class="form" id="registerForm">
                <h4 class="text-center">Registration Form</h4>
                <!-- Progress bar -->
                <center>
@@ -236,6 +236,14 @@ function updateProgressbar() {
  </script>
 <script type="text/javascript">
 
+  function alertFailure(msg){
+    Swal.fire({
+    icon: 'error',
+    title: 'Registration Failed',
+    text: msg
+})
+  }
+
   function alertLoginFailure(message) {
     $('#failedLogin').append(
         '<div class="alert alert-danger d-flex align-items-center" role="alert">' + 
@@ -244,16 +252,17 @@ function updateProgressbar() {
     )
   }
 
-  setTimeout(function() {
-        bootstrap.Alert.getOrCreateInstance(document.querySelector(".alert")).close();
-    }, 3000)
+  // setTimeout(function() {
+  //       bootstrap.Alert.getOrCreateInstance(document.querySelector(".alert")).close();
+  //   }, 3000)
   
-  function sweetSuccess(message) {
+  function sweetSuccess() {
     Swal.fire({
     icon: 'success',
     title: 'Successfully Registered',
-    text: message,
-    footer: 'Would you like to <a href="https://clinic-local.herokuapp.com/users/register">login?</a>'
+    text: '',
+    footer: 'Would you like to \t<b><a href="https://clinic-local.herokuapp.com/users/register">login?</a></b>',
+    timer: 15000
   })
 }  
   $("#registerForm").submit(function(e) {
@@ -272,12 +281,14 @@ function updateProgressbar() {
           dataType:'text',
           data: JSON.stringify(data),
           success: function(data) {
-           sweetSuccess('test')
-           window.open("/users", "_self").reload()
+          //  sweetSuccess('test')
+          
+           window.setTimeout(sweetSuccess(), 25000);
+          
           },
           error: function(error) {
-            resAlert = error.responseText.slice(11,-2)
-            alertRegisterFailure(resAlert);
+            resAlert = error.responseText.slice(11,-2),
+            window.setTimeout(alertFailure(resAlert), 25000);
           }
       })
   });

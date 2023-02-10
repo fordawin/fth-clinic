@@ -16,6 +16,7 @@ from fastapi.responses import RedirectResponse, HTMLResponse
 from passlib.context import CryptContext
 from jose import jwt
 import time
+from for_email import *
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
@@ -202,15 +203,21 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     db.commit()
 
 @router.get('/accept/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
+async def deactivate(id: str, db: Session = Depends(get_db)):
     cancel = db.query(Orders).filter(Orders.order_id == id).first()
 
     if not cancel:
-        raise HTTPException(404, 'Appointment to cancel is not found')
+        raise HTTPException(404, 'Order to cancel is not found')
     else:
         db.query(Orders).filter(Orders.order_id == id).update({'order_status': "For Pick-up"})
 
     db.commit()
+
+    users = db.query(User_credential).filter(User_credential.user_id == cancel.order_userid).first()
+
+    print(users)
+
+    await for_pickup([users.user_email])
 
     time.sleep(1)
 
