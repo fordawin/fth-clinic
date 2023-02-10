@@ -49,7 +49,7 @@ async def store(request: Request, product: ProductBase = Depends(ProductBase.as_
         filename = file.filename
         extension = filename.split(".")[1]
 
-        if extension not in ["png", "jpg"]:
+        if extension not in ["png", "jpg", "PNG", "jpeg", "JPG", "JPEG"]:
             return {"status" : "Error", "detail": "Image Extension Not Allowed!"}
         
         token_name = secrets.token_hex(10)+"."+extension

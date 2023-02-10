@@ -23,7 +23,7 @@
                         <div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
                             <h3><i class="fa fa-table text-warning" aria-hidden="true"></i> User Credential</h3>
                             Academic Year 2022-2023
-                            <span><a type="button" class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#addStudent">Add User</a></span>
+                            <span><a type="button" class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#addStudent" disabled>Add User</a></span>
                         </div>
                             
                         <div class="card-body">
@@ -74,7 +74,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="https://clinic-local.herokuapp.com/admin/" id="addUser" method="POST">
+          <form action="http://127.0.0.1:8000/admin/" id="addUser" method="POST">
             <div class="row">
                 <div class="col-md-12">
                     <label class="form-label" for="">Name</label>
@@ -195,7 +195,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-danger" href="https://faith-hope-love.herokuapp.com/usercredential/deactivate/{{ credentials.user_id }}" onclick="confirm()">Delete</a>
+          <a class="btn btn-danger" href="http://127.0.0.1:8000/usercredential/deactivate/{{ credentials.user_id }}" onclick="confirm()">Delete</a>
         </div>
       </div>
     </div>

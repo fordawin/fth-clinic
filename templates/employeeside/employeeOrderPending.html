@@ -48,7 +48,7 @@
                                         <td><a class="btn btn-warning btn-sm">{{ order.order_status }}</a></td>
                                         <td class="text-white">
                                             <span><a class="btn btn-success btn-sm" href="http://127.0.0.1:8000/payment/accept/{{ order.order_id }}" onclick="accept()" >Accept</a></span>
-                                            <span><a class="btn btn-danger btn-sm" href="https://clinic-local.herokuapp.com/payment/deny/{{ order.order_id }}" onclick="deny()" >Delete</a></span>
+                                            <span><a class="btn btn-danger btn-sm" href="http://127.0.0.1:8000/payment/deny/{{ order.order_id }}" onclick="deny()" >Delete</a></span>
                                         </td>
                                     </tr>
                                         {% endif %}
