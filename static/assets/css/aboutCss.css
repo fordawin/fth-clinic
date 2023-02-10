@@ -9,8 +9,6 @@
 }
 
 
-/*hover nav*/
-
 #navbar {
     background-color: rgb(255, 255, 255);
     position: fixed;
@@ -18,7 +16,7 @@
     width: 100%;
     display: block;
     transition: top 0.3s;
-    box-shadow: 1px 4px 11px #989b9a;
+    box-shadow: 1px 4px 11px #3a3838;
   }
   
   #navbar a {
@@ -38,6 +36,12 @@
   
     color: rgb(0, 0, 0);
   }
+
+  
+
+  /*header*/
+
+/*Header*/
 
 
   /*header*/

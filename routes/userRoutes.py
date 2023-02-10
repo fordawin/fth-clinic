@@ -115,10 +115,13 @@ def home(request: Request, db: Session = Depends(get_db)):
         applist = [(applen)]
         timlen = int(len(query2))
         timlist = [(timlen)]
+        query4 = db.query(Service).all()
         lst_all = query + query1 + query2 + applist + serlist + timlist
         return templates.TemplateResponse('clientside/home_after_login.html', {
             'request': request,
-            'appointments': lst_all
+            'appointments': lst_all,
+            'service': query4,
+            'timeslots': query2
         })
     except Exception as e:
         print(e)

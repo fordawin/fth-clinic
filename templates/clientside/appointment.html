@@ -2,6 +2,9 @@
 {% block title %}
 <title>Appoinments - Acupuncture and Herbal Medicine with Dr. Lee</title>
 {% endblock %}
+{% block linkcontent %}
+<link rel="stylesheet" href="{{url_for('static', path='/assets/css/styleClient.css')}}" type="text/css">
+{% endblock %}
 {% block navcontent %}
 <nav class="navbar navbar-expand-lg navbar-light">
 	<div class="container-fluid">
@@ -14,7 +17,7 @@
 	   <div class="collapse navbar-collapse" id="navbarSupportedContent">
 		  <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 			 <li class="nav-item">
-				<a class="nav-link active" aria-current="page" href="/users/home2">Home</a>
+				<a class="nav-link" aria-current="page" href="/users/home2">Home</a>
 			 </li>
 			 <li class="nav">
 				<a class="nav-link" href="about2">About</a>
@@ -54,6 +57,7 @@
 {% endblock %}
 
 {% block content%}
+<br><br><br><br><br><br>
 <section>
     <div class="container">
       <div class="row mt-lg-5">

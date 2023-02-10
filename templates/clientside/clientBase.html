@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 {% block linkcontent %}
 {% endblock %}
-<link rel="stylesheet" href="{{url_for('static', path='/assets/css/style.css')}}" />
+<!-- <link rel="stylesheet" href="{{url_for('static', path='/assets/css/style.css')}}" /> -->
 <!--Custom Style CSS	-->
 <!-- <link rel="stylesheet" href="{{url_for('static', path='/assets/css/styleClient.css')}}" type="text/css">	 -->
 <!--Bootstrap CSS	-->
@@ -59,7 +59,7 @@
              <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                    <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="/users/">Home</a>
+                      <a class="nav-link" aria-current="page" href="/users/">Home</a>
                    </li>
                    <li class="nav">
                       <a class="nav-link" href="about">About</a>
@@ -196,51 +196,58 @@
 	  }
 	}
 </script>
-	<script>
+<script>
 	
-		{
-			flatpickr("#myID", {
-			
-			minDate: new Date(), 
-			dateFormat: "Y-m-d",
-			inline: true,
-			position: "auto",
-		});
-		$( document ).ready(function() {
+	{
+		flatpickr("#myID", {
+		minDate: new Date(), 
+		dateFormat: "Y-m-d",
+		inline: true,
+		position: "auto",
+	});
+	$( document ).ready(function() {
+      // $("#selectTimeslot").hide();
+		$("#time_slot").hide();
+		$("#time_slot_weekend").hide();
+	});
+
+   var eds = [];
+
+   
+	$('#myID').on('change', function (){
+		var date = moment($(this).val()).format("YYYY-MM-DD");
+      console.log(date);
+      $.each(date, function() {
+         eds.push(test);
+      }) 
+      var test = $("#compareDate").val();
+      console.log(test);
+      if(date == test){
+         $("#selectTimeslot").show();
+         
+      }
+		var sunday = moment($(this).val()).day();
+		var monday = moment($(this).val()).day();
+		var tuesday = moment($(this).val()).day();
+		var wednesday = moment($(this).val()).day();
+		var thursday = moment($(this).val()).day();
+		var friday = moment($(this).val()).day();
+		var saturday = moment($(this).val()).day();
+
+		if( sunday == 0 || saturday == 6) {
 			$("#time_slot").hide();
+			$("#time_slot_weekend").show();
+		}
+		else {
 			$("#time_slot_weekend").hide();
-		});
-		$('#myID').on('change', function (){
-			console.log($(this).val());
-			console.log(moment($(this).val()).day());
-			var sunday = moment($(this).val()).day();
-			var monday = moment($(this).val()).day();
-			var tuesday = moment($(this).val()).day();
-			var wednesday = moment($(this).val()).day();
-			var thursday = moment($(this).val()).day();
-			var friday = moment($(this).val()).day();
-			var saturday = moment($(this).val()).day();
+			$("#time_slot").show();
+		}
 
-			if( sunday == 0 || saturday == 6) {
-				console.log("weekend");
-				$("#time_slot").hide();
-				$("#time_slot_weekend").show();
-			}
-			/*else if (monday == 1 || tuesday == 2 || wednesday == 3 || thursday == 4 || friday == 5 ) {
-				console.log("weekdays");
-				$("#time_slot_weekend").hide();
-				$("#time_slot").show();
-			}*/
-			else {
-				console.log("weekday");
-				$("#time_slot_weekend").hide();
-				$("#time_slot").show();
-			}
+	});
+   console.log(eds);
+	}	
 
-		});
-		}	
-
-	</script>
+</script>
    <!-- Messenger Chat Plugin Code -->
    <div id="fb-root"></div>
 
