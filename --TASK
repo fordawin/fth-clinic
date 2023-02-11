@@ -7,6 +7,11 @@ HARD
     CLIENT
     forgot password function
 
+DASHBOARD REPORT MAGPATULONG SA IBA
+    DOCTOR
+    ADMIN
+    EMPLOYEE
+
 HOME
     BUTTON in service broken also add href
     GET STARTED Button add functionality
@@ -19,9 +24,31 @@ ADMIN
     Generate Report Missing Content
     EDIT on Products
     VIEW on Products
-    DOCTOR UPDATE notification and function missing
-    CLIENT two pop-ups
+    DOCTOR UPDATE notification and function missing (DONE)
+    CLIENT two pop-ups (DONE)
+    Payment for admin broken
 
 CLIENT
-    ABOUT not integrated
+    REMOVE GET STARTED BUTTON INSIDE HOME LOGIN
+    ORDER HISTORY view icon no function
+    Main Profile not changing when updating information
+    ERROR CATCHING WHEN CHANGING PASSWORD (DONE)
+
+EMPLOYEE
+    DASHBOARD
+    Side bar ICON
+    Appointment Side Bar
+        Pending - PAYMENT
+        Finished - STATUS
+    ORDERS yes or no option when deleting/accepting (James) DI KO MAGAWA TO MEN NILAGNAT NA ULET AKO HAHAH
+    Cancelled status napupunta sa accepted
+    Employee PROFILE error
+
+DOCTOR
+    DASHBOARD
+    PROFILE NOT FUNCTIONING
+
+HREF FOR ALL LINKS PATI SA EMAIL DUN MARAMI (DONE)
+
+
     

@@ -306,8 +306,8 @@ def update(id: str, user: updateUser = Depends(updateUser.as_form), db: Session 
     response = RedirectResponse(url='/users/profile', status_code=302)
     return response
 
-@router.post('/pass/{id}', response_model=updateUser)
-def update_password(id: str, user: updateUser = Depends(updateUser.as_form), db: Session = Depends(get_db)):
+@router.post('/pass/{id}')
+def update_password(id: str, user: updateUser, db: Session = Depends(get_db)):
     verify = db.query(User_credential).filter(User_credential.user_id == id).first()
 
     if not verify:
@@ -328,9 +328,9 @@ def update_password(id: str, user: updateUser = Depends(updateUser.as_form), db:
         db.add(verify)
         db.commit()
 
-        time.sleep(1)  
-        response = RedirectResponse(url='/users/profile', status_code=302)
-        return response
+        # time.sleep(1)  
+        # response = RedirectResponse(url='/users/profile', status_code=302)
+        return
     else:
         raise HTTPException(404, 'Passwords did not match')
 

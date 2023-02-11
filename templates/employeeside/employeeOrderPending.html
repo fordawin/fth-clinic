@@ -75,6 +75,13 @@
 </footer>
 
 <script>
+    function success() {
+        Swal.fire(
+          'Success',
+          '',
+          'success'
+        )
+    }
     function deny() {
         Swal.fire(
           'Cancelled',
@@ -83,11 +90,23 @@
         )
     }
     function accept() {
-        Swal.fire(
-          'Accept!',
-          '',
-          'success'
-        )
+        Swal.fire({
+            title: 'Do you want to save the changes?',
+            showDenyButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+            customClass: {
+                actions: 'my-actions',
+                confirmButton: 'order-2',
+                denyButton: 'order-3',
+            }
+            }).then((result) => {
+            if (result.isConfirmed) {
+                success()
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+            })
     }
 
 </script>

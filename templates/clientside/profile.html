@@ -283,7 +283,7 @@
                                         <h5 class="mb-0">Change Password :</h5>
                                         {% for usercred in profile %}
                                             {% if usercred.user_id == profile[-1] %}
-                                                <form action="http://127.0.0.1:8000/usercredential/pass/{{usercred.user_id}}" method="POST" class="mt-4">
+                                                <form action="http://127.0.0.1:8000/usercredential/pass/{{usercred.user_id}}" method="POST" class="mt-4" id="updatePass">
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="mb-3">
@@ -307,7 +307,7 @@
                                                         </div><!--end col-->
                     
                                                         <div class="col-lg-12 mt-2 mb-0">
-                                                            <button type="submit" class="btn btn-primary" onclick="confirm()">Save password</button>
+                                                            <button type="submit" class="btn btn-primary">Save password</button>
                                                         </div><!--end col-->
                                                     </div><!--end row-->
                                                 </form>
@@ -335,7 +335,15 @@
     {% endif %}
 {% endfor %}
 <script>
-    function confirm() {
+    function sweetError(message) {
+        Swal.fire({
+        icon: 'error',
+        title: 'Try Again',
+        text: message,
+        footer: ''
+        })
+        }
+    function edit() {
       Swal.fire(
         'Password Changed!',
         '',
@@ -350,6 +358,53 @@
         'success'
       )
     }
+
+    function yesno(){
+
+    }
+  </script>
+  <script type="text/javascript">
+        $("#updatePass").submit(function(e) {
+        e.preventDefault();
+        var frm = $("#updatePass");
+        var data = {};
+        $.each(this, function(i, v){
+            var input = $(v);
+            data[input.attr("name")] = input.val();
+            delete data["undefined"];
+        });
+        Swal.fire({
+            title: 'Do you want to save the changes?',
+            showDenyButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+            customClass: {
+                actions: 'my-actions',
+                confirmButton: 'order-2',
+                denyButton: 'order-3',
+            }
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    contentType:"application/json",
+                    type:frm.attr("method"),
+                    url:frm.attr("action"),
+                    dataType:'text',
+                    data: JSON.stringify(data),
+                    success: function(data) {
+                    edit();
+                    const myTimeout = setTimeout(windowsOpen, 2000);
+                    },
+                    error: function(error) {
+                    resAlert = error.responseText.slice(11,-2)
+                    sweetError(resAlert);
+                    }
+                })
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+            })
+    });
   </script>
 {% endblock %}
 
