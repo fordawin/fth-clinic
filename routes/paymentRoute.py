@@ -4,9 +4,12 @@ from sqlalchemy.orm import Session
 from schemas.userCredentialSchema import LoginForm, TokenData
 from models.userCredentialModel import User_credential
 from schemas.paymentSchema import PaymentBase, PaymentUpdate
+from schemas.serviceSchema import ServiceBase
 from models.paymentModel import Payment
 from models.serviceModel import Service
+from models.productsModel import Product
 from models.timeSlotModel import Timeslot
+from models.employeeModel import Employee
 from models.ordersModel import Orders
 from models.appointmentModel import Appointment
 from database import get_db
@@ -63,6 +66,20 @@ async def verify(response: Response, form_data: LoginForm = Depends(LoginForm.as
 
                 return response
                 
+    except Exception as e:
+        print(e)
+
+@router.get('/profile')
+def employee(request: Request, token: str = Cookie('token'), db: Session = Depends(get_db)):
+    query = db.query(Employee).all()
+    token = jwt.decode(token, secret, algorithms=['HS256'])
+    id = [token["id"]]
+    lst_all = query + id
+    try:
+        return templates.TemplateResponse('employeeside/profile.html', {
+            'request': request,
+            'employee': lst_all
+        })
     except Exception as e:
         print(e)
 
@@ -241,6 +258,30 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     response = RedirectResponse(url='/payment/pending', status_code=302)
 
     return response
+
+@router.get('/products', response_class=HTMLResponse)
+def products(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Product).all()
+        return templates.TemplateResponse('employeeside/employeeProducts.html', {
+            'request': request,
+            'product': query
+        })
+
+    except Exception as e:
+        print(e)
+
+@router.get('/services', response_class=HTMLResponse)
+def services(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Service).all()
+        return templates.TemplateResponse('employeeside/employeeServices.html', {
+            'request': request,
+            'service': query
+        })
+
+    except Exception as e:
+        print(e)
 
 @router.get('/logout')
 def logout(response: Response):

@@ -13,42 +13,43 @@ DASHBOARD REPORT MAGPATULONG SA IBA
     EMPLOYEE
 
 HOME
-    BUTTON in service broken also add href
-    GET STARTED Button add functionality
-    ABOUT not integrated
+    BUTTON in service broken also add href (DONE)
+    GET STARTED Button add functionality (DONE)
+    ABOUT not integrated (DONE)
     
 ADMIN
-    Sidebar Icons
-    Disable/remove Add User button
-    Disable/remove Add Appointment button
-    Generate Report Missing Content
-    EDIT on Products
+    Sidebar Icons (DONE)
+    Disable/remove Add User button (DONE)
+    Disable/remove Add Appointment button (DONE)
+    Generate Report Missing Content (MISSING)
+    EDIT on Products 
     VIEW on Products
     DOCTOR UPDATE notification and function missing (DONE)
     CLIENT two pop-ups (DONE)
     Payment for admin broken
 
 CLIENT
-    REMOVE GET STARTED BUTTON INSIDE HOME LOGIN
-    ORDER HISTORY view icon no function
-    Main Profile not changing when updating information
+    REMOVE GET STARTED BUTTON INSIDE HOME LOGIN (DONE)
+    ORDER HISTORY view icon no function (DONE)
+    Main Profile not changing when updating information (DONE)
     ERROR CATCHING WHEN CHANGING PASSWORD (DONE)
 
 EMPLOYEE
     DASHBOARD
-    Side bar ICON
-    Appointment Side Bar
+    Side bar ICON (DONE)
+    Appointment Side Bar (DONE)
         Pending - PAYMENT
         Finished - STATUS
-    ORDERS yes or no option when deleting/accepting (James) DI KO MAGAWA TO MEN NILAGNAT NA ULET AKO HAHAH
-    Cancelled status napupunta sa accepted
-    Employee PROFILE error
+    ORDERS yes or no option when deleting/accepting (James) DI KO MAGAWA TO MEN NILAGNAT NA ULET AKO HAHAH (wag na to men)
+    Cancelled status napupunta sa accepted (DONE)
+    Employee PROFILE error (DONE)
 
 DOCTOR
     DASHBOARD
-    PROFILE NOT FUNCTIONING
+    PROFILE NOT FUNCTIONING (DONE)
+    Upload picture not yet working
 
 HREF FOR ALL LINKS PATI SA EMAIL DUN MARAMI (DONE)
 
-
+ (DONE)
     

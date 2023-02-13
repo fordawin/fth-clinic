@@ -30,6 +30,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Duration Picker -->
+    <script src="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet"/>
+    
     <!-- BLOCK FOR EXTRA STYLES -->
     
     {%block styles%}
@@ -97,11 +101,13 @@
                 <li class="submenu nav-item">
                     <a class="nav-link " href="/prescription"><i class="fa fa-fw fa-bars"></i><span> Dashboard </span> </a>
                 </li>
-                
                 <li class="submenu">
-                    <a class="nav-link" href="/prescription/base"><i class="fa-solid fa-prescription" aria-hidden="true"></i><span> Prescription </span> </a>
+                    <a class="nav-link" href="/prescription/base"><i class="fa fa-address-book-o" aria-hidden="true"></i></i><span> Appointments </span> </a>
                 </li>
-
+                <li class="submenu">
+                    <a class="nav-link" href="/prescription/schedules"><i class="fa fa-calendar-check-o" aria-hidden="true"></i><span> Schedules </span> </a>
+                </li>
+                
                 <li class="submenu">
                     <a class="nav-link" href="/prescription/done"><i class="fa-solid fa-file-prescription" aria-hidden="true"></i><span> Prescription Done </span> </a>
                 </li>

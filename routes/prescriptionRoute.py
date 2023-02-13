@@ -209,6 +209,18 @@ def update(id: str, user: doctorUpdate = Depends(doctorUpdate.as_form), db: Sess
 
     return response
 
+@router.get('/schedules')
+def schedules(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Timeslot).all()
+        return templates.TemplateResponse('doctorside/doctorSchedules.html', {
+            'request': request,
+            'schedules': query
+        })
+
+    except Exception as e:
+        print(e)
+
 @router.get('/logout')
 def logout(response: Response):
     response = RedirectResponse(url='/users/login', status_code=307)

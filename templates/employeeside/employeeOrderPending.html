@@ -8,9 +8,9 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="breadcrumb-holder">
-                        <h1 class="main-title float-left">Admin</h1>
+                        <h1 class="main-title float-left">Employee</h1>
                         <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item">Admin</li>
+                            <li class="breadcrumb-item">Employee</li>
                             <li class="breadcrumb-item active">Appointments</li>
                         </ol>
                         <div class="clearfix"></div>
@@ -90,23 +90,11 @@
         )
     }
     function accept() {
-        Swal.fire({
-            title: 'Do you want to save the changes?',
-            showDenyButton: true,
-            confirmButtonText: 'Yes',
-            denyButtonText: 'No',
-            customClass: {
-                actions: 'my-actions',
-                confirmButton: 'order-2',
-                denyButton: 'order-3',
-            }
-            }).then((result) => {
-            if (result.isConfirmed) {
-                success()
-            } else if (result.isDenied) {
-                Swal.fire('Changes are not saved', '', 'info')
-            }
-            })
+        Swal.fire(
+          'Accept!',
+          '',
+          'success'
+        )
     }
 
 </script>

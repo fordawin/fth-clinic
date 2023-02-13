@@ -58,7 +58,7 @@
                                 </div>
 
                                 <!-- item-->
-                                <a href="pro-profile.html" class="dropdown-item notify-item">
+                                <a href="profile" class="dropdown-item notify-item">
                                     <i class="fa fa-user"></i> <span>Profile</span>
                                 </a>
 
@@ -96,23 +96,28 @@
                     <a class="nav-link " href="/payment"><i class="fa fa-fw fa-bars"></i><span> Dashboard </span> </a>
                 </li>
                 
-                <li class="submenu">
-                    <a class="nav-link" href="/payment/base"><i class="fa fa-user-circle" aria-hidden="true"></i><span> Payment </span> </a>
-                </li>
-
-                <li class="submenu">
-                    <a class="nav-link" href="/payment/done"><i class="fa fa-user-circle" aria-hidden="true"></i><span> Payment Done </span> </a>
-                </li>
-                
                 <li class="submenu nav-item">
-                    <a class="nav-link" href="#"><i class="fa fa-check-square-o"></i> <span> Orders </span> <span class="menu-arrow"></span></a>
+                    <a class="nav-link" href="#"><i class="fa fa-calendar-check"></i> <span> Appointment </span> <span class="menu-arrow"></span></a>
+                        <ul class="list-unstyled navbar-nav">
+                            <li><a href="/payment/base">Pending</a></li>
+                            <li><a href="/payment/done">Finished</a></li>
+                        </ul>
+                </li>
+                <li class="submenu nav-item">
+                    <a class="nav-link" href="#"><i class="fa fa-shopping-bag"></i> <span> Products & Services </span> <span class="menu-arrow"></span></a>
+                        <ul class="list-unstyled navbar-nav">
+                            <li><a href="/payment/products">Products</a></li>
+                            <li><a href="/payment/services">Services</a></li>
+                        </ul>
+                </li>
+                <li class="submenu nav-item">
+                    <a class="nav-link" href="#"><i class="fa fa-shopping-cart"></i> <span> Orders </span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled navbar-nav">
                             <li><a href="/payment/pending">Pending</a></li>
                             <li><a href="/payment/accepted">Accepted</a></li>
                             <li><a href="/payment/cancelled">Cancelled</a></li>
                         </ul>
                 </li>
-
             </ul>
             <div class="clearfix"></div>
             </div>

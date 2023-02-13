@@ -84,6 +84,52 @@ async def store(request: Request, product: ProductBase = Depends(ProductBase.as_
         response = RedirectResponse(url='/admin/products', status_code=302)
 
         return response
+    
+@router.post('/employee')
+async def store(request: Request, product: ProductBase = Depends(ProductBase.as_form), file: UploadFile = File(...), db: Session = Depends(get_db)):
+
+    if db.query(Product).filter(Product.product_name == product.product_name).first():
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create product. Product already exists')
+    else: 
+        FILEPATH = "static/images/"
+        filename = file.filename
+        extension = filename.split(".")[1]
+
+        if extension not in ["png", "jpg", "PNG", "jpeg", "JPG", "JPEG"]:
+            return {"status" : "Error", "detail": "Image Extension Not Allowed!"}
+        
+        token_name = secrets.token_hex(10)+"."+extension
+        generate_name = FILEPATH + token_name
+        file_content = await file.read()
+
+        with open(generate_name, "wb") as file:
+            file.write(file_content)
+        
+        #pillow
+        img = Image.open(generate_name)
+        img = img.resize(size = (200, 200))
+        img.save(generate_name)
+
+        file.close()
+
+        product_pic = token_name
+
+        # file_url = "localhost:8000" + generate_name[1:]
+        to_store = Product(
+            product_name = product.product_name,
+            product_pic = product_pic,
+            product_price = product.product_price,
+            product_quantity = product.product_quantity,
+            product_description = product.product_description,
+            product_status = "Active"
+        )
+
+        db.add(to_store)
+        db.commit()
+
+        response = RedirectResponse(url='/payment/products', status_code=302)
+
+        return response
 
 @router.post('/{id}', response_model=productUpdate)
 def update(id: str, user: productUpdate, db: Session = Depends(get_db)):

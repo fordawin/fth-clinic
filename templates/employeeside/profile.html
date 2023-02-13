@@ -19,8 +19,8 @@
             </div>
          </div>
          <!-- end row -->
-         {% for data in doctor %}
-            {% if data.dt_user_credential == doctor[-1] %}
+         {% for data in employee %}
+            {% if data.em_user_credential == employee[-1] %}
          <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                <div class="card mb-3">
@@ -28,57 +28,57 @@
                      <h3><i class="fa fa-user text-warning "></i> Profile details</h3>
                   </div>
                   <div class="card-body">
-                     <form action="http://127.0.0.1:8000/doctor/{{data.em_id}}" method="POST" id="employeeUpdate">
+                     <form action="http://127.0.0.1:8000/employee/{{data.em_id}}" method="POST" id="doctorUpdate">
                         <div class="row">
                            <div class="col-lg-9 col-xl-9">
                               <div class="row">
                                  <div class="col-lg-6">
                                     <div class="form-group">
                                        <label class="form-label">First Name </label>
-                                       <input class="form-control" name="dt_firstName" type="text" value="{{data.dt_firstName}}"/>
+                                       <input class="form-control" name="em_firstName" type="text" value="{{data.em_firstName}}"/>
                                     </div>
                                  </div>
                                  <div class="col-lg-6">
                                     <div class="form-group">
                                        <label class="form-label">Middle Name </label>
-                                       <input class="form-control" name="dt_middleName" type="text" value="{{data.dt_middleName}}"/>
+                                       <input class="form-control" name="em_middleName" type="text" value="{{data.em_middleName}}"/>
                                     </div>
                                  </div>
                                  <div class="col-lg-6">
                                     <div class="form-group">
                                        <label class="form-label">Last Name </label>
-                                       <input class="form-control" name="dt_lastName" type="text" value="{{data.dt_lastName}}"/>
+                                       <input class="form-control" name="em_lastName" type="text" value="{{data.em_lastName}}"/>
                                     </div>
                                  </div>
 
                                  <div class="col-lg-6">
                                     <div class="form-group">
                                        <label class="form-label">House No. </label>
-                                       <input class="form-control" name="dt_houseNo" type="text" value="{{data.dt_houseNo}}"/>
+                                       <input class="form-control" name="em_houseNo" type="text" value="{{data.em_houseNo}}"/>
                                     </div>
                                  </div>
                                  <div class="col-lg-6">
                                     <div class="form-group">
                                        <label class="form-label">Street </label>
-                                       <input class="form-control" name="dt_street" type="text" value="{{data.dt_street}}"/>
+                                       <input class="form-control" name="em_street" type="text" value="{{data.em_street}}"/>
                                     </div>
                                  </div>
                                  <div class="col-lg-6">
                                     <div class="form-group">
                                        <label class="form-label">Barangay </label>
-                                       <input class="form-control" name="dt_brgy" type="text" value="{{data.dt_brgy}}"/>
+                                       <input class="form-control" name="em_brgy" type="text" value="{{data.em_brgy}}"/>
                                     </div>
                                  </div>
                                  <div class="col-lg-6">
                                     <div class="form-group">
                                        <label class="form-label">City </label>
-                                       <input class="form-control" name="dt_city" type="text" value="{{data.dt_city}}"/>
+                                       <input class="form-control" name="em_city" type="text" value="{{data.em_city}}"/>
                                     </div>
                                  </div>
                                  <div class="col-lg-6">
                                     <div class="form-group">
                                        <label class="form-label">Contact No </label>
-                                       <input class="form-control" name="dt_contactNo" type="text" value="{{data.dt_contactNo}}"/>
+                                       <input class="form-control" name="em_contactNo" type="text" value="{{data.em_contactNo}}"/>
                                     </div>
                                  </div>
                               </div>
@@ -136,6 +136,14 @@
 
 {% block sidebarscripts%}
       <script>
+         function confirm() {
+        Swal.fire({
+          icon: 'success',
+          title: 'Doctor Successfully Added',
+          showConfirmButton: true,
+          timer: 2000
+      })
+      }
       function edit() {
             Swal.fire(
             'Saved Changes!',
@@ -174,9 +182,9 @@
 		})
 	</script>
    <script type="text/javascript">
-      $("#employeeUpdate").submit(function(e) {
+      $("#doctorUpdate").submit(function(e) {
               e.preventDefault();
-              var frm = $("#employeeUpdate");
+              var frm = $("#doctorUpdate");
               var data = {};
               $.each(this, function(i, v){
                   var input = $(v);

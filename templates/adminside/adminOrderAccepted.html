@@ -39,7 +39,7 @@
                                 </thead>
                                 <tbody>
                                     {% for order in order_list %}
-                                        {% if order.order_status == 'For Pick-up' or 'Paid' %}
+                                        {% if order.order_status != 'Cancelled' %}
                                     <tr>
                                         <td>{{ order.order_user }}</td>
                                         <td>{{ order.order_remarks }}</td>
