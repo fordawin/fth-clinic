@@ -35,19 +35,6 @@ app.include_router(userRoutes.router)
 app.include_router(authRoutes.router)
 app.include_router(orderRoute.router)
 
-# @app.get('/', response_class=HTMLResponse)
-# def index(request: Request, db: Session = Depends(get_db)):
-#     try:
-#         posts = db.query(Post).all()
-#         return template.TemplateResponse('index.html', {
-#             'request': request,
-#             'posts': posts
-#         })
-#     except Exception as e:
-#         print(e)
-
-
-
 @app.get('/', response_class=HTMLResponse)
 def index():
     return RedirectResponse(url='/users', status_code=302)
