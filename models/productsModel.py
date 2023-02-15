@@ -11,6 +11,7 @@ class Product(Base):
     product_pic = Column(String(255), nullable=False, unique=True)
     product_name = Column(String(255), nullable=False, unique=True)
     product_price = Column(Integer, nullable=False)
+    product_discount = Column(Integer, nullable=True)
     product_quantity = Column(Integer, nullable=False)
     product_description = Column(String(255), nullable=False)
     product_status = Column(String(255), nullable=False, default="Active")

@@ -344,6 +344,7 @@ async def createClient(response: Response, form_data: ClientBase, db: Session = 
                             user_username = form_data.user_username,
                             user_password = password_hash(form_data.user_password),
                             user_email = form_data.user_email,
+                            user_points = 0,
                             user_type = "Client",
                             user_status = "Active"
                         )

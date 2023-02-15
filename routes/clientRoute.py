@@ -117,15 +117,15 @@ def findOne(id: str, db: Session = Depends(get_db)):
 
     return {'user': user}
 
-@router.get('/{id}', status_code=status.HTTP_202_ACCEPTED)
-def findOne(id: str, db: Session = Depends(get_db)):
+# @router.get('/{id}', status_code=status.HTTP_202_ACCEPTED)
+# def findOne(id: str, db: Session = Depends(get_db)):
 
-    user = db.query(Client).filter(Client.cl_id == id).first()
+#     user = db.query(Client).filter(Client.cl_id == id).first()
 
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f'CLient does not exists')
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f'CLient does not exists')
 
-    return {'user': user}
+#     return {'user': user}
 
 @router.post('/{id}', response_model=clientUpdate)
 def update(id: str, form_data: clientUpdate = Depends(clientUpdate.as_form), db: Session = Depends(get_db)):

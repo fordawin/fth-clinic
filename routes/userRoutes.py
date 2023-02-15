@@ -96,7 +96,7 @@ async def login(response: Response, form_data: LoginForm, db: Session = Depends(
             # response = RedirectResponse(url='appointments', status_code=302)
             response.set_cookie('token', token, httponly=True)
             response.set_cookie('type', user.user_type, httponly=False)
-            return
+            return token
 
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -184,7 +184,7 @@ def register(request: Request):
 
 @router.post('/register', response_class=HTMLResponse)
 async def register(response: Response, form_data: ClientBase, db: Session = Depends(get_db)):
-    print(form_data)
+    
     user_duplicate = db.query(User_credential).filter(User_credential.user_username == form_data.user_username).first()
     user_email_dup = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
     user_num_cl = db.query(Client).filter(Client.cl_contactNo == form_data.cl_contactNo).first()
@@ -200,6 +200,7 @@ async def register(response: Response, form_data: ClientBase, db: Session = Depe
                             user_username = form_data.user_username,
                             user_password = password_hash(form_data.user_password),
                             user_email = form_data.user_email,
+                            user_points = 0,
                             user_type = "Client",
                             user_status = "Active"
                         )

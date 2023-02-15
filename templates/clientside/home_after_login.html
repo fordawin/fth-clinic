@@ -141,7 +141,7 @@
 				</div>	
 			</div>
 		<div class="modal-body">
-			<form action="https://faith-hope-love.onrender.com/users/home2" method="POST" id="appointmentForm">
+			<form action="http://127.0.0.1:8000/users/home2" method="POST" id="appointmentForm">
 				<div class="container">
 					<div class="row mt-2">
 						<div class="col-md-4" style="vertical-align: text-top;">
@@ -171,9 +171,8 @@
 							<b>Appointment Time</b>
 						</div>
 						<div class="col-md-8" id="selectTimeslot">
-							<select class="form-control" name="ap_slotID" id="selectTimeslot" required>
+							<select class="form-control" name="ap_slotID" required>
 								{% for timeslot in appointments[appointments[-3] + appointments[-2]:-3] %}
-								<input type="hidden" value="{{timeslot.slot_date}}" id="compareDate"/>
 								<option value="{{timeslot.slot_id}}">{{timeslot.slot_start}} - {{timeslot.slot_end}} {{timeslot.slot_date}}</option>
 								{% endfor %}
 							</select>
@@ -380,7 +379,7 @@
 							<p><del></del></p>
 						</div>
 						<div class="pricing-box-action">
-							<a href="https://faith-hope-love.onrender.com/users/product2" class="btn btn-hover">
+							<a href="http://127.0.0.1:8000/users/product2" class="btn btn-hover">
 								<span>Order now</span>
 							</a>
 						</div>

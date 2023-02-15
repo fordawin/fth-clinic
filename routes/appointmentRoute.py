@@ -147,10 +147,14 @@ def update(id: str, user: AppointmentUpdate, db: Session = Depends(get_db)):
 @router.get('/deactivate/{id}')
 def deactivate(id: str, db: Session = Depends(get_db)):
     cancel = db.query(Appointment).filter(Appointment.ap_id == id).first()
+    slot = db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).first()
+
+    slotAdd = int(slot.slot_capacity) + 1
 
     if not cancel:
         raise HTTPException(404, 'Appointment to cancel is not found')
     else:
+        db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).update({'slot_capacity': slotAdd})
         db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Canceled"})
         
     db.commit()

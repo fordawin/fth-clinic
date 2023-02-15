@@ -36,6 +36,9 @@ class productUpdate(BaseModel):
     product_price: Optional[int]
     product_quantity: Optional[int]
 
+class Discount(BaseModel):
+    product_discount: Optional[int]
+
 # class ProductUpload(BaseModel):
 #     file : UploadFile
 

@@ -54,7 +54,7 @@
    <div class="right">
          <img src="../static/assets/images/logo.png" alt="" width="150px" height="80px"><br>
       <h4>Sign in</h4>
-      <form action="https://faith-hope-love.onrender.com/users/login" method="POST" id="loginForm">
+      <form action="http://127.0.0.1:8000/users/login" method="POST" id="loginForm">
          <div id="failedLogin"></div>
          <div class="inputs">
             <input type="text" name="user_email" placeholder="user name" id="xip_Name" required>
@@ -153,15 +153,15 @@ $("#loginForm").submit(function(e) {
          }
 
          if (type == 'type=Doctor'){
-            window.open("https://faith-hope-love.onrender.com/prescription", "_self").reload()
+            window.open("http://127.0.0.1:8000/prescription", "_self").reload()
          }
 
          if (type == 'type=Employee'){
-            window.open("https://faith-hope-love.onrender.com/payment", "_self").reload()
+            window.open("http://127.0.0.1:8000/payment", "_self").reload()
          }
 
          if (type == 'type=Admin'){
-            window.open("https://faith-hope-love.onrender.com/admin", "_self").reload()
+            window.open("http://127.0.0.1:8000/admin", "_self").reload()
          }
 
          // window.open("appointments", "_self").reload()

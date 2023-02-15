@@ -1,7 +1,7 @@
 from click import File
 from fastapi import APIRouter, Depends, HTTPException, Cookie, UploadFile, status, Response, Request
 from sqlalchemy.orm import Session
-from schemas.productSchema import ProductBase, productUpdate
+from schemas.productSchema import ProductBase, productUpdate, Discount
 from models.productsModel import Product
 from database import get_db
 from dependencies import get_token
@@ -74,6 +74,7 @@ async def store(request: Request, product: ProductBase = Depends(ProductBase.as_
             product_pic = product_pic,
             product_price = product.product_price,
             product_quantity = product.product_quantity,
+            product_discount = 0,
             product_description = product.product_description,
             product_status = "Active"
         )
@@ -158,4 +159,13 @@ def deactivate(id: str, db: Session = Depends(get_db)):
 
     db.commit()
     return {'message': 'Product removed successfully.'}
+
+@router.post('discount/{id}')
+def discount(id: str, product: Discount, db: Session = Depends(get_db)):
+
+    if not db.query(Product).filter(Product.product_id == id).update({'product_discount': product.product_discount}):
+        raise HTTPException(404, 'Product not found')
+
+    db.commit()
+    return {'message': 'Discount successfully placed.'}
 

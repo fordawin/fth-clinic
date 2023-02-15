@@ -81,7 +81,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="https://faith-hope-love.onrender.com/admin/employee" method="POST" class="form" id="employeeAdd">
+          <form action="http://127.0.0.1:8000/admin/employee" method="POST" class="form" id="employeeAdd">
             <div class="row">
               <div class="col-md-6">
                 <label class="form-label" for="">Username</label>
@@ -154,7 +154,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="https://faith-hope-love.onrender.com/employee/{{employees.em_id}}" id="employeeUpdate" method="POST">
+          <form action="http://127.0.0.1:8000/employee/{{employees.em_id}}" id="employeeUpdate" method="POST">
             <div class="row">
               <div class="col-md-4">
                   <label class="form-label" for="">First Name</label>
@@ -219,7 +219,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-danger" href="https://faith-hope-love.onrender.com/employee/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
+          <a class="btn btn-danger" href="http://127.0.0.1:8000/employee/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
         </div>
       </div>
     </div>

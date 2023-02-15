@@ -9,7 +9,7 @@ class PaymentBase(BaseModel):
     payment_mode : Optional[str]
     payment_amount : Optional[str]
     payment_appointmentID : Optional[str]
-
+    payment_points : Optional[str]
     @classmethod
     def as_form(
         cls,

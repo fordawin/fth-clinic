@@ -48,7 +48,7 @@ def store(orders: OrderBase, token: str = Cookie('token'),db: Session = Depends(
 
         count = price.product_quantity - orders.order_quantity
 
-        total = price.product_price * orders.order_quantity
+        total = (price.product_price * orders.order_quantity) - (orders.order_quantity * int(price.product_discount))
 
         db.query(Product).filter(Product.product_id == orders.order_productid).update({'product_quantity': count}) 
         to_store = Orders(

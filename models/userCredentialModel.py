@@ -11,6 +11,7 @@ class User_credential(Base):
     user_username = Column(String(255), nullable=False)
     user_password = Column(String(255), nullable=False)
     user_type = Column(Text, nullable=False)
+    user_points = Column(String(255), nullable=True)
     user_status = Column(String(255), default="Active", nullable=False)
     # user_created_by = Column(String(255), nullable=False)
     # user_updated_by = Column(String(255), nullable=True)
