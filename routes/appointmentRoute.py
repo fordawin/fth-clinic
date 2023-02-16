@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Cookie, status, Request
 from sqlalchemy.orm import Session, joinedload
-from schemas.appointmentSchema import AppointmentBase, AppointmentUpdate
+from schemas.appointmentSchema import AppointmentBase, AppointmentUpdate, AppointmentEmployee
 from models.appointmentModel import Appointment
 from models.timeSlotModel import Timeslot
 from schemas.serviceSchema import ServiceBase
@@ -162,5 +162,55 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     time.sleep(1)
 
     response = RedirectResponse(url='/users/appointments', status_code=302)
+
+    return response
+
+@router.post('/employee', response_class=HTMLResponse)
+async def store(form_data: AppointmentEmployee, db: Session = Depends(get_db)):
+    # token = jwt.decode(token, secret, algorithms=['HS256'])
+
+    serbisyo = db.query(Service).filter(Service.service_id == form_data.ap_serviceType).first()
+
+    oras = db.query(Timeslot).filter(Timeslot.slot_id == form_data.ap_slotID).first()
+
+    cliente = db.query(Client).filter(Client.cl_user_credential == form_data.ap_clientID).first()
+
+    simula = oras.slot_time
+
+    umpisa = dt.datetime.strptime(f'{simula}', '%H:%M:%S')
+    
+    hangganan = umpisa + timedelta(hours=1)
+
+    sched = db.query(Appointment).filter(Appointment.ap_slotID == form_data.ap_slotID).all()
+
+    bilang = int(len(sched))
+
+    kumpara = int(oras.slot_capacity)
+
+    if bilang > kumpara-1:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot schedule appointment. Reached maximum capacity')
+
+    to_store = Appointment(
+        ap_number = randoms(),
+        ap_clientID = form_data.ap_clientID,
+        ap_startTime = umpisa,
+        ap_clientName = cliente.cl_fullName,
+        ap_date = oras.slot_date,
+        ap_endTime = hangganan,
+        ap_status = "Unpaid",
+        ap_type = form_data.ap_type,
+        ap_service = serbisyo.service_name,
+        ap_comorbidity = form_data.ap_comorbidity,
+        ap_serviceType = serbisyo.service_id,
+        ap_amount = serbisyo.service_price,
+        ap_slotID = oras.slot_id
+    )
+
+    db.add(to_store)
+    db.commit()
+    await send_appointment([cliente.user_email], to_store.ap_clientName, to_store.ap_date, to_store.ap_startTime, to_store.ap_endTime, to_store.ap_service, to_store.ap_amount)
+    time.sleep(1)
+
+    response = RedirectResponse(url='/appointment', status_code=302)
 
     return response

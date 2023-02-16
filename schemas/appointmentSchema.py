@@ -47,3 +47,13 @@ class AppointmentUpdate(BaseModel):
     ap_comorbidity : Optional[str]
     ap_serviceType : Optional[str]
     ap_slotID : Optional[str]
+
+class AppointmentEmployee(BaseModel):
+    ap_startTime : Optional[t]
+    ap_date : Optional[d]
+    ap_type : Optional[str]
+    ap_clientID : Optional[str]
+    ap_service : Optional[str]
+    ap_comorbidity : str
+    ap_serviceType : str
+    ap_slotID : str
