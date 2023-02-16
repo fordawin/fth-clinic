@@ -252,6 +252,30 @@ def deactivate(id: str, db: Session = Depends(get_db)):
 
     return response
 
+@router.get('/products', response_class=HTMLResponse)
+def products(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Product).all()
+        return templates.TemplateResponse('employeeside/employeeProducts.html', {
+            'request': request,
+            'product': query
+        })
+
+    except Exception as e:
+        print(e)
+
+@router.get('/services', response_class=HTMLResponse)
+def services(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Service).all()
+        return templates.TemplateResponse('employeeside/employeeServices.html', {
+            'request': request,
+            'service': query
+        })
+
+    except Exception as e:
+        print(e)
+
 @router.get('/logout')
 def logout(response: Response):
     response = RedirectResponse(url='/users/login', status_code=307)

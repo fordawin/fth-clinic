@@ -144,7 +144,7 @@
                                 </thead>
 								<tbody>
 									{% for appointments in appointment %}
-										{% if appointments.ap_clientID == appointment[-1] and appointments.ap_status == 'Paid' %}
+										{% if appointments.ap_clientID == appointment[-1] and appointments.ap_status != 'Unpaid' %}
 										<tr>
 											<td>{{ appointments.ap_number }}</td>
 											<td>{{ appointments.ap_date }}</td>

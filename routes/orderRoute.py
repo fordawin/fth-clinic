@@ -37,7 +37,7 @@ def read(id: str, db: Session = Depends(get_db)):
     return {'Orders': orders}
 
 @router.post('/')
-def store(orders: OrderBase, token: str = Cookie('token'),db: Session = Depends(get_db)):
+async def store(orders: OrderBase, token: str = Cookie('token'),db: Session = Depends(get_db)):
     token = jwt.decode(token, secret, algorithms=['HS256'])
     price = db.query(Product).filter(Product.product_id == orders.order_productid).first()
 
@@ -59,7 +59,7 @@ def store(orders: OrderBase, token: str = Cookie('token'),db: Session = Depends(
             order_userid = token["id"],
             order_remarks = price.product_name
         )
-
+        # await for_pickup([token["email"]], to_store.ap_clientName, to_store.ap_date, to_store.ap_startTime, to_store.ap_endTime, to_store.ap_service, to_store.ap_amount)
     db.add(to_store)
     db.commit()
     return {'message': "Order Placed"}

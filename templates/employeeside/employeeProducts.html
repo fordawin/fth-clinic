@@ -48,7 +48,7 @@
                                         <td>{{ products.product_name }}</td>
                                         <td>{{ products.product_description }}</td>
                                         <td>{{ products.product_quantity }}</td>
-                                        <td>{{ products.product_price }}</td>
+                                        <td>{{ products.product_discount }}</td>
                                         <td class="text-white">
                                             <span><a type="button" class="btn btn-warning btn-sm " data-toggle="modal" data-target="#viewProducts{{products.product_id}}">View</a></span>
                                             <span><a type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editProducts{{products.product_id}}">Edit</a></span>
@@ -99,6 +99,10 @@
                     <input class="form-control" type="number" name="product_price">
                 </div>
                 <div class="col-md-6">
+                    <label class="form-label" for=""> Discounted Price</label>
+                    <input class="form-control" type="number" name="product_discount">
+                </div>
+                <div class="col-md-6">
                     <label class="form-label" for="">Upload Image</label>
                     <input type="file" name="file">
                 </div>
@@ -143,6 +147,10 @@
                             <label class="form-label" for="">Price</label>
                             <input class="form-control" type="number">
                         </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="">Discounted Price</label>
+                            <input class="form-control" type="number">
+                        </div>
                     </div>
                 </form>
                 </div>
@@ -153,47 +161,52 @@
             </div>
         </div>
     </div>
-
+    {% for products in product %}
     <!-- Edit Products Modal -->
-    <div class="modal fade" id="editProducts" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="editProducts{{products.product_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Edit Product</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-                <form method="POST">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="form-label" for="">Product Name</label>
-                            <input class="form-control" type="text">
-                        </div>
-                        <div class="col-md-12">
-                            <label class="form-label" for="">Product Description</label>
-                            <textarea class="form-control" name="" id="" rows="4"></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label" for="">Quantity</label>
-                            <input class="form-control" type="number">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label" for="">Price</label>
-                            <input class="form-control" type="number">
-                        </div>
-                        
-                    </div>
-                </form>
-                </div>
-                <div class="modal-footer">
-                <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-                </div>
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Add Products</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
+            <div class="modal-body">
+              <form action="http://127.0.0.1:8000/product/discount" method="POST" enctype="multipart/form-data" class="form" id="productEdit">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="form-label" for="">Product Name</label>
+                        <input class="form-control" type="text" name="product_name" value="{{ products.product_name }}">
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label" for="">Product Description</label>
+                        <textarea class="form-control" name="product_description" id="" rows="4">{{ products.product_description }}</textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="">Quantity</label>
+                        <input class="form-control" type="number" name="product_quantity" value="{{ products.product_quantity }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="">Price</label>
+                        <input class="form-control" type="number" name="product_price" value="{{ products.product_price }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for=""> Discounted Price</label>
+                        <input class="form-control" type="number" name="product_discount" value="{{ products.product_name }}">
+                    </div>
+                    <br>
+                </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm" value="Submit" onclick="confirm()" >Add Products</button>
+                    </div>
+              </form>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+    {% endfor %}
   <!-- Delete Student Modal -->
 <div class="modal fade" id="deleteStudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

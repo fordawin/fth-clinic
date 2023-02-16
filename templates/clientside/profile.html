@@ -114,6 +114,15 @@
                                     <h6 class="mb-0">Marital Status</h6>
                                     <p class="text-muted mb-0 ms-2">{{profiles.cl_maritalStatus}}</p>
                                 </div>
+                                {% for usercred in profile %}
+                                    {% if usercred.user_id == profile[-1] %}
+                                    <div class="d-flex align-items-center mt-2">
+                                        <i class="uil uil-award align-text-bottom text-primary h5 mb-0 me-2"></i>
+                                        <h6 class="mb-0">Clinic Points</h6>
+                                        <p class="text-muted mb-0 ms-2">{{ usercred.user_points }}</p>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                     </div><!--end col-->
@@ -140,9 +149,7 @@
             
                             <div class="tab-content p-4" id="pills-tabContent">
                                 <div class="tab-pane fade active show" id="pills-overview" role="tabpanel" aria-labelledby="overview-tab">
-                                    <h5 class="mb-0">Introduction:</h5>
-            
-                                    <p class="text-muted mt-4 mb-0">Web designers to occupy the space which will later be filled with 'real' content. This is required when, for example, the final text is not yet available. Dummy text is also known as 'fill text'. Dummy texts have been in use by typesetters since the 16th century.</p>
+
                                     <div class="row">
 
                                         <div class="col-lg-6 col-12 mt-4">
@@ -163,15 +170,17 @@
             
                                         <div class="col-lg-6 col-12 mt-4">
                                             <h5>Payment List</h5>
-            
+                                            {% for order in profile %}
+                                                {% if order.order_userid == profile[-1] %}
                                             <div class="d-flex justify-content-between align-items-center rounded p-3 shadow mt-3">
                                                 <div class="flex-1 overflow-hidden">
-                                                    <h6 class="flex-1 mb-0">Cardiogram</h6>
-                                                    <p class="text-muted mb-0 text-truncate small">Full bill paid</p>
+                                                    <h6 class="flex-1 mb-0">{{ order.order_remarks }}</h6>
+                                                    <p class="text-muted mb-0 text-truncate small">{{ order.order_status }}</p>
                                                 </div>
                                                 <a href="#" class="btn btn-icon btn-primary" data-toggle="modal" data-target="#view-invoice"><i class="uil uil-clipboard-notes icons"></i></a>
                                             </div>
-                                            
+                                                {% endif %}
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
