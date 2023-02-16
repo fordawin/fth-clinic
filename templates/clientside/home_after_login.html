@@ -173,7 +173,7 @@
 						<div class="col-md-8" id="selectTimeslot">
 							<select class="form-control" name="ap_slotID" required>
 								{% for timeslot in appointments[appointments[-3] + appointments[-2]:-3] %}
-								<option value="{{timeslot.slot_id}}">{{timeslot.slot_start}} - {{timeslot.slot_end}} {{timeslot.slot_date}}</option>
+								<option value="{{timeslot.slot_id}}">{{timeslot.slot_start}} - {{timeslot.slot_end}}</option>
 								{% endfor %}
 							</select>
 							<div class="invalid-feedback">
@@ -379,7 +379,7 @@
 							<p><del></del></p>
 						</div>
 						<div class="pricing-box-action">
-							<a href="http://127.0.0.1:8000/users/product2" class="btn btn-hover">
+							<a type="button" class="btn btn-hover" data-bs-toggle="modal" data-bs-target="#appointmentModal">
 								<span>Order now</span>
 							</a>
 						</div>

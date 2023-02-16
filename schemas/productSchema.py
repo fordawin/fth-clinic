@@ -9,6 +9,7 @@ class ProductBase(BaseModel):
     product_description : Optional[str]
     product_price: Optional[int]
     product_quantity: Optional[int]
+    product_discount: Optional[int]
 
     @classmethod
     def as_form(
@@ -17,13 +18,14 @@ class ProductBase(BaseModel):
         product_description: str = Form(...),
         product_price: str = Form(...),
         product_quantity: str = Form(...),
-  
+        product_discount: str = Form(...),
     ):
         return cls(
             product_name=product_name,
             product_description=product_description,
             product_price=product_price,
             product_quantity=product_quantity,
+            product_discount=product_discount
         )
     
 class Service(ProductBase):

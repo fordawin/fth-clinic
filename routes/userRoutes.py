@@ -268,9 +268,10 @@ def profile(request: Request, token: str = Cookie('token'), db: Session = Depend
     query = db.query(Client).all()
     query1 = db.query(Appointment).all()
     query2 = db.query(User_credential).all()
+    query3 = db.query(Orders).all()
     token = jwt.decode(token, secret, algorithms=['HS256'])
     id = [token["id"]]
-    lst_all = query + query1 + query2 + id
+    lst_all = query + query1 + query2 + query3 + id
     print(lst_all)
     try:
         return templates.TemplateResponse('clientside/profile.html', {

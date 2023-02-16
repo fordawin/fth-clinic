@@ -74,7 +74,7 @@ async def store(request: Request, product: ProductBase = Depends(ProductBase.as_
             product_pic = product_pic,
             product_price = product.product_price,
             product_quantity = product.product_quantity,
-            product_discount = 0,
+            product_discount = product.product_discount,
             product_description = product.product_description,
             product_status = "Active"
         )
@@ -122,6 +122,7 @@ async def store(request: Request, product: ProductBase = Depends(ProductBase.as_
             product_price = product.product_price,
             product_quantity = product.product_quantity,
             product_description = product.product_description,
+            product_discount = product.product_discount,
             product_status = "Active"
         )
 
