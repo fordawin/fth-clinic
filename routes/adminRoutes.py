@@ -16,6 +16,7 @@ from models.ordersModel import Orders
 from models.employeeModel import Employee
 from models.productsModel import Product
 from models.serviceModel import Service
+from dotenv import dotenv_values
 import datetime as dt
 from datetime import timedelta, date
 from for_email import *
@@ -40,7 +41,9 @@ def randoms():
     ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k = S)) 
     return ran
 
-secret = 'a very shady secret'
+config_credentials = dict(dotenv_values(".env"))
+
+secret = config_credentials["SECRET"]
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 def password_verify(plain, hashed):

@@ -7,8 +7,11 @@ from jose import jwt
 from passlib.context import CryptContext
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
+from dotenv import dotenv_values
+config_credentials = dict(dotenv_values(".env"))
 
-secret = 'a very shady secret'
+secret = config_credentials["SECRET"]
+
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 def password_verify(plain, hashed):
@@ -16,6 +19,8 @@ def password_verify(plain, hashed):
 
 def password_hash(password):
     return pwd_context.hash(password)
+
+
 
 router = APIRouter(
     prefix='/auth',

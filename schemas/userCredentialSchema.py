@@ -278,4 +278,7 @@ class updateUser(BaseModel):
     class Config:
         orm_mode = True
 
+class forgotPass(BaseModel):
+    user_email: Optional[str] = None
+
 

@@ -12,12 +12,15 @@ import time
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from for_email import *
+from dotenv import dotenv_values
 router = APIRouter(
     prefix='/orders',
     tags=['orders'], dependencies=[Depends(get_token)]
 )
 
-secret = 'a very shady secret'
+config_credentials = dict(dotenv_values(".env"))
+
+secret = config_credentials["SECRET"]
 templates = Jinja2Templates(directory="templates")
 
 # @router.get("/")

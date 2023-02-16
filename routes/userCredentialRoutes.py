@@ -3,7 +3,7 @@ from dotenv import dotenv_values
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from models.appointmentModel import Appointment
-from schemas.userCredentialSchema import UserBase, ClientBase, DoctorBase, EmployeeBase, UserRead, updateUser, TokenData
+from schemas.userCredentialSchema import UserBase, ClientBase, DoctorBase, EmployeeBase, UserRead, updateUser, TokenData, forgotPass
 from models.userCredentialModel import User_credential
 from models.adminModel import Admin
 from models.clientModel import Client
@@ -20,6 +20,8 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from jose import jwt
 import time
+import random
+import string
 
 
 templates = Jinja2Templates(directory="templates")
@@ -34,6 +36,12 @@ def password_verify(plain, hashed):
 
 def password_hash(password):
     return pwd_context.hash(password)
+
+def randoms():
+    S = 7  # number of characters in the string.  
+    # call random.choices() string module to find the string in Uppercase + numeric data.  
+    ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k = S)) 
+    return ran
 
 router = APIRouter(
     prefix='/usercredential',
@@ -379,3 +387,18 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     time.sleep(1)  
     response = RedirectResponse(url='/admin/user_credentials/', status_code=302)
     return response
+
+@router.post('/forgotpassword/')
+async def forgotpass(form: forgotPass, db: Session = Depends(get_db)):
+    emailChecking = db.query(User_credential).filter(User_credential.user_email == form.user_email).first()
+
+    if not emailChecking:
+        raise HTTPException(404, 'The email you have provided is not registered!')
+    else:
+        newPassword = randoms()
+        db.query(User_credential).filter(User_credential.user_id == emailChecking.user_id).update({'user_password': password_hash(newPassword)})
+        db.commit()
+        await passwordChange([form.user_email], newPassword)
+        return {'message': 'Password Changed!'}
+        
+

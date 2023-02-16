@@ -6,6 +6,7 @@ from models.timeSlotModel import Timeslot
 from schemas.serviceSchema import ServiceBase
 from models.serviceModel import Service
 from models.clientModel import Client
+from dotenv import dotenv_values
 from database import get_db
 from dependencies import get_token
 from jose import jwt
@@ -30,7 +31,9 @@ def randoms():
     ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k = S)) 
     return ran
 
-secret = 'a very shady secret'
+config_credentials = dict(dotenv_values(".env"))
+
+secret = config_credentials["SECRET"]
 router = APIRouter(
     prefix='/appointment',
     tags=['appointment'], dependencies=[Depends(get_token)]

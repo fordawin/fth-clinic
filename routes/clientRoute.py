@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter, Depends, HTTPException, Cookie, status, Response, Request
 from sqlalchemy.orm import Session
 from dotenv import dotenv_values
-from schemas.userCredentialSchema import LoginForm, TokenData
+from schemas.userCredentialSchema import LoginForm, TokenData, forgotPass
 from models.userCredentialModel import User_credential
 from schemas.clientSchema import clientUpdate, clientUpdate2
 from models.clientModel import Client
@@ -12,13 +12,23 @@ from dependencies import get_token
 from fastapi.templating import Jinja2Templates
 from passlib.context import CryptContext
 from fastapi.responses import RedirectResponse
+from for_email import *
 import time
+import random
+import string
+
 
 #image upload
 from fastapi import File, UploadFile
 from fastapi.staticfiles import StaticFiles
 from PIL import Image
 import secrets
+
+def randoms():
+    S = 7  # number of characters in the string.  
+    # call random.choices() string module to find the string in Uppercase + numeric data.  
+    ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k = S)) 
+    return ran
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
@@ -221,3 +231,4 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     time.sleep(1)  
     response = RedirectResponse(url='/admin/client/', status_code=302)
     return response
+

@@ -24,7 +24,10 @@ from PIL import Image
 import secrets
 
 
-secret = 'a very shady secret'
+from dotenv import dotenv_values
+config_credentials = dict(dotenv_values(".env"))
+
+secret = config_credentials["SECRET"]
 
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')

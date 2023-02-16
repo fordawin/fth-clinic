@@ -90,7 +90,12 @@
                         <input class="form-control" value="{{appointment.ap_id}}" name="payment_appointmentID" type="hidden" />
                         <div class="col-md-8">
                             <label class="form-label" for="">Payment Method</label>
-                            <input class="form-control" name="payment_mode" value="Cash" readonly/>
+                            <select class="form-control" name="payment_mode" id="">
+                                <option value="Paymaya">Paymaya</option>
+                                <option value="Gcash">Gcash</option>
+                                <option value="Paypal">Paypal</option> 
+                                <option value="Cash">Cash</option>
+                            </select>
 
                         </div>
                         <div class="col-md-8">
