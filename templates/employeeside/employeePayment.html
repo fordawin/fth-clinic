@@ -1,5 +1,5 @@
 {% extends 'employeeside/employeeBase.html' %}
-    
+
 {%block content%}
         <!-- End Sidebar -->
 <div class="content-page">
@@ -23,13 +23,13 @@
                     <div class="card mb-3">
                         <div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
                             <h3><i class="fa fa-table text-warning" aria-hidden="true"></i> Appointments</h3>
+                            <span><a type="button" class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#appointmentModal">Add Appointment</a></span>
                         </div>
                             
                         <div class="card-body">
                             <table id="example1"  class="table table-hover table-control no-footer" >
                                 <thead>
                                     <tr>
-                                        
                                         <th>Appointment ID</th>
                                         <th>Client's Name</th>
                                         <th>Type</th>
@@ -42,7 +42,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for appointment in appointments[:appointments[-3]] %}
+                                    {% for appointment in appointments[:appointments[-5]] %}
                                         {% if appointment.ap_status == 'Unpaid' %}
                                         <tr>
                                             <td>{{ appointment.ap_number }}</td>
@@ -72,6 +72,62 @@
 </div>
    <!-- end row -->
 
+<!-- Add Appointment Modal -->
+<div class="modal fade" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Service</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="http://127.0.0.1:8000/appointment/employee" method="POST" class="form" id="appointmentAdd">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Client List</label>
+                            <select class="form-control" name="ap_clientID" required>
+                                {% for usercred in appointments %}
+                                    {% if usercred.user_type == "Client" %}
+                                    <option value="{{usercred.user_id}}">{{usercred.user_email}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Service Type</label>
+                            <select class="form-control" name="ap_serviceType" id="" required>
+                                {% for service in appointments[appointments[-5]:-appointments[-1] - appointments[-2] - appointments[-3]  - 5] %}
+                                <option value="{{service.service_id}}">{{service.service_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Cormordibidities / Symptoms</label>
+                            <textarea class="form-control" name="ap_comorbidity" id="" rows="4"></textarea>
+                        </div>
+                        <div class="col-md-8" id="selectTimeslot">
+                            <select class="form-control" name="ap_slotID" required>
+                                {% for timeslot in appointments[appointments[-3] + appointments[-2]:-appointments[-1] - appointments[-2] - 5] %}
+                                <option value="{{timeslot.slot_id}}">{{timeslot.slot_start}} - {{timeslot.slot_end}} {{timeslot.slot_id}}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">
+                                This field is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Appointment Modal -->
 
   <!-- Payment Modal -->
   {% for appointment in appointments %}
@@ -151,6 +207,14 @@
         Swal.fire({
           icon: 'success',
           title: 'Payment Successful',
+          showConfirmButton: true,
+          timer: 2000
+          })
+        }
+        function confirmAppointment() {
+        Swal.fire({
+          icon: 'success',
+          title: 'Appointment Successfully Added',
           showConfirmButton: true,
           timer: 2000
       })
@@ -236,5 +300,38 @@
                   }
               })
           });
+            function windowsOpen(){
+                window.open("base", "_self").reload()
+            }
+            $("#appointmentAdd").submit(function(e) {
+                e.preventDefault();
+                var frm = $("#appointmentAdd");
+                var data = {};
+                $.each(this, function(i, v){
+                    var input = $(v);
+                    data[input.attr("name")] = input.val();
+                    delete data["undefined"];
+                });
+                console.log(data);
+                $.ajax({
+                    contentType:"application/json; charset=utf-8",
+                    type:frm.attr("method"),
+                    url:frm.attr("action"),
+                    dataType:'text',
+                    data: JSON.stringify(data),
+                    success: function(data) {
+                        confirmAppointment();
+                        const myTimeout = setTimeout(windowsOpen, 2000);
+                    },
+                    error: function(error) {
+                    // console.log(error.responseText.slice(11,-2))
+                    resAlert = error.responseText.slice(11,-2);
+                    sweetError(resAlert);
+                    }
+                })
+            });
+            $(function() {
+                $('.selectpicker').selectpicker();
+            });
     </script>
 {% endblock %}

@@ -157,7 +157,7 @@
 						</div>
 						<div class="col-md-8">
 							<select name="ap_serviceType" id="" class="form-control" required>
-								{% for service in appointments[appointments[-3]:-appointments[-1] - appointments[-2]] %}
+								{% for service in appointments[appointments[-3]:-appointments[-1] - appointments[-2] - 3] %}
 								<option value="{{service.service_id}}">{{service.service_name}}</option>
 								{% endfor %}
 							</select>

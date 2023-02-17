@@ -149,10 +149,10 @@
         function confirm() {
         Swal.fire({
           icon: 'success',
-          title: 'Doctor Successfully Added',
+          title: 'Payment Successful',
           showConfirmButton: true,
           timer: 2000
-      })
+          })
         }
         function delet() {
             Swal.fire(
@@ -177,6 +177,7 @@
     })
       }
     </script>
+    
     <script type="text/javascript">
 
         function windowsOpen(message) {
@@ -186,32 +187,6 @@
           $("#paypaypay").submit(function(e) {
               e.preventDefault();
               var frm = $("#paypaypay");
-              var data = {};
-              $.each(this, function(i, v){
-                  var input = $(v);
-                  data[input.attr("name")] = input.val();
-                  delete data["undefined"];
-              });
-              $.ajax({
-                  contentType:"application/json",
-                  type:frm.attr("method"),
-                  url:frm.attr("action"),
-                  dataType:'text',
-                  data: JSON.stringify(data),
-                  success: function(data) {
-                    confirm();
-                    const myTimeout = setTimeout(windowsOpen, 2000);
-                  },
-                  error: function(error) {
-                    resAlert = error.responseText.slice(11,-2)
-                    sweetError(resAlert);
-                  }
-              })
-          });
-
-          $("#doctorUpdate").submit(function(e) {
-              e.preventDefault();
-              var frm = $("#doctorUpdate");
               var data = {};
               $.each(this, function(i, v){
                   var input = $(v);

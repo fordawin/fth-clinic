@@ -8,6 +8,7 @@ from schemas.paymentSchema import PaymentBase, PaymentUpdate
 from models.paymentModel import Payment
 from models.serviceModel import Service
 from models.timeSlotModel import Timeslot
+from models.clientModel import Client
 from models.ordersModel import Orders
 from models.appointmentModel import Appointment
 from database import get_db
@@ -73,17 +74,19 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         query = db.query(Appointment).all()
         query1 = db.query(Service).all()
         query2 = db.query(Timeslot).all()
+        query3 = db.query(User_credential).all()
+        query4 = db.query(Client).all()
         applen = int(len(query))
         serlen = int(len(query1))
+        clilen = int(len(query3))
+        namlen = int(len(query4))
         serlist = [(serlen)]
         applist = [(applen)]
+        clilist = [(clilen)]
+        namlist = [(namlen)]
         timlen = int(len(query2))
         timlist = [(timlen)]
-        print(applist)
-        
-        print(applen)
-        lst_all = query + query1 + query2 + applist + serlist + timlist
-        print(lst_all)
+        lst_all = query + query1 + query2 + query3 + query4 + applist + serlist + clilist + namlist + timlist
         return templates.TemplateResponse('employeeside/employeePayment.html', {
             'request': request,
             'appointments': lst_all
@@ -169,7 +172,7 @@ def store(form_data: PaymentBase, db: Session = Depends(get_db)):
     db.add(to_store)
     db.commit()
 
-    return 
+    return {'message': 'Payment added successfully.'}
 
 @router.get('/pending')
 def employee(request: Request, db: Session = Depends(get_db)):
