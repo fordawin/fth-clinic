@@ -3,7 +3,7 @@ from dotenv import dotenv_values
 from models.prescriptionModel import Prescription
 from schemas.userCredentialSchema import LoginForm, TokenData, ClientBase
 from models.userCredentialModel import User_credential
-from schemas.appointmentSchema import AppointmentBase
+from schemas.appointmentSchema import AppointmentBase, Sched
 from models.appointmentModel import Appointment
 from models.timeSlotModel import Timeslot
 from models.serviceModel import Service
@@ -103,32 +103,37 @@ async def login(response: Response, form_data: LoginForm, db: Session = Depends(
         detail="Incorrect Username or Password"
     )
 
+@router.post("/home2")
+def read_form_post(request: Request, form_data: Sched, db: Session = Depends(get_db)):
+    query1 = db.query(Service).all()
+    verify = db.query(Timeslot).filter(Timeslot.slot_date == form_data.slot_date).first()
+    # Here, you can add your logic to generate the schedule based on the selected date
+    if not verify:
+        return {"There's no schedule for today "}
+    schedule = db.query(Timeslot).filter(Timeslot.slot_date == form_data.slot_date).all()
+    # We'll just return a dummy schedule for now
+    # schedule = ["10:00 AM - 11:00 AM", "1:00 PM - 2:00 PM", "4:00 PM - 5:00 PM"]
+    print(schedule)
+
+    return templates.TemplateResponse("clientside/home_after_login.html", {
+        "request": request,
+        'services': query1,
+        'timeslots': schedule
+    })
+    
+ 
+
 @router.get("/home2")
 def home(request: Request, db: Session = Depends(get_db)):
-    try:
-        query = db.query(Appointment).all()
-        query1 = db.query(Service).all()
-        query2 = db.query(Timeslot).all()
-        applen = int(len(query))
-        serlen = int(len(query1))
-        serlist = [(serlen)]
-        applist = [(applen)]
-        timlen = int(len(query2))
-        timlist = [(timlen)]
-        query4 = db.query(Service).all()
-        lst_all = query + query1 + query2 + applist + serlist + timlist
-        return templates.TemplateResponse('clientside/home_after_login.html', {
-            'request': request,
-            'appointments': lst_all,
-            'service': query4,
-            'timeslots': query2
-        })
-    except Exception as e:
-        print(e)
+    query1 = db.query(Service).all()
+    query2 = db.query(Timeslot).all()
+    return templates.TemplateResponse('clientside/home_after_login.html', {
+        'request': request,
+        'services': query1,
+        'timeslots': query2
+    })  
 
-    
-
-@router.post('/home2', response_class=HTMLResponse)
+@router.post('/home3', response_class=HTMLResponse)
 async def home(form_data: AppointmentBase, token: str = Cookie('token'), db: Session = Depends(get_db)):
     token = jwt.decode(token, secret, algorithms=['HS256'])
 
@@ -335,6 +340,12 @@ def order(request: Request, token: str = Cookie('token'), db: Session = Depends(
         })
     except Exception as e:
         print(e)
+
+@router.get("/forgot")
+def home(request: Request):
+    return templates.TemplateResponse('clientside/forgot.html', {
+        'request': request,
+    })  
 
 @router.get('/logout')
 def logout(response: Response):

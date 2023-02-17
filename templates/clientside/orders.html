@@ -71,7 +71,15 @@
                               </div>
                           </a><!--end nav link-->
                       </li><!--end nav item-->
-                      
+
+                      <li class="nav-item" role="presentation">
+                        <a class="nav-link rounded-0" id="order-tab" data-bs-toggle="pill" href="#order-experience" role="tab" aria-controls="order-experience" aria-selected="false" tabindex="-1">
+                            <div class="text-center pt-1 pb-1">
+                                <h5 class="title fw-normal mb-0">Current Order</h5>
+                            </div>
+                        </a><!--end nav link-->
+                      </li><!--end nav item-->
+
                       <li class="nav-item" role="presentation">
                           <a class="nav-link rounded-0" id="experience-tab" data-bs-toggle="pill" href="#pills-experience" role="tab" aria-controls="pills-experience" aria-selected="false" tabindex="-1">
                               <div class="text-center pt-1 pb-1">
@@ -79,56 +87,17 @@
                               </div>
                           </a><!--end nav link-->
                       </li><!--end nav item-->
+
                   </ul>
   
                   <div class="tab-content p-4" id="pills-tabContent">
                       <div class="tab-pane fade active show" id="pills-overview" role="tabpanel" aria-labelledby="overview-tab">
-                          
-                            <div class="card">
-                              <div class="card-header" style=" background-color:  #4169e1; color: white">
-                                <h5>My Order</h5>
-                              </div>
-                              <div class="card-body" style="overflow-x: auto;">
-                                <table id="pastAppointments" class="table table-responsive table-hover" style="width: 100%;">
-                                  <thead>
-                                    <tr>
-                                      <th>Product Name</th>
-                                      <th>Quantity</th>
-                                      <th>Total</th>
-                                      <th>Status</th>
-                                      <th>Action</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-									{% for order in order_list %}
-										{% if order.order_userid == order_list[-1] and order.order_status == 'For Pick-up' %}
-										<tr>
-											<td>{{ order.order_remarks }}</td>
-											<td>{{ order.order_quantity }}</td>
-											<td>{{ order.order_total }}</td>
-                                            <td><a class="btn btn-warning btn-sm">{{ order.order_status }}</a></td>
-											<td>
-												<a type="button" class="btn btn-sm btn-outline-success rounded-circle" data-toggle="modal" data-target="#viewAppointment{{order.order_id}}"><i class="uil uil-eye align-text-bottom text-primary h5 "></i></a>
-											</td>
-										</tr>
-										{% endif %}
-                  					{% endfor %}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                       
-                          
-                      </div>
-  
-                      <div class="tab-pane fade" id="pills-experience" role="tabpanel" aria-labelledby="experience-tab">
-                       
                           <div class="card">
                             <div class="card-header" style=" background-color:  #4169e1; color: white">
-                              <h5>Order History</h5>
+                              <h5>My Order</h5>
                             </div>
                             <div class="card-body" style="overflow-x: auto;">
-                              <table id="upcomingAppointments" class="table table-responsive table-hover" style="width: 100%;">
+                              <table id="pastAppointments" class="table table-responsive table-hover" style="width: 100%;">
                                 <thead>
                                   <tr>
                                     <th>Product Name</th>
@@ -139,23 +108,92 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-									{% for order in order_list %}
-										{% if order.order_userid == order_list[-1] and order.order_status != 'For Pick-up' %}
-										<tr>
-											<td>{{ order.order_remarks }}</td>
-											<td>{{ order.order_quantity }}</td>
-											<td>{{ order.order_total }}</td>
-											<td><a class="btn btn-secondary btn-sm">{{ order.order_status }}</a></td>
-											<td>
-												<a type="button" class="btn btn-sm btn-outline-success rounded-circle" data-toggle="modal" data-target="#viewOrder{{order.order_id}}"><i class="uil uil-eye align-text-bottom text-primary h5 "></i></a>
-											</td>
-										</tr>
-										{% endif %}
-                  					{% endfor %}
-                                  </tbody>
+                                {% for order in order_list %}
+                                  {% if order.order_userid == order_list[-1] and order.order_status == 'For Pick-up' %}
+                                  <tr>
+                                    <td>{{ order.order_remarks }}</td>
+                                    <td>{{ order.order_quantity }}</td>
+                                    <td>{{ order.order_total }}</td>
+                                    <td><a class="btn btn-warning btn-sm">{{ order.order_status }}</a></td>
+                                    <td>
+                                      <a type="button" class="btn btn-sm btn-outline-success rounded-circle" data-toggle="modal" data-target="#viewAppointment{{order.order_id}}"><i class="uil uil-eye align-text-bottom text-primary h5 "></i></a>
+                                    </td>
+                                  </tr>
+                                  {% endif %}
+                                {% endfor %}
+                                </tbody>
                               </table>
                             </div>
-                         
+                          </div>   
+                      </div>
+                      <div class="tab-pane fade" id="order-experience" role="tabpanel" aria-labelledby="order-tab">
+                        <div class="card">
+                          <div class="card-header" style=" background-color:  #4169e1; color: white">
+                            <h5>Current</h5>
+                          </div>
+                          <div class="card-body" style="overflow-x: auto;">
+                            <table id="upcomingAppointments" class="table table-responsive table-hover" style="width: 100%;">
+                              <thead>
+                                <tr>
+                                  <th>Product Name</th>
+                                  <th>Quantity</th>
+                                  <th>Total</th>
+                                  <th>Status</th>
+                                  <th>Action</th>
+                                </tr>
+                              </thead>
+                                <tbody>
+                                  {% for order in order_list %}
+                                    {% if order.order_userid == order_list[-1] and order.order_status == 'Pending' %}
+                                    <tr>
+                                      <td>{{ order.order_remarks }}</td>
+                                      <td>{{ order.order_quantity }}</td>
+                                      <td>{{ order.order_total }}</td>
+                                      <td><a class="btn btn-secondary btn-sm">{{ order.order_status }}</a></td>
+                                      <td>
+                                        <a type="button" class="btn btn-sm btn-outline-success rounded-circle" data-toggle="modal" data-target="#viewOrder{{order.order_id}}"><i class="uil uil-eye align-text-bottom text-primary h5 "></i></a>
+                                      </td>
+                                    </tr>
+                                    {% endif %}
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>  
+                      <div class="tab-pane fade" id="pills-experience" role="tabpanel" aria-labelledby="experience-tab">
+                        <div class="card">
+                          <div class="card-header" style=" background-color:  #4169e1; color: white">
+                            <h5>Order History</h5>
+                          </div>
+                          <div class="card-body" style="overflow-x: auto;">
+                            <table id="upcomingAppointments" class="table table-responsive table-hover" style="width: 100%;">
+                              <thead>
+                                <tr>
+                                  <th>Product Name</th>
+                                  <th>Quantity</th>
+                                  <th>Total</th>
+                                  <th>Status</th>
+                                  <th>Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for order in order_list %}
+                                  {% if order.order_userid == order_list[-1] and order.order_status == 'Paid' %}
+                                  <tr>
+                                    <td>{{ order.order_remarks }}</td>
+                                    <td>{{ order.order_quantity }}</td>
+                                    <td>{{ order.order_total }}</td>
+                                    <td><a class="btn btn-secondary btn-sm">{{ order.order_status }}</a></td>
+                                    <td>
+                                      <a type="button" class="btn btn-sm btn-outline-success rounded-circle" data-toggle="modal" data-target="#viewOrder{{order.order_id}}"><i class="uil uil-eye align-text-bottom text-primary h5 "></i></a>
+                                    </td>
+                                  </tr>
+                                  {% endif %}
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                          </div>
                       </div>
                   </div>                     
               </div>

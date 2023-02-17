@@ -197,7 +197,7 @@
 <script>
 	
 	{
-		flatpickr("#myID", {
+		flatpickr("#slot_date", {
 		minDate: new Date(), 
 		dateFormat: "Y-m-d",
 		inline: true,
@@ -212,7 +212,7 @@
    var eds = [];
 
    
-	$('#myID').on('change', function (){
+	$('#slot_date').on('change', function (){
 		var date = moment($(this).val()).format("YYYY-MM-DD");
       console.log(date);
       $.each(date, function() {

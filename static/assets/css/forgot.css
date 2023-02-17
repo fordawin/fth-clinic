@@ -1,0 +1,59 @@
+body {
+    font-family:Arial, Helvetica, sans-serif;
+    background-image: url(https://shreethemes.in/doctris/layouts/assets/images/bg/bg-lines-one.png);
+    background-color: #fffffff8!important;
+  }
+  form {
+   
+    box-shadow: 0px 4px 20px 0px #097c4a;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  input[type=text], input[type=email] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 90px;
+    box-sizing: border-box;
+  }
+  button {
+    background-color: #23ab70;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+  button:hover {
+    background-color: #23ab70;
+  }
+  .cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    text-decoration: none;
+    color: white;
+    background-color:#23ab70;
+    border-radius: 5px;
+  }
+  .container {
+    padding: 16px;
+  }
+  .text-muted {
+    color: #8492a6!important;
+}
+  p {
+    text-align: center;
+    color: #8492a6!important;
+  }

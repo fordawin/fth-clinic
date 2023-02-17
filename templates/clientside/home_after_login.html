@@ -105,25 +105,24 @@
          <div class="col-md-6 color-3 p-4">
             <h3 class="mb-2">Book an Appointment</h3>
             <hr>
-            <form action="#" class="appointment-form" method="POST">
+			<!-- <form action="http://127.0.0.1:8000/users/timeslut" method="POST">
+				<input type="date" name="slot_date">
+				<button type="submit">Submit</button>
+			</form> -->
+            <form action="http://127.0.0.1:8000/users/home2" class="appointment-form" id="timeslot" method="POST">
                <div class="row">
                   <div class="col-sm-12">
                      <div class="form-group">
                         <div class="row text-center">
-                           <input id="myID" type="datetime" style="display: none;" name="date" value="date">
+							<input id="slot_date" type="date" style="display: none;" name="slot_date">
                         </div>
                      </div>
                   </div>
                </div>
-               <!-- <div class="form-group">
-                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#appointmentModal">
-                  Book an Appointment
-                  </button>
-               </div> -->
-            </form>
-			<a type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#appointmentModal">
+               <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#appointmentModal">
 				Book an Appointment
-			</a>
+			   </button>
+            </form>
          </div>
       </div>
    </div>
@@ -141,7 +140,7 @@
 				</div>	
 			</div>
 		<div class="modal-body">
-			<form action="http://127.0.0.1:8000/users/home2" method="POST" id="appointmentForm">
+			<form action="http://127.0.0.1:8000/users/home3" method="POST" id="appointmentForm">
 				<div class="container">
 					<div class="row mt-2">
 						<div class="col-md-4" style="vertical-align: text-top;">
@@ -157,7 +156,7 @@
 						</div>
 						<div class="col-md-8">
 							<select name="ap_serviceType" id="" class="form-control" required>
-								{% for service in appointments[appointments[-3]:-appointments[-1] - appointments[-2] - 3] %}
+								{% for service in services %}
 								<option value="{{service.service_id}}">{{service.service_name}}</option>
 								{% endfor %}
 							</select>
@@ -172,7 +171,7 @@
 						</div>
 						<div class="col-md-8" id="selectTimeslot">
 							<select class="form-control" name="ap_slotID" required>
-								{% for timeslot in appointments[appointments[-3] + appointments[-2]:-3] %}
+								{% for timeslot in timeslots %}
 								<option value="{{timeslot.slot_id}}">{{timeslot.slot_start}} - {{timeslot.slot_end}}</option>
 								{% endfor %}
 							</select>
@@ -361,19 +360,19 @@
 			<span class="main-color"><p style="color:black" >Service </p></span> <hr>
 		<div class="pricing-list">
 			<div class="row row-3">
-				{% for services in service %}
+				{% for service in services %}
 				<div class="col">
 					<div class="pricing-box">
 						<div class="pricing-box-header">
 							<div class="pricing-name">
-								<p style="color:rgb(255, 255, 255)" > {{services.service_name}} </p>
+								<p style="color:rgb(255, 255, 255)" > {{service.service_name}} </p>
 							</div>
 							<div class="pricing-price">
-								<p style="color:rgb(255, 255, 255)" >₱ {{services.service_price}} </p>
+								<p style="color:rgb(255, 255, 255)" >₱ {{service.service_price}} </p>
 							</div>
 						</div>
 						<div class="pricing-box-content">
-							<p style="color:rgb(255, 255, 255)" >{{services.service_description}} </p>
+							<p style="color:rgb(255, 255, 255)" >{{service.service_description}} </p>
 							<p></p>
 							<p> </p>
 							<p><del></del></p>
@@ -460,12 +459,34 @@ $("#appointmentForm").submit(function(e) {
         success: function(data) {
 			confirm();
 			const myTimeout = setTimeout(windowsOpen, 2000);
-         
         },
         error: function(error) {
          // console.log(error.responseText.slice(11,-2))
          resAlert = error.responseText.slice(11,-2);
          sweetError(resAlert);
+        }
+    })
+});
+
+$("#timeslot").submit(function(e) {
+    e.preventDefault();
+    var frm = $("#timeslot");
+    var data = {};
+    $.each(this, function(i, v){
+        var input = $(v);
+        data[input.attr("name")] = input.val();
+        delete data["undefined"];
+    });
+	console.log(data);
+    $.ajax({
+        contentType:"application/json; charset=utf-8",
+        type:frm.attr("method"),
+        url:frm.attr("action"),
+        dataType:'text',
+        data: JSON.stringify(data),
+        success: function(data) {
+        },
+        error: function(error) {
         }
     })
 });

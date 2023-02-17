@@ -281,4 +281,13 @@ class updateUser(BaseModel):
 class forgotPass(BaseModel):
     user_email: Optional[str] = None
 
+    @classmethod
+    def as_form(
+        cls,
+        user_email: str = Form(...)
+    ):
+        return cls(
+            user_email = user_email
+        )
+
 

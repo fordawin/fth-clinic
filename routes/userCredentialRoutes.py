@@ -48,36 +48,6 @@ router = APIRouter(
     tags=['user credential']
 )
 
-@router.get('/datatable')
-def datatable(request: Request, db: Session = Depends(get_db)):
-    try:
-        def perform_search(queryset, user_input):
-            return queryset.filter(
-                or_(
-                    User_credential.user_username.like('%' + user_input + '%'),
-                    User_credential.user_email.like('%' + user_input + '%')
-                )
-            )
-
-        table = DataTable(dict(request.query_params), User_credential, db.query(User_credential), [
-            ('user_username', 'user_email'),
-            'user_username',
-            'user_email'
-        ])
-
-        table.searchable(lambda queryset, user_input: perform_search(queryset, user_input))
-    
-        return table.json()
-    except Exception as e:
-        print(e)
-
-
-@router.get('/')
-def findAll(db: Session = Depends(get_db)):
-    users = db.query(User_credential).filter(User_credential.user_status == "Active").all()
-
-    return {'users': users}
-
 @router.get('/{id}', status_code=status.HTTP_202_ACCEPTED)
 def findOne(id: str, db: Session = Depends(get_db)):
 
@@ -389,8 +359,8 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     return response
 
 @router.post('/forgotpassword/')
-async def forgotpass(form: forgotPass, db: Session = Depends(get_db)):
-    emailChecking = db.query(User_credential).filter(User_credential.user_email == form.user_email).first()
+async def forgotpass(form_data: forgotPass, db: Session = Depends(get_db)):
+    emailChecking = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
 
     if not emailChecking:
         raise HTTPException(404, 'The email you have provided is not registered!')
@@ -398,7 +368,7 @@ async def forgotpass(form: forgotPass, db: Session = Depends(get_db)):
         newPassword = randoms()
         db.query(User_credential).filter(User_credential.user_id == emailChecking.user_id).update({'user_password': password_hash(newPassword)})
         db.commit()
-        await passwordChange([form.user_email], newPassword)
+        await passwordChange([form_data.user_email], newPassword)
         return {'message': 'Password Changed!'}
         
 

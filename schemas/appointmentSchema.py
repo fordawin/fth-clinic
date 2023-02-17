@@ -57,3 +57,17 @@ class AppointmentEmployee(BaseModel):
     ap_comorbidity : str
     ap_serviceType : str
     ap_slotID : str
+
+class Sched(BaseModel):
+    slot_date : d
+
+    @classmethod
+    def as_form(
+        cls,
+        slot_date : d = Form(...),
+    ):
+        return cls(
+            slot_date = slot_date,
+        )
+    class Config:
+        orm_mode = True
