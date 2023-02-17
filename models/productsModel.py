@@ -14,6 +14,7 @@ class Product(Base):
     product_discount = Column(Integer, nullable=True)
     product_quantity = Column(Integer, nullable=False)
     product_description = Column(String(255), nullable=False)
+    product_type = Column(String(255), nullable=False)
     product_status = Column(String(255), nullable=False, default="Active")
     product_created_at = Column(DateTime, default=text('NOW()'))
     product_updated_at = Column(DateTime, onupdate=text('NOW()'))
