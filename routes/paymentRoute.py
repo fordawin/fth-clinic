@@ -12,7 +12,7 @@ from models.clientModel import Client
 from models.ordersModel import Orders
 from models.appointmentModel import Appointment
 from database import get_db
-from dependencies import get_token
+from dependencies import get_token, check_employee
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, HTMLResponse
 from passlib.context import CryptContext
@@ -31,10 +31,9 @@ def password_verify(plain, hashed):
 def password_hash(password):
     return pwd_context.hash(password)
 
-
 router = APIRouter(
     prefix='/payment',
-    tags=['payment']
+    tags=['payment'], dependencies=[Depends(check_employee)]
 )
 
 templates = Jinja2Templates(directory="templates")
@@ -44,29 +43,6 @@ def employee(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse('employeeside/employeeDashboard.html', {
         'request': request,
     })
-
-@router.get('/login')
-def employee(request: Request):
-    return templates.TemplateResponse('employeeside/login.html', {
-        'request': request,
-    })
-    
-@router.post('/login', response_class=HTMLResponse)
-async def verify(response: Response, form_data: LoginForm = Depends(LoginForm.as_form), db: Session = Depends(get_db)):
-    try:
-        user = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
-        if user:
-            match = password_verify(form_data.user_password, user.user_password)
-            if match:
-                data = TokenData(id = user.user_id, email = user.user_email, type = user.user_type)
-                token = jwt.encode(dict(data), secret)
-                response = RedirectResponse(url='/payment/base', status_code=302)
-                response.set_cookie('token', token, httponly=True)
-
-                return response
-                
-    except Exception as e:
-        print(e)
 
 @router.get('/base')
 def appointments(request: Request, db: Session = Depends(get_db)):
@@ -95,31 +71,6 @@ def appointments(request: Request, db: Session = Depends(get_db)):
     except Exception as e:
         print(e)
 
-@router.get('/base/admin')
-def appointments(request: Request, db: Session = Depends(get_db)):
-    try:
-        query = db.query(Appointment).all()
-        query1 = db.query(Service).all()
-        query2 = db.query(Timeslot).all()
-        applen = int(len(query))
-        serlen = int(len(query1))
-        serlist = [(serlen)]
-        applist = [(applen)]
-        timlen = int(len(query2))
-        timlist = [(timlen)]
-        print(applist)
-        
-        print(applen)
-        lst_all = query + query1 + query2 + applist + serlist + timlist
-        print(lst_all)
-        return templates.TemplateResponse('adminside/adminBase.html', {
-            'request': request,
-            'appointments': lst_all
-        })
-        
-    except Exception as e:
-        print(e)
-
 @router.get('/done')
 def appointments(request: Request, db: Session = Depends(get_db)):
     try:
@@ -132,11 +83,7 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         applist = [(applen)]
         timlen = int(len(query2))
         timlist = [(timlen)]
-        print(applist)
-        
-        print(applen)
         lst_all = query + query1 + query2 + applist + serlist + timlist
-        print(lst_all)
         return templates.TemplateResponse('employeeside/employeePaymentDone.html', {
             'request': request,
             'appointments': lst_all
@@ -310,34 +257,5 @@ def logout(response: Response):
     response.delete_cookie('token')
     response.delete_cookie('type')
     return response
-
-@router.post('/base/admin')
-def store(form_data: PaymentBase, db: Session = Depends(get_db)):
-
-    query = db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).first()
-
-    # return print(query)
-
-    babayaran = int(query.ap_amount)
-
-    bayad = int(form_data.payment_amount)
-
-    points = db.query(User_credential).filter(User_credential.user_id == query.ap_clientID).first()
-
-    addPoints = int(points.user_points) + 1
-
-    if bayad < babayaran:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Insufficient Funds')
-    else:
-        db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).update({"ap_status": "Paid"})
-        db.query(User_credential).filter(User_credential.user_id == points.user_id).update({"user_points": addPoints})
-        
-    to_store = Payment(
-        payment_mode = form_data.payment_mode,
-        payment_amount = form_data.payment_amount,
-        payment_appointmentID = form_data.payment_appointmentID
-    )
-    db.add(to_store)
-    db.commit()
 
      

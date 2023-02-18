@@ -16,10 +16,10 @@ conf = ConnectionConfig(
     MAIL_FROM = config_credentials["EMAIL"],
     MAIL_PORT = 465,
     MAIL_SERVER = "smtp.gmail.com",
-    # MAIL_TLS = False,
-    # MAIL_SSL = True,
-    MAIL_STARTTLS = False,
-    MAIL_SSL_TLS = True,
+    MAIL_TLS = False,
+    MAIL_SSL = True,
+    # MAIL_STARTTLS = False,
+    # MAIL_SSL_TLS = True,
     USE_CREDENTIALS = True
 )
 
@@ -97,7 +97,7 @@ async def send_email(email : list, first, middle, last):
 <div style="font-family: sans-serif">
 <div class="" style="font-size: 12px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 14.399999999999999px; color: #FFFFFF; line-height: 1.2;">
 <p style="margin: 0; font-size: 18px; text-align: left; mso-line-height-alt: 21.599999999999998px;"><span style="font-size:24px;">Welcome to Faith Hope Love Clinic</span></p>
-<p style="margin: 0; font-size: 18px; text-align: left; mso-line-height-alt: 21.599999999999998px;"><span style="font-size:24px;">Your password reset has been successful! </span><br/></p>
+<p style="margin: 0; font-size: 18px; text-align: left; mso-line-height-alt: 21.599999999999998px;"><span style="font-size:24px;"> <Your password reset has been successful!/span><br/></p>
 </div>
 </div>
 </td>

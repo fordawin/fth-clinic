@@ -4,14 +4,14 @@ from sqlalchemy.orm import Session
 from schemas.serviceSchema import ServiceBase, ServiceBas, updateService
 from models.serviceModel import Service
 from database import get_db
-from dependencies import get_token
+from dependencies import get_token, check_employee
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 import time
 
 router = APIRouter(
     prefix='/service',
-    tags=['service']
+    tags=['service'], dependencies=[Depends(check_employee)]
 )
 
 templates = Jinja2Templates(directory="templates")
@@ -19,10 +19,6 @@ templates = Jinja2Templates(directory="templates")
 @router.get("/")
 def home(request: Request):
     return templates.TemplateResponse("clientside/services.html", {"request": request})
-
-@router.get("/admin")
-def home(request: Request):
-    return templates.TemplateResponse("adminside/adminServices.html", {"request": request})
 
 @router.get('/')
 def all(db: Session = Depends(get_db)):
@@ -58,10 +54,7 @@ def update(id: str, user: updateService, db: Session = Depends(get_db)):
     verify = db.query(Service).filter(Service.service_id == id).first()
 
     if not verify:
-        raise HTTPException(404, 'Product to update is not found')
-    
-    # if db.query(Service).filter(Service.service_name == user.service_name).first():
-    #     raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Service. Service already exists')
+        raise HTTPException(404, 'Service to update is not found')
     else:
         user_data = user.dict(exclude_unset=True)
         for key, value in user_data.items():
@@ -71,7 +64,6 @@ def update(id: str, user: updateService, db: Session = Depends(get_db)):
 
 @router.post('/{id}')
 def deactivate(id: str, db: Session = Depends(get_db)):
-    # deletion = db.query(Product).filter(Product.product_id == id).first()
 
     if not db.query(Service).filter(Service.service_id == id).update({'service_status': "Inactive"}):
         raise HTTPException(404, 'Service to delete is not found')

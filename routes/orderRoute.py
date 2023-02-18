@@ -6,7 +6,7 @@ from models.userCredentialModel import User_credential
 from models.clientModel import Client
 from models.productsModel import Product
 from database import get_db
-from dependencies import get_token
+from dependencies import get_token, check_employee
 from jose import jwt
 import time
 from fastapi.templating import Jinja2Templates
@@ -22,22 +22,6 @@ config_credentials = dict(dotenv_values(".env"))
 
 secret = config_credentials["SECRET"]
 templates = Jinja2Templates(directory="templates")
-
-# @router.get("/")
-# def home(request: Request):
-#     return templates.TemplateResponse("adminside/adminProducts.html", {"request": request})
-
-@router.get('/')
-def all(db: Session = Depends(get_db)):
-    orders = db.query(Orders).filter(orders.order_status == "Active").all()
-    return {'Orders': orders}
-
-@router.get('/{id}')
-def read(id: str, db: Session = Depends(get_db)):
-    orders = db.query(Orders).filter(Orders.order_id == id).first()
-    if not orders:
-        raise HTTPException(404, 'Order not found')
-    return {'Orders': orders}
 
 @router.post('/')
 async def store(orders: OrderBase, token: str = Cookie('token'),db: Session = Depends(get_db)):
@@ -62,53 +46,7 @@ async def store(orders: OrderBase, token: str = Cookie('token'),db: Session = De
             order_userid = token["id"],
             order_remarks = price.product_name
         )
-        # await for_pickup([token["email"]], to_store.ap_clientName, to_store.ap_date, to_store.ap_startTime, to_store.ap_endTime, to_store.ap_service, to_store.ap_amount)
     db.add(to_store)
     db.commit()
     return {'message': "Order Placed"}
-
-# @router.post('/{id}', response_model=productUpdate)
-# def update(id: str, user: productUpdate, db: Session = Depends(get_db)):
-#     verify = db.query(Product).filter(Product.product_id == id).first()
-
-#     if not verify:
-#         raise HTTPException(404, 'Product to update is not found')
     
-#     if db.query(Product).filter(Product.product_name == user.product_name).first():
-#         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Product. Product already exists')
-#     else:
-#         user_data = user.dict(exclude_unset=True)
-#         for key, value in user_data.items():
-#             setattr(verify, key, value)
-#         db.add(verify)
-#         db.commit()
-
-#         return {'message': 'Product updated successfully.'} 
-    
-@router.post('/{id}')
-async def pickup(id: str, db: Session = Depends(get_db)):
-    # deletion = db.query(Product).filter(Product.product_id == id).first()
-
-    if not db.query(Orders).filter(Orders.order_id == id).update({'order_status': "For Pickup"}):
-        raise HTTPException(404, 'Order to pickup is not found')
-
-    orderID = db.query(Orders).filter(Orders.order_id == id).first
-
-    users = db.query(User_credential).filter(User_credential.user_id == orderID.order_userid).first
-
-    db.commit()
-    await for_pickup(users.user_id)
-    time.sleep(1) 
-    return {'message': 'Success.'}
-
-@router.post('/payment/{id}')
-def payment(id: str, pay: PaymentBase, db: Session = Depends(get_db)):
-    payment = db.query(Orders).filter(Orders.order_id == id).first()
-
-    if pay.order_payment == payment.order_total:
-        db.query(Orders).filter(Orders.order_id == id).update({'order_status': "Paid"})
-        db.commit()
-
-        return {'message': 'Success'}
-    else:
-        raise HTTPException(404, 'Insufficient Payment')

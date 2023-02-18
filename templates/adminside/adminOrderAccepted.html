@@ -82,7 +82,7 @@
                </button>
                </div>
                <div class="modal-body">
-               <form action="https://faith-hope-love.onrender.com/orders/payment/{{ order.order_id }}" id="paymentAccept" method="POST" >
+               <form action="http://127.0.0.1:8000/admin/orderPayment/{{ order.order_id }}" id="paymentAccept" method="POST" >
                    <div class="row">
                        <div class="col-md-8">
                            <label class="form-label" for="">Payment Amount</label>
@@ -180,7 +180,6 @@
         data[input.attr("name")] = input.val();
         delete data["undefined"];
     });
-    console.log(data)
     $.ajax({
         contentType:"application/json",
         type:frm.attr("method"),

@@ -53,6 +53,7 @@
 	<div class="right">
       <center><img src="../static/assets/images/logo.png" alt="" width="150px" height="80px" style=""></center><br>
       <h4>Sign in</h4>
+      <form action="http://127.0.0.1:8000/users/login" method="POST" id="loginForm">
       <div id="failedLogin"></div>
       <div class="inputs">
          <input type="text" name="user_email" placeholder="User name">
@@ -74,30 +75,8 @@
          <p>Don't have an account? <a href="register" style="color:#1904E5" class="creat-account">Creat Your Account</a> it takes less than a minute</p>
          
          <a href="/users"><button class="btn"><i class="fa fa-home"></i></button></a>
-      
-      </div>
-   <!-- <div class="right">
-         <img src="../static/assets/images/logo.png" alt="" width="150px" height="80px"><br>
-      <h4>Sign in</h4>
-      <form action="http://127.0.0.1:8000/users/login" method="POST" id="loginForm">
-         <div id="failedLogin"></div>
-         <div class="inputs">
-            <input type="text" name="user_email" placeholder="user name" id="xip_Name" required>
-            <br>
-            <input type="password" name="user_password" placeholder="password" id="xip_Password" required>
-         </div><br>
-         <div class="remember-me--forget-password">
-               <label class="checkbox">
-                  <input type="checkbox" value="remember-me" id="remember_me"> Remember me
-               </label>
-         </div>
-            <br><br>
-            <button class="btn">Sign in</button>
-               <br>  <br>  <br>  <br>  <br>  <br>
-            <p>Don't have an account? <a href="register" style="color:#1904E5" >Creat Your Account</a> it takes less than a minute</p>
-            <a href="/users"><button type="button" class="btn"><i class="fa fa-home"></i></button></a>
       </form>
-   </div> -->
+      </div>
 
 <script src="{{url_for('static', path='/assets/js/jquery-3.4.1.min.js')}}" type="text/javascript" > </script>	
 <!--Bootstra JS	-->
@@ -171,7 +150,6 @@ $("#loginForm").submit(function(e) {
         data: JSON.stringify(data),
         success: function(data) {
          const type = document.cookie
-         console.log(document.cookie);
 
          if (type == 'type=Client'){
             window.open("appointments", "_self").reload()
@@ -188,11 +166,8 @@ $("#loginForm").submit(function(e) {
          if (type == 'type=Admin'){
             window.open("http://127.0.0.1:8000/admin", "_self").reload()
          }
-
-         // window.open("appointments", "_self").reload()
         },
         error: function(error) {
-         // console.log(error.responseText.slice(11,-2))
          resAlert = error.responseText.slice(11,-2);
          alertLoginFailure(resAlert);
         }
