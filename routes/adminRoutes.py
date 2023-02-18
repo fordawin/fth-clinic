@@ -14,7 +14,7 @@ from schemas.appointmentSchema import AppointmentBase, AppointmentUpdate
 from schemas.userCredentialSchema import LoginForm, UserBase, ClientBase, DoctorBase, EmployeeBase, UserRead, updateUser, TokenData
 from schemas.clientSchema import clientUpdate
 from schemas.serviceSchema import ServiceBas, ServiceBase, updateService
-from schemas.orderSchema import OrderBase, PaymentBase
+from schemas.orderSchema import OrderBase, PaymentBase as PaymentOrder
 from models.userCredentialModel import User_credential
 from models.clientModel import Client
 from models.doctorModel import Doctor
@@ -887,11 +887,11 @@ def employee(request: Request, db: Session = Depends(get_db)):
     except Exception as e:
         print(e)
 
-@router.get('/orderAccepted')
+@router.get('/orderAcceptedNew')
 def employee(request: Request, db: Session = Depends(get_db)):
     try:
         query = db.query(Orders).all()
-        return templates.TemplateResponse('adminside/adminOrderAccepted.html', {
+        return templates.TemplateResponse('adminside/adminOrderAcceptedNew.html', {
             'request': request,
             'order_list': query
         })
@@ -951,7 +951,7 @@ def deactivate(id: str, db: Session = Depends(get_db)):
 
 #PAYMENT ROUTES
 @router.post('/orderPayment/{id}')
-def payment(id: str, pay: PaymentBase, db: Session = Depends(get_db)):
+def payment(id: str, pay: PaymentOrder, db: Session = Depends(get_db)):
     payment = db.query(Orders).filter(Orders.order_id == id).first()
 
     if pay.order_payment == payment.order_total:
