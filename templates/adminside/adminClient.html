@@ -88,7 +88,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="http://127.0.0.1:8000/admin/client" method="POST" class="form" id="clientAdd">
+          <form action="https://fth-clinic.herokuapp.com/admin/client" method="POST" class="form" id="clientAdd">
             <div class="row">
                 <div class="col-md-6">
                   <label class="form-label" for="">Username</label>
@@ -178,7 +178,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="http://127.0.0.1:8000/client/admin/{{clients.cl_id}}" id="clientUpdate" method="POST">
+          <form action="https://fth-clinic.herokuapp.com/client/admin/{{clients.cl_id}}" id="clientUpdate" method="POST">
             <div class="row">
               <div class="col-md-4">
                   <label class="form-label" for="">First Name</label>
@@ -251,7 +251,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-danger" href="http://127.0.0.1:8000//client/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
+          <a class="btn btn-danger" href="https://fth-clinic.herokuapp.com//client/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
         </div>
       </div>
     </div>

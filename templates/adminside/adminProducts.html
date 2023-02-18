@@ -84,7 +84,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="http://127.0.0.1:8000/admin/defaultProduct" method="POST" enctype="multipart/form-data" class="form" id="productAdd">
+          <form action="https://fth-clinic.herokuapp.com/admin/defaultProduct" method="POST" enctype="multipart/form-data" class="form" id="productAdd">
             <div class="row">
                 <div class="col-md-12">
                     <label class="form-label" for="">Product Name</label>
@@ -169,7 +169,7 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="http://127.0.0.1:8000/admin/productDiscount/{{products.product_id}}" method="POST" id="addDiscount">
+                <form action="https://fth-clinic.herokuapp.com/admin/productDiscount/{{products.product_id}}" method="POST" id="addDiscount">
                     <div class="row">
                         <div class="col-md-6">
                             <label class="form-label" for="">Discounted Price</label>
@@ -198,7 +198,7 @@
             <span aria-hidden="true">&times;</span>
         </button>
         </div>
-        <form action="http://127.0.0.1:8000/admin/productDeactivate/{{products.product_id}}">
+        <form action="https://fth-clinic.herokuapp.com/admin/productDeactivate/{{products.product_id}}">
             <div class="modal-body">
             <p>Are you sure you want to cancel this appointment? </p>
             </div>
