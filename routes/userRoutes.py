@@ -103,23 +103,23 @@ async def login(response: Response, form_data: LoginForm, db: Session = Depends(
         detail="Incorrect Username or Password"
     )
 
-@router.post("/home2")
-def read_form_post(request: Request, form_data: Sched, db: Session = Depends(get_db)):
-    query1 = db.query(Service).all()
-    verify = db.query(Timeslot).filter(Timeslot.slot_date == form_data.slot_date).first()
+# @router.post("/home2")
+# def read_form_post(request: Request, form_data: Sched, db: Session = Depends(get_db)):
+#     query1 = db.query(Service).all()
+#     verify = db.query(Timeslot).filter(Timeslot.slot_date == form_data.slot_date).first()
     # Here, you can add your logic to generate the schedule based on the selected date
-    if not verify:
-        return {"There's no schedule for today "}
-    schedule = db.query(Timeslot).filter(Timeslot.slot_date == form_data.slot_date).all()
+    # if not verify:
+    #     return {"There's no schedule for today "}
+    # schedule = db.query(Timeslot).filter(Timeslot.slot_date == form_data.slot_date).all()
     # We'll just return a dummy schedule for now
     # schedule = ["10:00 AM - 11:00 AM", "1:00 PM - 2:00 PM", "4:00 PM - 5:00 PM"]
-    print(schedule)
+    # print(schedule)
 
-    return templates.TemplateResponse("clientside/home_after_login.html", {
-        "request": request,
-        'services': query1,
-        'timeslots': schedule
-    })
+    # return templates.TemplateResponse("clientside/home_after_login.html", {
+    #     "request": request,
+    #     'services': query1,
+    #     'timeslots': schedule
+    # })
     
  
 
