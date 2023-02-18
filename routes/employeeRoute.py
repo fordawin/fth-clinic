@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from schemas.employeeSchema import employeeUpdate
+from schemas.orderSchema import PaymentBase as OrderPayment
 from schemas.paymentSchema import PaymentBase, PaymentUpdate
 from schemas.userCredentialSchema import UserBase, EmployeeBase
 from models.userCredentialModel import User_credential
@@ -151,7 +152,7 @@ async def deactivate(id: str, db: Session = Depends(get_db)):
 
 #PAYMENT ROUTES
 @router.post('/orderPayment/{id}')
-def payment(id: str, pay: PaymentBase, db: Session = Depends(get_db)):
+def payment(id: str, pay: OrderPayment, db: Session = Depends(get_db)):
     payment = db.query(Orders).filter(Orders.order_id == id).first()
 
     if pay.order_payment == payment.order_total:

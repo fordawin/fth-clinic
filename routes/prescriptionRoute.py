@@ -13,7 +13,7 @@ from models.appointmentModel import Appointment
 from models.serviceModel import Service
 from models.timeSlotModel import Timeslot
 from database import get_db
-from dependencies import get_token
+from dependencies import get_token, check_doctor
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, HTMLResponse
 from passlib.context import CryptContext
@@ -33,7 +33,7 @@ def password_hash(password):
 
 router = APIRouter(
     prefix='/prescription',
-    tags=['prescription']
+    tags=['prescription'], dependencies=[Depends(check_doctor)]
 )
 
 templates = Jinja2Templates(directory="templates")
