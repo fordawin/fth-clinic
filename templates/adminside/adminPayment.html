@@ -85,17 +85,12 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="http://127.0.0.1:8000/payment/base/admin" method="POST" class="form" id="paypaypay">
+                <form action="http://127.0.0.1:8000/admin/appointmentPayment" method="POST" class="form" id="paypaypay">
                     <div class="row">
                         <input class="form-control" value="{{appointment.ap_id}}" name="payment_appointmentID" type="hidden" />
                         <div class="col-md-8">
                             <label class="form-label" for="">Payment Method</label>
-                            <select class="form-control" name="payment_mode" id="">
-                                <option value="Paymaya">Paymaya</option>
-                                <option value="Gcash">Gcash</option>
-                                <option value="Paypal">Paypal</option> 
-                                <option value="Cash">Cash</option>
-                            </select>
+                            <input class="form-control" name="payment_mode" value="Cash" readonly/>
                         </div>
                         <div class="col-md-8">
                             <label class="form-label" for="">Payment Amount</label>
@@ -181,7 +176,7 @@
     <script type="text/javascript">
 
         function windowsOpen(message) {
-            window.open("base", "_self").reload()
+            window.open("", "_self").reload()
             }
         
           $("#paypaypay").submit(function(e) {

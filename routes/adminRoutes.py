@@ -6,7 +6,7 @@ from models.clientModel import Client
 from models.timeSlotModel import Timeslot
 from models.appointmentModel import Appointment
 from models.paymentModel import Payment
-from schemas.paymentSchema import PaymentUpdate
+from schemas.paymentSchema import PaymentUpdate, PaymentBase as PaymentB
 from schemas.employeeSchema import employeeUpdate
 from schemas.timeSlotSchema import SlotBase, TimeSlotUpdate
 from schemas.productSchema import productUpdate, ProductBase, Discount
@@ -120,6 +120,27 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         })
     except Exception as e:
         print(e)
+
+@router.get('/deactivate/{id}')
+def deactivate(id: str, db: Session = Depends(get_db)):
+    cancel = db.query(Appointment).filter(Appointment.ap_id == id).first()
+    slot = db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).first()
+
+    slotAdd = int(slot.slot_capacity) + 1
+
+    if not cancel:
+        raise HTTPException(404, 'Appointment to cancel is not found')
+    else:
+        db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).update({'slot_capacity': slotAdd})
+        db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Canceled"})
+        
+    db.commit()
+
+    time.sleep(1)
+
+    response = RedirectResponse(url='/admin/appointment', status_code=302)
+
+    return response
 
 @router.get('/reports')
 def reports(request: Request):
@@ -603,14 +624,19 @@ def update(id: str, user: updateService, db: Session = Depends(get_db)):
         db.add(verify)
         db.commit()
 
-@router.post('deactivateService/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
-
+@router.get('/deactivateService/{id}')
+def deactivateService(id: str, db: Session = Depends(get_db)):
+    
     if not db.query(Service).filter(Service.service_id == id).update({'service_status': "Inactive"}):
         raise HTTPException(404, 'Service to delete is not found')
 
     db.commit()
-    return {'message': 'Service removed successfully.'}
+
+    time.sleep(1)
+
+    response = RedirectResponse(url='/admin/services', status_code=302)
+
+    return response
 
 #PRODUCTS ROUTE
 @router.get('/products', response_class=HTMLResponse)
@@ -738,8 +764,8 @@ def update(id: str, user: productUpdate, db: Session = Depends(get_db)):
         db.commit()
 
         return {'message': 'Product updated successfully.'} 
-    
-@router.post('/productDeactivate/{id}')
+
+@router.get('/productDeactivate/{id}')
 def deactivate(id: str, db: Session = Depends(get_db)):
     # deletion = db.query(Product).filter(Product.product_id == id).first()
 
@@ -747,7 +773,12 @@ def deactivate(id: str, db: Session = Depends(get_db)):
         raise HTTPException(404, 'Product to delete is not found')
 
     db.commit()
-    return {'message': 'Product removed successfully.'}
+    
+    time.sleep(1)
+
+    response = RedirectResponse(url='/admin/products', status_code=302)
+
+    return response
 
 @router.post('/productDiscount/{id}')
 def discount(id: str, product: Discount, db: Session = Depends(get_db)):
@@ -930,3 +961,32 @@ def payment(id: str, pay: PaymentBase, db: Session = Depends(get_db)):
         return {'message': 'Success'}
     else:
         raise HTTPException(404, 'Insufficient Payment')
+    
+@router.post('/appointmentPayment')
+def store(form_data: PaymentB, db: Session = Depends(get_db)):
+
+    query = db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).first()
+
+    babayaran = int(query.ap_amount)
+
+    bayad = int(form_data.payment_amount)
+
+    points = db.query(User_credential).filter(User_credential.user_id == query.ap_clientID).first()
+
+    addPoints = int(points.user_points) + 1
+
+    if bayad < babayaran:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Insufficient Funds')
+    else:
+        db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).update({"ap_status": "Paid"})
+        db.query(User_credential).filter(User_credential.user_id == points.user_id).update({"user_points": addPoints})
+        
+    to_store = Payment(
+        payment_mode = form_data.payment_mode,
+        payment_amount = form_data.payment_amount,
+        payment_appointmentID = form_data.payment_appointmentID
+    )
+    db.add(to_store)
+    db.commit()
+
+    return {'message': 'Payment added successfully.'}

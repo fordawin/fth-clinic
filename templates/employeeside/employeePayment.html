@@ -83,12 +83,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="http://127.0.0.1:8000/appointment/employee" method="POST" class="form" id="appointmentAdd">
+                <form action="http://127.0.0.1:8000/appointment/employee" method="POST" id="appointmentForm">
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label" for="">Client List</label>
                             <select class="form-control" name="ap_clientID" required>
-                                {% for usercred in appointments %}
+                                {% for usercred in usercreds %}
                                     {% if usercred.user_type == "Client" %}
                                     <option value="{{usercred.user_id}}">{{usercred.user_email}}</option>
                                     {% endif %}
@@ -97,8 +97,8 @@
                         </div>
                         <div class="col-md-12">
                             <label class="form-label" for="">Service Type</label>
-                            <select class="form-control" name="ap_serviceType" id="" required>
-                                {% for service in appointments[appointments[-5]:-appointments[-1] - appointments[-2] - appointments[-3]  - 5] %}
+                            <select class="form-control" name="ap_serviceType" required>
+                                {% for service in services %}
                                 <option value="{{service.service_id}}">{{service.service_name}}</option>
                                 {% endfor %}
                             </select>
@@ -108,8 +108,9 @@
                             <textarea class="form-control" name="ap_comorbidity" id="" rows="4"></textarea>
                         </div>
                         <div class="col-md-8" id="selectTimeslot">
+                            <label class="form-label" for="">Schedule</label>
                             <select class="form-control" name="ap_slotID" required>
-                                {% for timeslot in appointments[appointments[-3] + appointments[-2]:-appointments[-1] - appointments[-2] - 5] %}
+                                {% for timeslot in timeslots %}
                                 <option value="{{timeslot.slot_id}}">{{timeslot.slot_start}} - {{timeslot.slot_end}} {{timeslot.slot_id}}</option>
                                 {% endfor %}
                             </select>
@@ -146,13 +147,7 @@
                         <input class="form-control" value="{{appointment.ap_id}}" name="payment_appointmentID" type="hidden" />
                         <div class="col-md-8">
                             <label class="form-label" for="">Payment Method</label>
-                            <select class="form-control" name="payment_mode" id="">
-                                <option value="Paymaya">Paymaya</option>
-                                <option value="Gcash">Gcash</option>
-                                <option value="Paypal">Paypal</option> 
-                                <option value="Cash">Cash</option>
-                            </select>
-
+                            <input class="form-control" type="text" name="payment_mode" value="Cash" readonly/>
                         </div>
                         <div class="col-md-8">
                             <label class="form-label" for="">Payment Amount</label>
@@ -303,9 +298,9 @@
             function windowsOpen(){
                 window.open("base", "_self").reload()
             }
-            $("#appointmentAdd").submit(function(e) {
+            $("#appointmentForm").submit(function(e) {
                 e.preventDefault();
-                var frm = $("#appointmentAdd");
+                var frm = $("#appointmentForm");
                 var data = {};
                 $.each(this, function(i, v){
                     var input = $(v);
@@ -324,7 +319,6 @@
                         const myTimeout = setTimeout(windowsOpen, 2000);
                     },
                     error: function(error) {
-                    // console.log(error.responseText.slice(11,-2))
                     resAlert = error.responseText.slice(11,-2);
                     sweetError(resAlert);
                     }

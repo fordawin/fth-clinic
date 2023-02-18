@@ -65,7 +65,11 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         lst_all = query + query1 + query2 + query3 + query4 + applist + serlist + clilist + namlist + timlist
         return templates.TemplateResponse('employeeside/employeePayment.html', {
             'request': request,
-            'appointments': lst_all
+            'appointments': lst_all,
+            'services': query1,
+            'timeslots': query2,
+            'usercreds': query3,
+            'clients': query4
         })
         
     except Exception as e:

@@ -157,7 +157,7 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     db.commit()
     return {'message': 'Product removed successfully.'}
 
-@router.post('discount/{id}')
+@router.post('/discount/{id}')
 def discount(id: str, product: Discount, db: Session = Depends(get_db)):
 
     if not db.query(Product).filter(Product.product_id == id).update({'product_discount': product.product_discount}):

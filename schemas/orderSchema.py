@@ -19,8 +19,8 @@ class Order(OrderBase):
     order_updated_at: dt
 
 class PaymentBase(BaseModel):
-    order_payment : Optional[int] | None = None
-
+    order_payment : Optional[int]
+    
     @classmethod
     def as_form(
         cls,

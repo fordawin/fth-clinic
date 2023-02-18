@@ -169,9 +169,9 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     return response
 
 @router.post('/employee', response_class=HTMLResponse)
-async def store(form_data: AppointmentEmployee, db: Session = Depends(get_db)):
-    # token = jwt.decode(token, secret, algorithms=['HS256'])
+async def store(form_data: AppointmentEmployee = Depends(AppointmentEmployee.as_form), db: Session = Depends(get_db)):
 
+    print(form_data)
     serbisyo = db.query(Service).filter(Service.service_id == form_data.ap_serviceType).first()
 
     oras = db.query(Timeslot).filter(Timeslot.slot_id == form_data.ap_slotID).first()
@@ -180,7 +180,7 @@ async def store(form_data: AppointmentEmployee, db: Session = Depends(get_db)):
 
     simula = oras.slot_time
 
-    umpisa = dt.datetime.strptime(f'{simula}', '%H:%M:%S')
+    umpisa = dt.datetime.strptime(f'{simula}', '%H:%M')
     
     hangganan = umpisa + timedelta(hours=1)
 
@@ -196,7 +196,7 @@ async def store(form_data: AppointmentEmployee, db: Session = Depends(get_db)):
     to_store = Appointment(
         ap_number = randoms(),
         ap_clientID = form_data.ap_clientID,
-        ap_startTime = umpisa,
+        ap_startTime = simula,
         ap_clientName = cliente.cl_fullName,
         ap_date = oras.slot_date,
         ap_endTime = hangganan,
@@ -212,8 +212,9 @@ async def store(form_data: AppointmentEmployee, db: Session = Depends(get_db)):
     db.add(to_store)
     db.commit()
     await send_appointment([cliente.user_email], to_store.ap_clientName, to_store.ap_date, to_store.ap_startTime, to_store.ap_endTime, to_store.ap_service, to_store.ap_amount)
-    # time.sleep(1)
 
-    # response = RedirectResponse(url='/appointment', status_code=302)
+    time.sleep(1)
 
-    return {'message': 'Appointment added successfully.'}
+    response = RedirectResponse(url='/payment/base', status_code=302)
+
+    # return {'message': 'Appointment added successfully.'}

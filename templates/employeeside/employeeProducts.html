@@ -48,7 +48,7 @@
                                         <td>{{ products.product_name }}</td>
                                         <td>{{ products.product_description }}</td>
                                         <td>{{ products.product_quantity }}</td>
-                                        <td>{{ products.product_discount }}</td>
+                                        <td>{{ products.product_price }}</td>
                                         <td class="text-white">
                                             <span><a type="button" class="btn btn-warning btn-sm " data-toggle="modal" data-target="#viewProducts{{products.product_id}}">View</a></span>
                                             <span><a type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editProducts{{products.product_id}}">Edit</a></span>
@@ -80,7 +80,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="http://127.0.0.1:8000/product/employee" method="POST" enctype="multipart/form-data" class="form" id="productAdd">
+          <form action="http://127.0.0.1:8000/product/default" method="POST" enctype="multipart/form-data" class="form" id="productAdd">
             <div class="row">
                 <div class="col-md-12">
                     <label class="form-label" for="">Product Name</label>
@@ -97,10 +97,6 @@
                 <div class="col-md-6">
                     <label class="form-label" for="">Price</label>
                     <input class="form-control" type="number" name="product_price">
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for=""> Discounted Price</label>
-                    <input class="form-control" type="number" name="product_discount">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label" for="">Upload Image</label>
@@ -129,7 +125,7 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="">
+                <form action="http://127.0.0.1:8000/product/default" method="POST">
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label" for="">Product Name</label>
@@ -145,10 +141,6 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="">Price</label>
-                            <input class="form-control" type="number">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label" for="">Discounted Price</label>
                             <input class="form-control" type="number">
                         </div>
                     </div>
@@ -190,10 +182,6 @@
                     <div class="col-md-6">
                         <label class="form-label" for="">Price</label>
                         <input class="form-control" type="number" name="product_price" value="{{ products.product_price }}">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label" for=""> Discounted Price</label>
-                        <input class="form-control" type="number" name="product_discount" value="{{ products.product_name }}">
                     </div>
                     <br>
                 </div>
