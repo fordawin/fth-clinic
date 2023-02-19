@@ -22,6 +22,7 @@ from models.ordersModel import Orders
 from models.employeeModel import Employee
 from models.productsModel import Product
 from models.serviceModel import Service
+from models.prescriptionModel import Prescription
 from dotenv import dotenv_values
 import datetime as dt
 from datetime import timedelta, date
@@ -460,13 +461,15 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         timlen = int(len(query2))
         timlist = [(timlen)]
         print(applist)
-        
+        queryJoin = db.query(Appointment, Prescription).join(Prescription, Appointment.ap_id == Prescription.presc_appointmentID)
+
         print(applen)
         lst_all = query + query1 + query2 + applist + serlist + timlist
         print(lst_all)
         return templates.TemplateResponse('adminside/adminAppointments.html', {
             'request': request,
-            'appointments': lst_all
+            'appointments': lst_all,
+            'details': queryJoin
         })
         
     except Exception as e:

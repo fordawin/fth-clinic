@@ -47,7 +47,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for appointment in appointments[:appointments[-3]] %}
+                                    {% for appointment, prescript in details %}
                                     <tr>
                                         <td>{{ appointment.ap_number }}</td>
                                         <td>{{ appointment.ap_clientName }}</td>
@@ -120,7 +120,7 @@
         </div>
         </div>
   </div>
-{% for appointment in appointments[:appointments[-3]] %}
+  {% for appointment, prescript in details %}
   <!-- View Appointments Modal -->
   <div class="modal fade" id="viewAppointments{{appointment.ap_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -140,15 +140,15 @@
                         </div>
                         <div class="col-md-12">
                             <label class="form-label" for="">Medication</label>
-                            <textarea class="form-control" name="" id="" rows="2"></textarea>
+                            <textarea class="form-control" name="" id="" rows="2" readonly>{{ prescript.presc_medication }}</textarea>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="">Treatment</label>
-                            <textarea class="form-control" name="" id="" rows="2"></textarea>
+                            <textarea class="form-control" name="" id="" rows="2" readonly>{{ prescript.presc_treatment }}</textarea>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="">Remarks</label>
-                            <textarea class="form-control" name="" id="" rows="2"></textarea>
+                            <textarea class="form-control" name="" id="" rows="2" readonly>{{ prescript.presc_remarks }}</textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -161,7 +161,6 @@
         </div>
     </div>
 {% endfor %}
-    <!-- Edit Appointments Modal -->
   <div class="modal fade" id="editAppointments" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
