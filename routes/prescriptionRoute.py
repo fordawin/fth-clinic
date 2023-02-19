@@ -107,7 +107,7 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/base')
-def store(form_data: PrescriptionBase, db: Session = Depends(get_db)):
+def store(form_data: PrescriptionBase = Depends(PrescriptionBase.as_form), db: Session = Depends(get_db)):
 
     db.query(Appointment).filter(Appointment.ap_id == form_data.presc_appointmentID).update({"ap_type": "Done"})
 
@@ -120,32 +120,19 @@ def store(form_data: PrescriptionBase, db: Session = Depends(get_db)):
     db.add(to_store)
     db.commit()
     
-    # time.sleep(1)
+    time.sleep(1)
 
-    # response = RedirectResponse(url='/prescription/base', status_code=302)
+    response = RedirectResponse(url='/prescription/base', status_code=302)
 
-    return
+    return response
 
 @router.get('/done')
 def appointments(request: Request, db: Session = Depends(get_db)):
     try:
-        query = db.query(Appointment).all()
-        query1 = db.query(Service).all()
-        query2 = db.query(Timeslot).all()
-        applen = int(len(query))
-        serlen = int(len(query1))
-        serlist = [(serlen)]
-        applist = [(applen)]
-        timlen = int(len(query2))
-        timlist = [(timlen)]
-        print(applist)
-        
-        print(applen)
-        lst_all = query + query1 + query2 + applist + serlist + timlist
-        print(lst_all)
+        queryJoin = db.query(Appointment, Prescription).join(Prescription, Appointment.ap_id == Prescription.presc_appointmentID)
         return templates.TemplateResponse('doctorside/doctorPrescriptionDone.html', {
             'request': request,
-            'appointments': lst_all
+            'details': queryJoin
         })
         
     except Exception as e:

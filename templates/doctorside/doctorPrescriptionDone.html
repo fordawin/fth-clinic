@@ -42,8 +42,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for appointment in appointments[:appointments[-3]] %}
-                                        {% if appointment.ap_type == 'Done' %}
+                                    {% for appointment, prescript in details %}
+                                        {% if appointment.ap_type == "Done" %}
                                         <tr>
                                             <td>{{ appointment.ap_number }}</td>
                                             <td>{{ appointment.ap_clientName }}</td>
@@ -54,7 +54,7 @@
                                             <td>{{ appointment.ap_endTime }}</td>
                                             <td>{{ appointment.ap_status }}</td>
                                             <td class="text-white">
-                                                <span><a type="button" class="btn btn-warning btn-sm " data-toggle="modal" data-target="#paymentModal{{appointment.ap_id}}">View Details</a></span>
+                                                <span><a type="button" class="btn btn-warning btn-sm " data-toggle="modal" data-target="#paymentModal{{prescript.presc_id}}">View Details</a></span>
                                             </td>
                                         </tr>
                                         {% endif %}
@@ -73,13 +73,13 @@
    <!-- end row -->
 
 
-  <!-- Payment Modal -->
-  {% for appointment in appointments %}
-  <div class="modal fade" id="paymentModal{{appointment.ap_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+  <!-- View Modal -->
+  {% for appointment, prescript in details %}
+  <div class="modal fade lg" id="paymentModal{{prescript.presc_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Payment</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">View Details</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -88,7 +88,7 @@
                 <form method="POST">
                     <div class="row">
                         <input class="form-control" value="{{appointment.ap_id}}" name="payment_appointmentID" type="hidden" />
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                             <label class="form-label" for="">Appointment ID</label>
                             <input class="form-control" value="{{ appointment.ap_number }}" type="text" readonly/>
                         </div>
@@ -96,20 +96,33 @@
                             <label class="form-label" for="">Client Name</label>
                             <input class="form-control" value="{{ appointment.ap_clientName }}" type="text" readonly/>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label" for="">Service Name</label>
                             <input class="form-control" value="{{ appointment.ap_service }}" type="text" readonly/>
                         </div>
-                        <div class="col-md-12">
-                            <label class="form-label" for="">Condition</label>
-                            <textarea class="form-control" id="" rows="4" readonly>{{appointment.ap_comorbidity}}</textarea>
-                        </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label" for="">Service Amount</label>
                             <input class="form-control" value="{{ appointment.ap_amount }}" type="text" readonly/>
-                        </div><div class="col-md-6">
+                        </div>
+                        <div class="col-md-4">
                             <label class="form-label" for="">Date</label>
                             <input class="form-control" value="{{ appointment.ap_date }}" type="text" readonly/>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Treatment</label>
+                            <textarea class="form-control" id="" rows="4" readonly>{{ prescript.presc_treatment }}</textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Medication</label>
+                            <textarea class="form-control" id="" rows="4" readonly>{{ prescript.presc_medication }}</textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Remarks</label>
+                            <textarea class="form-control" id="" rows="4" readonly>{{ prescript.presc_remarks }}</textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Condition</label>
+                            <textarea class="form-control" id="" rows="4" readonly>{{ appointment.ap_comorbidity }}</textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -120,7 +133,7 @@
             </div>
         </div>
     </div>
-    {% endfor %}
+{% endfor %}
 
 
 {%endblock%}
