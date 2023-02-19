@@ -34,6 +34,7 @@
                                         <th>Quantity</th>
                                         <th>Total</th>
                                         <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,6 +46,7 @@
                                         <td>{{ order.order_quantity }}</td>
                                         <td>{{ order.order_total }}</td> 
                                         <td><a class="btn btn-danger btn-sm">{{ order.order_status }}</a></td>
+                                        <span><a class="btn btn-danger btn-sm" href="https://fth-clinic.herokuapp.com/payment/deny/{{ order.order_id }}" onclick="deny()" >Delete</a></span>
                                     </tr>
                                         {% endif %}
                                     {% endfor %}
@@ -65,7 +67,7 @@
 <script>
     function deny() {
         Swal.fire(
-          'Cancelled',
+          'Canceled',
           '',
           'success'
         )
