@@ -351,4 +351,5 @@ def home(request: Request):
 def logout(response: Response):
     response = RedirectResponse(url='/users/login', status_code=307)
     response.delete_cookie('token')
+    response.delete_cookie('type')
     return response

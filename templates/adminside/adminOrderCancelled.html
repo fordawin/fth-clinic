@@ -38,7 +38,7 @@
                                 </thead>
                                 <tbody>
                                     {% for order in order_list %}
-                                        {% if order.order_status == 'Cancelled' %}
+                                        {% if order.order_status == 'Canceled' %}
                                     <tr>
                                         <td>{{ order.order_user }}</td>
                                         <td>{{ order.order_remarks }}</td>

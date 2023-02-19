@@ -75,15 +75,16 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
     try:
         pending = db.query(Appointment).filter(Appointment.ap_status == "Unpaid").all()
         paid = db.query(Appointment).filter(Appointment.ap_status == "Paid").all()
-        cancel = db.query(Appointment).filter(Appointment.ap_status == "Cancelled").all()
+        cancel = db.query(Appointment).filter(Appointment.ap_status == "Canceled").all()
         appointment = db.query(Appointment).all()
+        order = db.query(Orders).all()
         active_users = db.query(User_credential).filter(User_credential.user_status == "Active").all()
-        print(active_users)
-        today = date.today()
 
-        new_pending = db.query(Appointment).filter(Appointment.ap_status == "Unpaid" , Appointment.ap_date == today).all()
-        new_paid = db.query(Appointment).filter(Appointment.ap_status == "Paid" , Appointment.ap_date == today).all()
-        new_cancel = db.query(Appointment).filter(Appointment.ap_status == "Cancelled" , Appointment.ap_date == today).all()
+        order_pending = db.query(Orders).filter(Orders.order_status == "Pending").all()
+        order_paid = db.query(Orders).filter(Orders.order_status == "Paid").all()
+        order_cancel = db.query(Orders).filter(Orders.order_status == "Canceled").all()
+        order_pickup = db.query(Orders).filter(Orders.order_status == "For Pick-up").all()
+
         return templates.TemplateResponse("adminside/admin.html", {
             "request": request,
             "pending": pending,
@@ -91,9 +92,11 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
             "active_users": active_users,
             "cancel": cancel,
             "appointments": appointment,
-            "new_pending": new_pending,
-            "new_paid": new_paid,
-            "new_cancel": new_cancel
+            "order_pending": order_pending,
+            "order_paid": order_paid,
+            "order_cancel": order_cancel,
+            "order_pickup": order_pickup,
+            "orders": order
         })
 
     except Exception as e:
@@ -782,7 +785,7 @@ def deactivate(id: str, db: Session = Depends(get_db)):
 
 @router.post('/productDiscount/{id}')
 def discount(id: str, product: Discount, db: Session = Depends(get_db)):
-
+    db.expire_all()
     if not db.query(Product).filter(Product.product_id == id).update({'product_discount': product.product_discount}):
         raise HTTPException(404, 'Product not found')
 

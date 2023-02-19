@@ -7,6 +7,7 @@ from database import get_db
 from dependencies import get_token, check_employee
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, HTMLResponse
+import time
 
 #img
 from fastapi import File, UploadFile
@@ -147,7 +148,7 @@ def update(id: str, user: productUpdate, db: Session = Depends(get_db)):
 
         return {'message': 'Product updated successfully.'} 
     
-@router.post('/{id}')
+@router.get('/{id}')
 def deactivate(id: str, db: Session = Depends(get_db)):
     # deletion = db.query(Product).filter(Product.product_id == id).first()
 
@@ -155,7 +156,12 @@ def deactivate(id: str, db: Session = Depends(get_db)):
         raise HTTPException(404, 'Product to delete is not found')
 
     db.commit()
-    return {'message': 'Product removed successfully.'}
+
+    time.sleep(1)
+    
+    response = RedirectResponse(url='/payment/products/', status_code=302)
+
+    return response
 
 @router.post('/discount/{id}')
 def discount(id: str, product: Discount, db: Session = Depends(get_db)):
@@ -164,5 +170,7 @@ def discount(id: str, product: Discount, db: Session = Depends(get_db)):
         raise HTTPException(404, 'Product not found')
 
     db.commit()
+    db.expire_all()
     return {'message': 'Discount successfully placed.'}
+
 

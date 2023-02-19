@@ -52,20 +52,9 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         query2 = db.query(Timeslot).all()
         query3 = db.query(User_credential).all()
         query4 = db.query(Client).all()
-        applen = int(len(query))
-        serlen = int(len(query1))
-        clilen = int(len(query3))
-        namlen = int(len(query4))
-        serlist = [(serlen)]
-        applist = [(applen)]
-        clilist = [(clilen)]
-        namlist = [(namlen)]
-        timlen = int(len(query2))
-        timlist = [(timlen)]
-        lst_all = query + query1 + query2 + query3 + query4 + applist + serlist + clilist + namlist + timlist
         return templates.TemplateResponse('employeeside/employeePayment.html', {
             'request': request,
-            'appointments': lst_all,
+            'appointments': query,
             'services': query1,
             'timeslots': query2,
             'usercreds': query3,

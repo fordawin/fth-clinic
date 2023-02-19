@@ -42,7 +42,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for appointment in appointments[:appointments[-5]] %}
+                                    {% for appointment in appointments %}
                                         {% if appointment.ap_status == 'Unpaid' %}
                                         <tr>
                                             <td>{{ appointment.ap_number }}</td>
@@ -104,7 +104,7 @@
                             </select>
                         </div>
                         <div class="col-md-12">
-                            <label class="form-label" for="">Cormordibidities / Symptoms</label>
+                            <label class="form-label" for="">Condition / Symptoms</label>
                             <textarea class="form-control" name="ap_comorbidity" id="" rows="4"></textarea>
                         </div>
                         <div class="col-md-8" id="selectTimeslot">
@@ -142,16 +142,17 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="https://fth-clinic.herokuapp.com/payment/base" method="POST" class="form" id="paypaypay">
+                    {{ appointment.ap_id|pprint }}
+                <form class="form" id="paypaypay">
                     <div class="row">
-                        <input class="form-control" value="{{appointment.ap_id}}" name="payment_appointmentID" type="hidden" />
+                        <input class="form-control" value="{{appointment.ap_id}}" name="payment_appointmentID" type="hidden" id="paymentID" />
                         <div class="col-md-8">
                             <label class="form-label" for="">Payment Method</label>
-                            <input class="form-control" type="text" name="payment_mode" value="Cash" readonly/>
+                            <input class="form-control" type="text" name="payment_mode" value="Cash" id="paymentMode" readonly/>
                         </div>
                         <div class="col-md-8">
                             <label class="form-label" for="">Payment Amount</label>
-                            <input class="form-control" name="payment_amount" type="number" />
+                            <input class="form-control" name="payment_amount" type="number" id="paymentAmount" />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -233,90 +234,82 @@
     <script type="text/javascript">
 
         function windowsOpen(message) {
-            window.open("base", "_self").reload()
+            window.open("", "_self").reload()
             }
         
-          $("#paypaypay").submit(function(e) {
-              e.preventDefault();
-              var frm = $("#paypaypay");
-              var data = {};
-              $.each(this, function(i, v){
-                  var input = $(v);
-                  data[input.attr("name")] = input.val();
-                  delete data["undefined"];
-              });
-              $.ajax({
-                  contentType:"application/json",
-                  type:frm.attr("method"),
-                  url:frm.attr("action"),
-                  dataType:'text',
-                  data: JSON.stringify(data),
-                  success: function(data) {
-                    confirm();
-                    const myTimeout = setTimeout(windowsOpen, 2000);
-                  },
-                  error: function(error) {
-                    resAlert = error.responseText.slice(11,-2)
-                    sweetError(resAlert);
-                  }
-              })
-          });
+        //   $("#paypaypay").submit(function(e) {
+        //       e.preventDefault();
+        //       var frm = $("#paypaypay");
+            //   var paymentMode = $("#paymentMode").val();
+            //   var paymentAmount = $("#paymentAmount").val();
+            //   var paymentID = $("#paymentID").val();
+            //   var data = {};
+            //   $.each(this, function(i, v){
+            //       var input = $(v);
+            //       data[input.attr("name")] = input.val();
+            //       delete data["undefined"];
+            //   });
+            //     var server_data = [
+            //     {"payment_mode": paymentMode},
+            //     {"payment_amount": paymentAmount},
+            //     {"payment_appointmentID": paymentID}
+            //     ];
+            //     $.ajax({
+            //     type: "POST",
+            //     url: "/payment/base",
+            //     data: JSON.stringify(server_data),
+            //     contentType: "application/json",
+            //     dataType: 'json',
+            //     success: function(result) {
+            //         console.log(result);
+            //     } 
+            // })
+            // });
 
-          $("#doctorUpdate").submit(function(e) {
-              e.preventDefault();
-              var frm = $("#doctorUpdate");
-              var data = {};
-              $.each(this, function(i, v){
-                  var input = $(v);
-                  data[input.attr("name")] = input.val();
-                  delete data["undefined"];
-              });
-              console.log(data);
-              $.ajax({
-                  contentType:"application/json",
-                  type:frm.attr("method"),
-                  url:frm.attr("action"),
-                  dataType:'text',
-                  data: JSON.stringify(data),
-                  success: function(data) {
-                    confirm();
-                    const myTimeout = setTimeout(windowsOpen, 2000);
-                  },
-                  error: function(error) {
-                    resAlert = error.responseText.slice(11,-2)
-                    sweetError(resAlert);
-                  }
-              })
-          });
+            $(document).ready(function() {
+            // Submit the form via AJAX when the user clicks "Add Item"
+            
+            $("#paypaypay").submit(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "https://fth-clinic.herokuapp.com/payment/base",
+                    data: $('#paypaypay').serialize(),
+                    success: function(data) {
+                        console.log(data);
+                    }
+                });
+            });
+        });
             function windowsOpen(){
                 window.open("base", "_self").reload()
             }
-            $("#appointmentForm").submit(function(e) {
-                e.preventDefault();
-                var frm = $("#appointmentForm");
-                var data = {};
-                $.each(this, function(i, v){
-                    var input = $(v);
-                    data[input.attr("name")] = input.val();
-                    delete data["undefined"];
-                });
-                console.log(data);
-                $.ajax({
-                    contentType:"application/json; charset=utf-8",
-                    type:frm.attr("method"),
-                    url:frm.attr("action"),
-                    dataType:'text',
-                    data: JSON.stringify(data),
-                    success: function(data) {
-                        confirmAppointment();
-                        const myTimeout = setTimeout(windowsOpen, 2000);
-                    },
-                    error: function(error) {
-                    resAlert = error.responseText.slice(11,-2);
-                    sweetError(resAlert);
-                    }
-                })
-            });
+            // $("#appointmentForm").submit(function(e) {
+            //     e.preventDefault();
+            //     var frm = $("#appointmentForm");
+            //     var data = {};
+            //     $.each(this, function(i, v){
+            //         var input = $(v);
+            //         data[input.attr("name")] = input.val();
+            //         delete data["undefined"];
+            //     });
+            //     console.log(data);
+            //     $.ajax({
+            //         contentType:"application/json",
+            //         type:frm.attr("method"),
+            //         url:frm.attr("action"),
+            //         dataType:'text',
+            //         data: JSON.stringify(data),
+            //         success: function(data) {
+            //             confirmAppointment();
+            //             const myTimeout = setTimeout(windowsOpen, 2000);
+            //         },
+            //         error: function(error) {
+            //         resAlert = error.responseText.slice(11,-2);
+            //         sweetError(resAlert);
+            //         }
+            //     })
+            // });
             $(function() {
                 $('.selectpicker').selectpicker();
             });
