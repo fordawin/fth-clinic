@@ -23,162 +23,163 @@
 									</div>
 						</div>
 						<!-- end row -->
-							<div class="row">
-									<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
-											<div class="card-box noradius noborder bg-danger" >
-													
-													<i class="fa fa-exclamation-triangle float-right text-white" aria-hidden="true"></i>
-													<h6 class="text-white text-uppercase m-b-20">Appointment / Cancel</h6>
-													<h1 class="m-b-20 text-white counter">{{ cancel|length }}</h1>
-													<span class="text-white">{{ cancel|length }} New Cancel</span>
-											</div>
-									</div>
+						<div class="row">
+								<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
+										<div class="card-box noradius noborder bg-danger" >
+												
+												<i class="fa fa-exclamation-triangle float-right text-white" aria-hidden="true"></i>
+												<h6 class="text-white text-uppercase m-b-20">Appointment / Cancel</h6>
+												<h1 class="m-b-20 text-white counter">{{ cancel|length }}</h1>
+												<span class="text-white">{{ cancel|length }} New Cancel</span>
+										</div>
+								</div>
 
-									<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
-											<div class="card-box noradius noborder bg-success" >
-												<i class="fa fa-file float-right text-white" aria-hidden="true"></i>
-													<h6 class="text-white text-uppercase m-b-20">Appointment / Done</h6>
-													<h1 class="m-b-20 text-white counter">{{ paid|length }}</h1>
-													<span class="text-white">{{ paid|length }} New Entries</span>
-											</div>
-									</div>
+								<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
+										<div class="card-box noradius noborder bg-success" >
+											<i class="fa fa-file float-right text-white" aria-hidden="true"></i>
+												<h6 class="text-white text-uppercase m-b-20">Appointment / Done</h6>
+												<h1 class="m-b-20 text-white counter">{{ paid|length }}</h1>
+												<span class="text-white">{{ paid|length }} New Entries</span>
+										</div>
+								</div>
 
-									<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
-											<div class="card-box noradius noborder bg-warning" >
-												<i class="fa fa-hourglass-end float-right text-white" aria-hidden="true"></i>
-													<h6 class="text-white text-uppercase m-b-20">Appointment / Pending</h6>
-													<h1 class="m-b-20 text-white counter">{{ pending|length }}</h1>
-													<span class="text-white">{{ pending|length }} New Pending</span>
-											</div>
-									</div>
-							</div>
-							<!-- end row -->
-				
-							<div class="row">
-									<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-3">						
-										<div class="card mb-3 ">
-											<div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
-												<h3><i class="fa fa-repeat text-warning" aria-hidden="true"></i> Recent Orders</h3>
-												Daily
-											</div>
-											<div class="card-body">
-												<!-- dashbaord  -->
-												<div class="row">
-													<div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
-														<div class="card-box noradius noborder bg-success" >
-															<h6 class="text-white text-uppercase m-b-20">Done</h6>
-															<h1 class="m-b-20 text-white counter">{{ order_paid|length }}</h1>
-															<span class="text-white">Order</span>
-														</div>
+								<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
+										<div class="card-box noradius noborder bg-warning" >
+											<i class="fa fa-hourglass-end float-right text-white" aria-hidden="true"></i>
+												<h6 class="text-white text-uppercase m-b-20">Appointment / Pending</h6>
+												<h1 class="m-b-20 text-white counter">{{ pending|length }}</h1>
+												<span class="text-white">{{ pending|length }} New Pending</span>
+										</div>
+								</div>
+						</div>
+						<!-- end row -->
+			
+						<div class="row">
+
+								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-12">						
+									<div class="card mb-3 ">
+										<div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
+											<h3><i class="fa fa-repeat text-warning" aria-hidden="true"></i> Recent Orders</h3>
+											Daily
+										</div>
+										<div class="card-body">
+											<!-- dashbaord  -->
+											<div class="row">
+												<div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+													<div class="card-box noradius noborder bg-success" >
+														<h6 class="text-white text-uppercase m-b-20">Done</h6>
+														<h1 class="m-b-20 text-white counter">{{ order_paid|length }}</h1>
+														<span class="text-white">Order</span>
 													</div>
-													
-													<div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
-														<div class="card-box noradius noborder bg-warning" >
-															<h6 class="text-white text-uppercase m-b-20">Pending</h6>
-															<h1 class="m-b-20 text-white counter">{{ order_pending|length }}</h1>
-															<span class="text-white">Order</span>
-														</div>
+												</div>
+												
+												<div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+													<div class="card-box noradius noborder bg-warning" >
+														<h6 class="text-white text-uppercase m-b-20">Pending</h6>
+														<h1 class="m-b-20 text-white counter">{{ order_pending|length }}</h1>
+														<span class="text-white">Order</span>
 													</div>
-									
-													<div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
-														<div class="card-box noradius noborder bg-info" >
-															<h6 class="text-white text-uppercase m-b-20">For pick-up</h6>
-															<h1 class="m-b-20 text-white counter">{{ order_pickup|length }}</h1>
-															<span class="text-white">Order</span>
-														</div>
+												</div>
+								
+												<div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+													<div class="card-box noradius noborder bg-info" >
+														<h6 class="text-white text-uppercase m-b-20">For pick-up</h6>
+														<h1 class="m-b-20 text-white counter">{{ order_pickup|length }}</h1>
+														<span class="text-white">Order</span>
 													</div>
-													<div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
-														<div class="card-box noradius noborder bg-danger" >
-															<h6 class="text-white text-uppercase m-b-20">Canceled</h6>
-															<h1 class="m-b-20 text-white counter">{{ order_cancel|length }}</h1>
-															<span class="text-white">Order</span>
-														</div>
+												</div>
+												<div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+													<div class="card-box noradius noborder bg-danger" >
+														<h6 class="text-white text-uppercase m-b-20">Canceled</h6>
+														<h1 class="m-b-20 text-white counter">{{ order_cancel|length }}</h1>
+														<span class="text-white">Order</span>
 													</div>
 												</div>
 											</div>
-											<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-										</div><!-- end card-->					
-									</div>
-									
-									
-							</div>
-							<!-- end row -->
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
-									<div class="card mb-3 ">
-										<div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
-											<h3><i class="fa fa-table text-warning" aria-hidden="true"></i> Recent Appointment Logs</h3>
-										</div>
-										<div class="card-body" style="overflow-x:auto;">
-
-											<table class="table table-hover table-control no-footer" id="printAppointment">
-
-												<thead>
-													<tr>
-														<th>Appointment ID</th>
-														<th>Client's Name</th>
-														<th>Type</th>
-														<th>Condition</th>
-														<th>Date</th>
-														<th>Start Time - End Time</th>
-														<th>Status</th>
-													</tr>
-												</thead>
-												<tbody>
-													{% for appointment in appointments %}
-													<tr>
-														<td>{{ appointment.ap_number}}</td>
-														<td>{{ appointment.ap_clientName }}</td>
-														<td>{{ appointment.ap_type }}</td>
-														<td>{{ appointment.ap_comorbidity }}</td>
-														<td>{{ appointment.ap_date }}</td>
-														<td>{{ appointment.ap_startTime }} - {{ appointment.ap_endTime }}</td>
-														<td>{{ appointment.ap_status }}</td>
-													</tr>
-													{% endfor %}
-												</tbody>
-											</table>
 										</div>
 										<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 									</div><!-- end card-->					
 								</div>
-							
-
-							
-								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
-									<div class="card mb-3 ">
-										<div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
-											<h3><i class="fa fa-table text-warning" aria-hidden="true"></i> Inventory Inflow / Outflow</h3>
-										</div>
-											
-										<div class="card-body" style="overflow-x:auto;">
-											<table class="table table-hover table-control no-footer" id="printProduct">
-												<thead>
-													<tr>
-														<th>Name</th>
-														<th>Product Name</th>
-														<th>Price</th>
-														<th>Quantity</th>
-														<th>Total</th>
-													</tr>
-												</thead>
-												<tbody>
-													{% for order in orders %}
-													<tr>
-														<td>{{order.order_user}}</td>
-														<td>{{order.order_remarks}}</td>
-														<td>{{order.order_price}}</td>
-														<td>{{order.order_quantity}}</td>
-														<td>{{order.order_total}}</td>
-													</tr>
-													{% endfor %}
-												</tbody>
-											</table>
-										</div>
-										<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-									</div><!-- end card-->					
+								
+								
+						</div>
+						<!-- end row -->
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
+							<div class="card mb-3 ">
+								<div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
+									<h3><i class="fa fa-table text-warning" aria-hidden="true"></i> Recent Appointment Logs</h3>
 								</div>
-							</div>
+								<div class="card-body" style="overflow-x:auto;">
+
+									<table class="table table-hover table-control no-footer" id="printAppointment">
+
+										<thead>
+											<tr>
+												<th>Appointment ID</th>
+												<th>Client's Name</th>
+												<th>Type</th>
+												<th>Condition</th>
+												<th>Date</th>
+												<th>Start Time - End Time</th>
+												<th>Status</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for appointment in appointments %}
+											<tr>
+												<td>{{ appointment.ap_number}}</td>
+												<td>{{ appointment.ap_clientName }}</td>
+												<td>{{ appointment.ap_type }}</td>
+												<td>{{ appointment.ap_comorbidity }}</td>
+												<td>{{ appointment.ap_date }}</td>
+												<td>{{ appointment.ap_startTime }} - {{ appointment.ap_endTime }}</td>
+												<td>{{ appointment.ap_status }}</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+								<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+							</div><!-- end card-->					
+						</div>
+					
+
+					
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
+							<div class="card mb-3 ">
+								<div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
+									<h3><i class="fa fa-table text-warning" aria-hidden="true"></i> Inventory Inflow / Outflow</h3>
+								</div>
+									
+								<div class="card-body" style="overflow-x:auto;">
+									<table class="table table-hover table-control no-footer" id="printProduct">
+										<thead>
+											<tr>
+												<th>Name</th>
+												<th>Product Name</th>
+												<th>Price</th>
+												<th>Quantity</th>
+												<th>Total</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for order in orders %}
+											<tr>
+												<td>{{order.order_user}}</td>
+												<td>{{order.order_remarks}}</td>
+												<td>{{order.order_price}}</td>
+												<td>{{order.order_quantity}}</td>
+												<td>{{order.order_total}}</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+								<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+							</div><!-- end card-->					
+						</div>
+					</div>
             </div>
 			<!-- END container-fluid -->
 
