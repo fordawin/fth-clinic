@@ -240,7 +240,7 @@ def appointment(request: Request, token: str = Cookie('token'), db: Session = De
     query1 = db.query(Prescription).all()
     id = [token["id"]]
     lst_all = query + query1 + id
-    print(lst_all)
+  
     try:
         return templates.TemplateResponse('clientside/appointment.html', {
             'request': request,
