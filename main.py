@@ -8,11 +8,14 @@ from database import get_db, engine
 from models.timeSlotModel import Timeslot
 from dependencies import get_token
 import models
+from fastapi.templating import Jinja2Templates
+
+
 
 models.paymentModel.Base.metadata.create_all(bind=engine)
 
 # Register template folder
-template = Jinja2Templates('templates')
+templates = Jinja2Templates('templates')
 
 
 app = FastAPI()
@@ -40,3 +43,8 @@ app.include_router(orderRoute.router)
 @app.get('/', response_class=HTMLResponse)
 def index():
     return RedirectResponse(url='/users', status_code=302)
+
+
+@app.get("/logged")
+def logged(request: Request):
+    return templates.TemplateResponse("/logged.html", {"request": request}) 

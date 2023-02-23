@@ -12,6 +12,7 @@ from models.timeSlotModel import Timeslot
 from models.appointmentModel import Appointment
 from models.ordersModel import Orders
 from models.productsModel import Product
+from models.prescriptionModel import Prescription
 from schemas.appointmentSchema import AppointmentBase
 from database import get_db
 from dependencies import get_token
@@ -54,6 +55,23 @@ router = APIRouter(
 )
 
 templates = Jinja2Templates(directory="templates")
+
+
+@router.get("/appointments")
+def appointment(request: Request, token: str = Cookie('token'), db: Session = Depends(get_db)):
+    token = jwt.decode(token, secret, algorithms=['HS256'])
+    query = db.query(Appointment).all()
+    query1 = db.query(Prescription).all()
+    id = [token["id"]]
+    lst_all = query + query1 + id
+  
+    try:
+        return templates.TemplateResponse('clientside/appointment.html', {
+            'request': request,
+            'appointment': lst_all
+        })
+    except Exception as e:
+        print(e)
 
 @router.post('/uploadProfile/{id}', status_code=status.HTTP_202_ACCEPTED)
 async def upload_profile(id: str, file: UploadFile = File(...), db: Session = Depends(get_db)):

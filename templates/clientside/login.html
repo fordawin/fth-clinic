@@ -155,7 +155,7 @@ $("#loginForm").submit(function(e) {
          const type = document.cookie
 
          if (type == 'type=Client'){
-            window.open("appointments", "_self").reload()
+            window.open("/client/appointments", "_self").reload()
          }
 
          if (type == 'type=Doctor'){
