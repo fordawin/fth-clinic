@@ -58,11 +58,9 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         applist = [(applen)]
         timlen = int(len(query2))
         timlist = [(timlen)]
-        print(applist)
-        
-        print(applen)
+
         lst_all = query + query1 + query2 + applist + serlist + timlist
-        print(lst_all)
+
         return templates.TemplateResponse('adminside/adminAppointments.html', {
             'request': request,
             'appointments': lst_all
@@ -171,7 +169,6 @@ def deactivate(id: str, db: Session = Depends(get_db)):
 @router.post('/employee', response_class=HTMLResponse)
 async def store(form_data: AppointmentEmployee = Depends(AppointmentEmployee.as_form), db: Session = Depends(get_db)):
 
-    print(form_data)
     serbisyo = db.query(Service).filter(Service.service_id == form_data.ap_serviceType).first()
 
     oras = db.query(Timeslot).filter(Timeslot.slot_id == form_data.ap_slotID).first()

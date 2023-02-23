@@ -292,20 +292,7 @@ function updateProgressbar() {
           }
       })
   });
-     // function Login(){
-  
-     //    const promise = $.ajax({
-     //     type: 'POST',
-     //     url: 'http://127.0.0.1:8000/users/login',
-     //     contentType: "application/json",
-     //     dataType: "json",
-     //     data: JSON.stringify( {"user_email": $("#user_email").val(), "user_password": $("#user_password").val()})
-     //    })
-     //    promise.then(function (data){
-     //       console.log(data);
-     //       window.open("appointments.html", "_self").reload(),
-     //       alert("Login Successfully")
-     //    })
-     // }
+
   </script>
+  <script src="{{url_for('static', path='/assets/js/sessioncheckers.js')}}"></script>
 {% endblock %}

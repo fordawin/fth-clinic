@@ -238,7 +238,6 @@ def profile(request: Request, token: str = Cookie('token'), db: Session = Depend
     token = jwt.decode(token, secret, algorithms=['HS256'])
     id = [token["id"]]
     lst_all = query + query1 + query2 + query3 + id
-    print(lst_all)
     try:
         return templates.TemplateResponse('clientside/profile.html', {
                 'request': request,
@@ -273,7 +272,6 @@ def order(request: Request, token: str = Cookie('token'), db: Session = Depends(
     query = db.query(Orders).all()
     id = [token["id"]]
     lst_all = query + id
-    print(lst_all)
     try:
         return templates.TemplateResponse('clientside/orders.html', {
             'request': request,

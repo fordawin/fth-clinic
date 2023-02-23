@@ -93,11 +93,8 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         applist = [(applen)]
         timlen = int(len(query2))
         timlist = [(timlen)]
-        print(applist)
-        
-        print(applen)
         lst_all = query + query1 + query2 + applist + serlist + timlist
-        print(lst_all)
+
         return templates.TemplateResponse('doctorside/doctorPrescription.html', {
             'request': request,
             'appointments': lst_all
@@ -138,11 +135,9 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         applist = [(applen)]
         timlen = int(len(query2))
         timlist = [(timlen)]
-        print(applist)
-        
-        print(applen)
+
         lst_all = query + query1 + query2 + applist + serlist + timlist
-        print(lst_all)
+
         return templates.TemplateResponse('doctorside/doctorPrescriptionDone.html', {
             'request': request,
             'appointments': lst_all

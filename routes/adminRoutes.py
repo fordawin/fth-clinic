@@ -78,7 +78,6 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
         cancel = db.query(Appointment).filter(Appointment.ap_status == "Cancelled").all()
         appointment = db.query(Appointment).all()
         active_users = db.query(User_credential).filter(User_credential.user_status == "Active").all()
-        print(active_users)
         today = date.today()
 
         new_pending = db.query(Appointment).filter(Appointment.ap_status == "Unpaid" , Appointment.ap_date == today).all()
@@ -349,7 +348,6 @@ def createClient(request: Request, db: Session = Depends(get_db)):
 
 @router.post('/client', response_class=HTMLResponse)
 async def createClient(response: Response, form_data: ClientBase, db: Session = Depends(get_db)):
-    print(form_data)
     user_duplicate = db.query(User_credential).filter(User_credential.user_username == form_data.user_username).first()
     user_email_dup = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
     user_num_cl = db.query(Client).filter(Client.cl_contactNo == form_data.cl_contactNo).first()
@@ -456,11 +454,8 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         applist = [(applen)]
         timlen = int(len(query2))
         timlist = [(timlen)]
-        print(applist)
-        
-        print(applen)
         lst_all = query + query1 + query2 + applist + serlist + timlist
-        print(lst_all)
+
         return templates.TemplateResponse('adminside/adminAppointments.html', {
             'request': request,
             'appointments': lst_all
@@ -531,11 +526,7 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         applist = [(applen)]
         timlen = int(len(query2))
         timlist = [(timlen)]
-        print(applist)
-        
-        print(applen)
         lst_all = query + query1 + query2 + applist + serlist + timlist
-        print(lst_all)
         return templates.TemplateResponse('adminside/adminPayment.html', {
             'request': request,
             'appointments': lst_all
@@ -556,11 +547,7 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         applist = [(applen)]
         timlen = int(len(query2))
         timlist = [(timlen)]
-        print(applist)
-        
-        print(applen)
         lst_all = query + query1 + query2 + applist + serlist + timlist
-        print(lst_all)
         return templates.TemplateResponse('adminside/adminPaymentDone.html', {
             'request': request,
             'appointments': lst_all

@@ -204,8 +204,6 @@ async def deactivate(id: str, db: Session = Depends(get_db)):
 
     users = db.query(User_credential).filter(User_credential.user_id == cancel.order_userid).first()
 
-    print(users)
-
     await for_pickup([users.user_email])
 
     time.sleep(1)
