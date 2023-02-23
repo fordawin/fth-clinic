@@ -5,13 +5,19 @@ from schemas.userCredentialSchema import LoginForm, TokenData, forgotPass
 from models.userCredentialModel import User_credential
 from schemas.clientSchema import clientUpdate, clientUpdate2
 from models.clientModel import Client
-from models.doctorModel import Doctor
 from models.employeeModel import Employee
+from models.doctorModel import Doctor
+from models.serviceModel import Service
+from models.timeSlotModel import Timeslot
+from models.appointmentModel import Appointment
+from models.ordersModel import Orders
+from models.productsModel import Product
+from schemas.appointmentSchema import AppointmentBase
 from database import get_db
 from dependencies import get_token
 from fastapi.templating import Jinja2Templates
 from passlib.context import CryptContext
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, HTMLResponse
 from for_email import *
 import time
 import random
@@ -44,36 +50,10 @@ def password_hash(password):
 
 router = APIRouter(
     prefix='/client',
-    tags=['client']
+    tags=['client'], dependencies=[Depends(get_token)]
 )
 
 templates = Jinja2Templates(directory="templates")
-
-# app.mount("/../static", StaticFiles(directory="static"), name="static")
-# @router.get("/")
-# def registration(request: Request):
-#     return templates.TemplateResponse("clientside/home.html", {"request": request})
-
-# @router.get("/login")
-# def registration(request: Request):
-#     return templates.TemplateResponse("clientside/login.html", {"request": request})
-
-# @router.post('/login')
-# async def verify(response: Response, request: Request, form_data: LoginForm = Depends(LoginForm.as_form), db: Session = Depends(get_db)):
-
-#     # email = user.user_email
-#     # password = form.get("password")
-#     try:
-#         user = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
-#         if user:
-#             match = password_verify(form_data.user_password, user.user_password)
-#             if match:
-#                 data = TokenData(email = user.user_email, type = user.user_type)
-#                 token = jwt.encode(dict(data), secret)
-#                 response.set_cookie('token', token, httponly=True)
-#                 return templates.TemplateResponse("clientside/home.html", {"request": request})
-#     except Exception as e:
-#         print(e)
 
 @router.post('/uploadProfile/{id}', status_code=status.HTTP_202_ACCEPTED)
 async def upload_profile(id: str, file: UploadFile = File(...), db: Session = Depends(get_db)):
@@ -106,36 +86,9 @@ async def upload_profile(id: str, file: UploadFile = File(...), db: Session = De
 
     # file_url = "localhost:8000" + generate_name[1:]
 
-    response = RedirectResponse(url='/users/profile', status_code=302)
+    response = RedirectResponse(url='/client/profile', status_code=302)
 
     return response
-
-
-@router.get('/')
-def findAll(db: Session = Depends(get_db)):
-    users = db.query(Client).filter(Client.cl_status == "Active").all()
-
-    return {'users': users}
-
-@router.get('/{id}', status_code=status.HTTP_202_ACCEPTED)
-def findOne(id: str, db: Session = Depends(get_db)):
-
-    user = db.query(Client).filter(Client.cl_id == id).first()
-
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f'CLient does not exists')
-
-    return {'user': user}
-
-# @router.get('/{id}', status_code=status.HTTP_202_ACCEPTED)
-# def findOne(id: str, db: Session = Depends(get_db)):
-
-#     user = db.query(Client).filter(Client.cl_id == id).first()
-
-#     if not user:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f'CLient does not exists')
-
-#     return {'user': user}
 
 @router.post('/{id}', response_model=clientUpdate)
 def update(id: str, form_data: clientUpdate = Depends(clientUpdate.as_form), db: Session = Depends(get_db)):
@@ -175,7 +128,7 @@ def update(id: str, form_data: clientUpdate = Depends(clientUpdate.as_form), db:
 
     time.sleep(1)
 
-    response = RedirectResponse(url='/users/profile', status_code=302)
+    response = RedirectResponse(url='/client/profile', status_code=302)
 
     return response
 
@@ -196,26 +149,6 @@ def update(id: str, user: clientUpdate, db: Session = Depends(get_db)):
             # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
         db.add(verify)
         db.commit()
-        
-    # else:
-    #     if not user_num_cl: 
-    #         if not user_num_doc: 
-    #             if not user_num_em:
-    #                     user_data = user.dict(exclude_unset=True)
-    #                     for key, value in user_data.items():
-    #                         setattr(verify, key, value)
-    #                         # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
-    #                     db.add(verify)
-    #                     db.commit()
-
-    #                     return {'message': 'Client updated successfully.'} 
-    #             else:
-    #                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
-    #         else:
-    #             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
-    #     else:
-    #         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Doctor. Mobile Number already exists')
-
   
 @router.get('/deactivate/{id}')
 def deactivate(id: str, db: Session = Depends(get_db)):
@@ -232,3 +165,119 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     response = RedirectResponse(url='/admin/client/', status_code=302)
     return response
 
+@router.get("/about2")
+def about(request: Request):
+    return templates.TemplateResponse("clientside/about_after_login.html", {"request": request})
+
+@router.get("/home2")
+def home(request: Request, db: Session = Depends(get_db)):
+    query1 = db.query(Service).all()
+    query2 = db.query(Timeslot).all()
+    return templates.TemplateResponse('clientside/home_after_login.html', {
+        'request': request,
+        'services': query1,
+        'timeslots': query2
+    })  
+
+@router.post('/home3', response_class=HTMLResponse)
+async def home(form_data: AppointmentBase, token: str = Cookie('token'), db: Session = Depends(get_db)):
+    token = jwt.decode(token, secret, algorithms=['HS256'])
+
+    serbisyo = db.query(Service).filter(Service.service_id == form_data.ap_serviceType).first()
+
+    oras = db.query(Timeslot).filter(Timeslot.slot_id == form_data.ap_slotID).first()
+
+    cliente = db.query(Client).filter(Client.cl_user_credential == token["id"]).first()
+
+    simula = oras.slot_start
+    
+    hangganan = oras.slot_end
+
+    sched = db.query(Appointment).filter(Appointment.ap_slotID == form_data.ap_slotID).all()
+
+    bilang = int(len(sched))
+
+    kumpara = int(oras.slot_capacity)
+
+    if bilang > kumpara-1:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot schedule Appointment. Reached maximum capacity')
+
+    to_store = Appointment(
+        ap_number = randoms(),
+        ap_clientID = token["id"],
+        ap_startTime = simula,
+        ap_clientName = cliente.cl_fullName,
+        ap_date = oras.slot_date,
+        ap_endTime = hangganan,
+        ap_status = "Unpaid",
+        ap_type = form_data.ap_type,
+        ap_service = serbisyo.service_name,
+        ap_comorbidity = form_data.ap_comorbidity,
+        ap_serviceType = serbisyo.service_id,
+        ap_amount = serbisyo.service_price,
+        ap_slotID = oras.slot_id
+    )
+
+    db.add(to_store)
+    db.commit()
+
+    await send_appointment([token["email"]], to_store.ap_clientName, to_store.ap_date, to_store.ap_startTime, to_store.ap_endTime, to_store.ap_service, to_store.ap_amount)
+    
+    time.sleep(1)
+
+    response = RedirectResponse(url='/users/appointments', status_code=302)
+
+    return response
+
+@router.get("/profile")
+def profile(request: Request, token: str = Cookie('token'), db: Session = Depends(get_db)):
+    query = db.query(Client).all()
+    query1 = db.query(Appointment).all()
+    query2 = db.query(User_credential).all()
+    query3 = db.query(Orders).all()
+    token = jwt.decode(token, secret, algorithms=['HS256'])
+    id = [token["id"]]
+    lst_all = query + query1 + query2 + query3 + id
+    print(lst_all)
+    try:
+        return templates.TemplateResponse('clientside/profile.html', {
+                'request': request,
+                'profile': lst_all
+            })
+    except Exception as e:
+        print(e)
+
+@router.get("/contact2")
+def contact(request: Request):
+    try:
+        return templates.TemplateResponse('clientside/contact_after_login.html', {
+            'request': request
+        })
+    except Exception as e:
+        print(e)
+
+@router.get("/product2")
+def shop(request: Request, db: Session = Depends(get_db)):
+    try:
+        query = db.query(Product).all()
+        return templates.TemplateResponse('clientside/product_after_login.html', {
+            'request': request,
+            'product_list': query
+        })
+    except Exception as e:
+        print(e)
+
+@router.get("/orders")
+def order(request: Request, token: str = Cookie('token'), db: Session = Depends(get_db)):
+    token = jwt.decode(token, secret, algorithms=['HS256'])
+    query = db.query(Orders).all()
+    id = [token["id"]]
+    lst_all = query + id
+    print(lst_all)
+    try:
+        return templates.TemplateResponse('clientside/orders.html', {
+            'request': request,
+            'order_list': lst_all
+        })
+    except Exception as e:
+        print(e)

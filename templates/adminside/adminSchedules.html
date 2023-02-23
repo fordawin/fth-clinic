@@ -75,7 +75,7 @@
             </button>
             </div>
             <div class="modal-body">
-            <form action="https://fth-clinic.herokuapp.com/admin/newSchedule" method="POST" id="scheduleAdd">
+            <form action="http://127.0.0.1:8000/admin/newSchedule" method="POST" id="scheduleAdd">
                 <div class="row">
                     <div class="col-md-6">
                         <label class="form-label" for="">Number of Session</label>
@@ -161,7 +161,7 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="https://fth-clinic.herokuapp.com/admin/updateSchedule/{{ schedule.slot_id }}" method="POST" id="scheduleUpdate">
+                <form action="http://127.0.0.1:8000/admin/updateSchedule/{{ schedule.slot_id }}" method="POST" id="scheduleUpdate">
                     <div class="row">
                         <div class="col-md-6">
                             <label class="form-label" for="">Date</label>

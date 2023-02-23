@@ -281,7 +281,7 @@ def update(id: str, user: updateUser = Depends(updateUser.as_form), db: Session 
     db.commit()
 
     time.sleep(3)
-    response = RedirectResponse(url='/users/profile', status_code=302)
+    response = RedirectResponse(url='/client/profile', status_code=302)
     return response
 
 @router.post('/pass/{id}')
@@ -306,8 +306,6 @@ def update_password(id: str, user: updateUser, db: Session = Depends(get_db)):
         db.add(verify)
         db.commit()
 
-        # time.sleep(1)  
-        # response = RedirectResponse(url='/users/profile', status_code=302)
         return
     else:
         raise HTTPException(404, 'Passwords did not match')

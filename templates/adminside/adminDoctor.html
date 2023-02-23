@@ -79,7 +79,7 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="https://fth-clinic.herokuapp.com/admin/doctor" method="POST" class="form" id="doctorAdd">
+                <form action="http://127.0.0.1:8000/admin/doctor" method="POST" class="form" id="doctorAdd">
                     <div class="row">
                         <div class="col-md-6">
                             <label class="form-label" for="">Username</label>
@@ -148,7 +148,7 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="https://fth-clinic.herokuapp.com/doctor/{{doctors.dt_id}}" id="doctorUpdate" method="POST">
+                <form action="http://127.0.0.1:8000/doctor/{{doctors.dt_id}}" id="doctorUpdate" method="POST">
                     <div class="row">
                         <div class="col-md-4">
                             <label class="form-label" for="">First Name</label>
@@ -217,11 +217,11 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to the information of Doctor? </p>
+          <p>Are you sure you want to the information of Doctor {{doctors.dt_fullName}}? </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-danger" href="https://fth-clinic.herokuapp.com/doctor/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
+          <a class="btn btn-danger" href="http://127.0.0.1:8000/doctor/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
         </div>
       </div>
     </div>
