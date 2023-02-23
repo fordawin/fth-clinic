@@ -80,9 +80,9 @@ def login(request: Request):
 def about(request: Request):
     return templates.TemplateResponse("clientside/about.html", {"request": request})
 
-@router.get("/about2")
-def about(request: Request):
-    return templates.TemplateResponse("clientside/about_after_login.html", {"request": request})
+# @router.get("/about2")
+# def about(request: Request):
+#     return templates.TemplateResponse("clientside/about_after_login.html", {"request": request})
 
 
 @router.post('/login', response_class=HTMLResponse)
@@ -96,6 +96,7 @@ async def login(response: Response, form_data: LoginForm, db: Session = Depends(
             # response = RedirectResponse(url='appointments', status_code=302)
             response.set_cookie('token', token, httponly=True)
             response.set_cookie('type', user.user_type, httponly=False)
+            
             return token
 
     raise HTTPException(
@@ -103,85 +104,65 @@ async def login(response: Response, form_data: LoginForm, db: Session = Depends(
         detail="Incorrect Username or Password"
     )
 
-# @router.post("/home2")
-# def read_form_post(request: Request, form_data: Sched, db: Session = Depends(get_db)):
+# @router.get("/home2")
+# def home(request: Request, db: Session = Depends(get_db)):
 #     query1 = db.query(Service).all()
-#     verify = db.query(Timeslot).filter(Timeslot.slot_date == form_data.slot_date).first()
-    # Here, you can add your logic to generate the schedule based on the selected date
-    # if not verify:
-    #     return {"There's no schedule for today "}
-    # schedule = db.query(Timeslot).filter(Timeslot.slot_date == form_data.slot_date).all()
-    # We'll just return a dummy schedule for now
-    # schedule = ["10:00 AM - 11:00 AM", "1:00 PM - 2:00 PM", "4:00 PM - 5:00 PM"]
-    # print(schedule)
+#     query2 = db.query(Timeslot).all()
+#     return templates.TemplateResponse('clientside/home_after_login.html', {
+#         'request': request,
+#         'services': query1,
+#         'timeslots': query2
+#     })  
 
-    # return templates.TemplateResponse("clientside/home_after_login.html", {
-    #     "request": request,
-    #     'services': query1,
-    #     'timeslots': schedule
-    # })
+# @router.post('/home3', response_class=HTMLResponse)
+# async def home(form_data: AppointmentBase, token: str = Cookie('token'), db: Session = Depends(get_db)):
+#     token = jwt.decode(token, secret, algorithms=['HS256'])
+
+#     serbisyo = db.query(Service).filter(Service.service_id == form_data.ap_serviceType).first()
+
+#     oras = db.query(Timeslot).filter(Timeslot.slot_id == form_data.ap_slotID).first()
+
+#     cliente = db.query(Client).filter(Client.cl_user_credential == token["id"]).first()
+
+#     simula = oras.slot_start
     
- 
+#     hangganan = oras.slot_end
 
-@router.get("/home2")
-def home(request: Request, db: Session = Depends(get_db)):
-    query1 = db.query(Service).all()
-    query2 = db.query(Timeslot).all()
-    return templates.TemplateResponse('clientside/home_after_login.html', {
-        'request': request,
-        'services': query1,
-        'timeslots': query2
-    })  
+#     sched = db.query(Appointment).filter(Appointment.ap_slotID == form_data.ap_slotID).all()
 
-@router.post('/home3', response_class=HTMLResponse)
-async def home(form_data: AppointmentBase, token: str = Cookie('token'), db: Session = Depends(get_db)):
-    token = jwt.decode(token, secret, algorithms=['HS256'])
+#     bilang = int(len(sched))
 
-    serbisyo = db.query(Service).filter(Service.service_id == form_data.ap_serviceType).first()
+#     kumpara = int(oras.slot_capacity)
 
-    oras = db.query(Timeslot).filter(Timeslot.slot_id == form_data.ap_slotID).first()
+#     if bilang > kumpara-1:
+#         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot schedule Appointment. Reached maximum capacity')
 
-    cliente = db.query(Client).filter(Client.cl_user_credential == token["id"]).first()
+#     to_store = Appointment(
+#         ap_number = randoms(),
+#         ap_clientID = token["id"],
+#         ap_startTime = simula,
+#         ap_clientName = cliente.cl_fullName,
+#         ap_date = oras.slot_date,
+#         ap_endTime = hangganan,
+#         ap_status = "Unpaid",
+#         ap_type = form_data.ap_type,
+#         ap_service = serbisyo.service_name,
+#         ap_comorbidity = form_data.ap_comorbidity,
+#         ap_serviceType = serbisyo.service_id,
+#         ap_amount = serbisyo.service_price,
+#         ap_slotID = oras.slot_id
+#     )
 
-    simula = oras.slot_start
+#     db.add(to_store)
+#     db.commit()
+
+#     await send_appointment([token["email"]], to_store.ap_clientName, to_store.ap_date, to_store.ap_startTime, to_store.ap_endTime, to_store.ap_service, to_store.ap_amount)
     
-    hangganan = oras.slot_end
+#     time.sleep(1)
 
-    sched = db.query(Appointment).filter(Appointment.ap_slotID == form_data.ap_slotID).all()
+#     response = RedirectResponse(url='/users/appointments', status_code=302)
 
-    bilang = int(len(sched))
-
-    kumpara = int(oras.slot_capacity)
-
-    if bilang > kumpara-1:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot schedule Appointment. Reached maximum capacity')
-
-    to_store = Appointment(
-        ap_number = randoms(),
-        ap_clientID = token["id"],
-        ap_startTime = simula,
-        ap_clientName = cliente.cl_fullName,
-        ap_date = oras.slot_date,
-        ap_endTime = hangganan,
-        ap_status = "Unpaid",
-        ap_type = form_data.ap_type,
-        ap_service = serbisyo.service_name,
-        ap_comorbidity = form_data.ap_comorbidity,
-        ap_serviceType = serbisyo.service_id,
-        ap_amount = serbisyo.service_price,
-        ap_slotID = oras.slot_id
-    )
-
-    db.add(to_store)
-    db.commit()
-
-    await send_appointment([token["email"]], to_store.ap_clientName, to_store.ap_date, to_store.ap_startTime, to_store.ap_endTime, to_store.ap_service, to_store.ap_amount)
-    
-    time.sleep(1)
-
-    response = RedirectResponse(url='/users/appointments', status_code=302)
-
-    return response
+#     return response
 
 @router.get("/register")
 def register(request: Request):
@@ -268,37 +249,11 @@ def appointment(request: Request, token: str = Cookie('token'), db: Session = De
     except Exception as e:
         print(e)
 
-@router.get("/profile")
-def profile(request: Request, token: str = Cookie('token'), db: Session = Depends(get_db)):
-    query = db.query(Client).all()
-    query1 = db.query(Appointment).all()
-    query2 = db.query(User_credential).all()
-    query3 = db.query(Orders).all()
-    token = jwt.decode(token, secret, algorithms=['HS256'])
-    id = [token["id"]]
-    lst_all = query + query1 + query2 + query3 + id
-    print(lst_all)
-    try:
-        return templates.TemplateResponse('clientside/profile.html', {
-                'request': request,
-                'profile': lst_all
-            })
-    except Exception as e:
-        print(e)
 
 @router.get("/contact")
 def contact(request: Request):
     try:
         return templates.TemplateResponse('clientside/contact.html', {
-            'request': request
-        })
-    except Exception as e:
-        print(e)
-
-@router.get("/contact2")
-def contact(request: Request):
-    try:
-        return templates.TemplateResponse('clientside/contact_after_login.html', {
             'request': request
         })
     except Exception as e:
@@ -315,32 +270,6 @@ def shop(request: Request, db: Session = Depends(get_db)):
     except Exception as e:
         print(e)
 
-@router.get("/product2")
-def shop(request: Request, db: Session = Depends(get_db)):
-    try:
-        query = db.query(Product).all()
-        return templates.TemplateResponse('clientside/product_after_login.html', {
-            'request': request,
-            'product_list': query
-        })
-    except Exception as e:
-        print(e)
-
-@router.get("/orders")
-def order(request: Request, token: str = Cookie('token'), db: Session = Depends(get_db)):
-    token = jwt.decode(token, secret, algorithms=['HS256'])
-    query = db.query(Orders).all()
-    id = [token["id"]]
-    lst_all = query + id
-    print(lst_all)
-    try:
-        return templates.TemplateResponse('clientside/orders.html', {
-            'request': request,
-            'order_list': lst_all
-        })
-    except Exception as e:
-        print(e)
-
 @router.get("/forgot")
 def home(request: Request):
     return templates.TemplateResponse('clientside/forgot.html', {
@@ -351,4 +280,5 @@ def home(request: Request):
 def logout(response: Response):
     response = RedirectResponse(url='/users/login', status_code=307)
     response.delete_cookie('token')
+    response.delete_cookie('type')
     return response

@@ -16,10 +16,10 @@ conf = ConnectionConfig(
     MAIL_FROM = config_credentials["EMAIL"],
     MAIL_PORT = 465,
     MAIL_SERVER = "smtp.gmail.com",
-    # MAIL_TLS = False,
-    # MAIL_SSL = True,
-    MAIL_STARTTLS = False,
-    MAIL_SSL_TLS = True,
+    MAIL_TLS = False,
+    MAIL_SSL = True,
+    # MAIL_STARTTLS = False,
+    # MAIL_SSL_TLS = True,
     USE_CREDENTIALS = True
 )
 
@@ -97,7 +97,7 @@ async def send_email(email : list, first, middle, last):
 <div style="font-family: sans-serif">
 <div class="" style="font-size: 12px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 14.399999999999999px; color: #FFFFFF; line-height: 1.2;">
 <p style="margin: 0; font-size: 18px; text-align: left; mso-line-height-alt: 21.599999999999998px;"><span style="font-size:24px;">Welcome to Faith Hope Love Clinic</span></p>
-<p style="margin: 0; font-size: 18px; text-align: left; mso-line-height-alt: 21.599999999999998px;"><span style="font-size:24px;"> <Your password reset has been successful!/span><br/></p>
+<p style="margin: 0; font-size: 18px; text-align: left; mso-line-height-alt: 21.599999999999998px;"><span style="font-size:24px;">Your registration is completed!</span><br/></p>
 </div>
 </div>
 </td>
@@ -142,7 +142,7 @@ async def send_email(email : list, first, middle, last):
 <tr>
 <td class="pad" style="padding-bottom:10px;padding-left:30px;padding-right:10px;padding-top:10px;text-align:left;">
 <div align="left" class="alignment">
-<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://example.com" style="height:43px;width:122px;v-text-anchor:middle;" arcsize="0%" strokeweight="0.75pt" strokecolor="#85D874" fillcolor="#FFFFFF"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#85D874; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="https://fth-clinic.herokuapp.com/users/contact" style="text-decoration:none;display:inline-block;color:#85D874;background-color:#FFFFFF;border-radius:0px;width:auto;border-top:1px solid #85D874;font-weight:undefined;border-right:1px solid #85D874;border-bottom:1px solid #85D874;border-left:1px solid #85D874;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;" target="_blank"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 32px;">Contact Us</span></span></a>
+<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://example.com" style="height:43px;width:122px;v-text-anchor:middle;" arcsize="0%" strokeweight="0.75pt" strokecolor="#85D874" fillcolor="#FFFFFF"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#85D874; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="http://127.0.0.1:8000/users/contact" style="text-decoration:none;display:inline-block;color:#85D874;background-color:#FFFFFF;border-radius:0px;width:auto;border-top:1px solid #85D874;font-weight:undefined;border-right:1px solid #85D874;border-bottom:1px solid #85D874;border-left:1px solid #85D874;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;" target="_blank"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 32px;">Contact Us</span></span></a>
 <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
 </div>
 </td>
@@ -415,7 +415,7 @@ async def send_appointment(email : list, user, ddate, startt, endt, service, amo
 <tr>
 <td class="pad" style="padding-bottom:10px;padding-left:30px;padding-right:10px;padding-top:10px;text-align:left;">
 <div align="left" class="alignment">
-<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://example.com" style="height:43px;width:122px;v-text-anchor:middle;" arcsize="0%" strokeweight="0.75pt" strokecolor="#85D874" fillcolor="#FFFFFF"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#85D874; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="https://fth-clinic.herokuapp.com/users/contact" style="text-decoration:none;display:inline-block;color:#85D874;background-color:#FFFFFF;border-radius:0px;width:auto;border-top:1px solid #85D874;font-weight:undefined;border-right:1px solid #85D874;border-bottom:1px solid #85D874;border-left:1px solid #85D874;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;" target="_blank"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 32px;">Contact Us</span></span></a>
+<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://example.com" style="height:43px;width:122px;v-text-anchor:middle;" arcsize="0%" strokeweight="0.75pt" strokecolor="#85D874" fillcolor="#FFFFFF"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#85D874; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="http://127.0.0.1:8000/users/contact" style="text-decoration:none;display:inline-block;color:#85D874;background-color:#FFFFFF;border-radius:0px;width:auto;border-top:1px solid #85D874;font-weight:undefined;border-right:1px solid #85D874;border-bottom:1px solid #85D874;border-left:1px solid #85D874;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;" target="_blank"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 32px;">Contact Us</span></span></a>
 <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
 </div>
 </td>
@@ -688,7 +688,7 @@ async def for_pickup(email: list):
 <tr>
 <td class="pad" style="padding-bottom:10px;padding-left:30px;padding-right:10px;padding-top:10px;text-align:left;">
 <div align="left" class="alignment">
-<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://example.com" style="height:43px;width:122px;v-text-anchor:middle;" arcsize="0%" strokeweight="0.75pt" strokecolor="#85D874" fillcolor="#FFFFFF"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#85D874; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="https://fth-clinic.herokuapp.com/users/login" style="text-decoration:none;display:inline-block;color:#85D874;background-color:#FFFFFF;border-radius:0px;width:auto;border-top:1px solid #85D874;font-weight:undefined;border-right:1px solid #85D874;border-bottom:1px solid #85D874;border-left:1px solid #85D874;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;" target="_blank"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 32px;">Log-in Here</span></span></a>
+<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://example.com" style="height:43px;width:122px;v-text-anchor:middle;" arcsize="0%" strokeweight="0.75pt" strokecolor="#85D874" fillcolor="#FFFFFF"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#85D874; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="http://127.0.0.1:8000/users/login" style="text-decoration:none;display:inline-block;color:#85D874;background-color:#FFFFFF;border-radius:0px;width:auto;border-top:1px solid #85D874;font-weight:undefined;border-right:1px solid #85D874;border-bottom:1px solid #85D874;border-left:1px solid #85D874;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;" target="_blank"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 32px;">Log-in Here</span></span></a>
 <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
 </div>
 </td>
@@ -915,7 +915,7 @@ async def passwordChange(email: list, newPassword):
 <div style="font-family: sans-serif">
 <div class="" style="font-size: 12px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 14.399999999999999px; color: #FFFFFF; line-height: 1.2;">
 <p style="margin: 0; font-size: 18px; text-align: left; mso-line-height-alt: 21.599999999999998px;"><span style="font-size:24px;">Welcome to Faith Hope Love Clinic</span></p>
-<p style="margin: 0; font-size: 18px; text-align: left; mso-line-height-alt: 21.599999999999998px;"><span style="font-size:24px;">Your registration is completed! </span><br/></p>
+<p style="margin: 0; font-size: 18px; text-align: left; mso-line-height-alt: 21.599999999999998px;"><span style="font-size:24px;">Your password reset has been successful </span><br/></p>
 </div>
 </div>
 </td>
@@ -960,7 +960,7 @@ async def passwordChange(email: list, newPassword):
 <tr>
 <td class="pad" style="padding-bottom:10px;padding-left:30px;padding-right:10px;padding-top:10px;text-align:left;">
 <div align="left" class="alignment">
-<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://example.com" style="height:43px;width:122px;v-text-anchor:middle;" arcsize="0%" strokeweight="0.75pt" strokecolor="#85D874" fillcolor="#FFFFFF"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#85D874; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="https://fth-clinic.herokuapp.com/users/contact" style="text-decoration:none;display:inline-block;color:#85D874;background-color:#FFFFFF;border-radius:0px;width:auto;border-top:1px solid #85D874;font-weight:undefined;border-right:1px solid #85D874;border-bottom:1px solid #85D874;border-left:1px solid #85D874;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;" target="_blank"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 32px;">Contact Us</span></span></a>
+<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://example.com" style="height:43px;width:122px;v-text-anchor:middle;" arcsize="0%" strokeweight="0.75pt" strokecolor="#85D874" fillcolor="#FFFFFF"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#85D874; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="http://127.0.0.1:8000/users/contact" style="text-decoration:none;display:inline-block;color:#85D874;background-color:#FFFFFF;border-radius:0px;width:auto;border-top:1px solid #85D874;font-weight:undefined;border-right:1px solid #85D874;border-bottom:1px solid #85D874;border-left:1px solid #85D874;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;" target="_blank"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 32px;">Contact Us</span></span></a>
 <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
 </div>
 </td>

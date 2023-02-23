@@ -621,8 +621,13 @@ def update(id: str, user: updateService, db: Session = Depends(get_db)):
         user_data = user.dict(exclude_unset=True)
         for key, value in user_data.items():
             setattr(verify, key, value)
-        db.add(verify)
+    try:
         db.commit()
+    except:
+        db.rollback()
+        raise HTTPException(500, 'Failed to update payment')
+    
+    return {'message': 'Service updated successfully.'}
 
 @router.get('/deactivateService/{id}')
 def deactivateService(id: str, db: Session = Depends(get_db)):

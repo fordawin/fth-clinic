@@ -53,7 +53,7 @@
 	<div class="right">
       <center><img src="../static/assets/images/logo.png" alt="" width="150px" height="80px" style=""></center><br>
       <h4>Sign in</h4>
-      <form action="https://fth-clinic.herokuapp.com/users/login" method="POST" id="loginForm">
+      <form action="http://127.0.0.1:8000/users/login" method="POST" id="loginForm">
       <div id="failedLogin"></div>
       <div class="inputs">
          <input type="text" name="user_email" placeholder="User name">
@@ -74,8 +74,9 @@
             <br>  <br>  <br>  <br>  <br>  <br>
          <p>Don't have an account? <a href="register" style="color:#1904E5" class="creat-account">Creat Your Account</a> it takes less than a minute</p>
          
-         <a href="/users"><button class="btn"><i class="fa fa-home"></i></button></a>
+         
       </form>
+      <a href="/users"><button class="btn"><i class="fa fa-home"></i></button></a>
       </div>
 
 <script src="{{url_for('static', path='/assets/js/jquery-3.4.1.min.js')}}" type="text/javascript" > </script>	
@@ -96,7 +97,9 @@
 
 <!--for remember me scrpt-->
 <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="{{url_for('static', path='/assets/js/sessionchecker.js')}}"></script>
 <script>
+
     $(function() {
 
         if (localStorage.chkbx && localStorage.chkbx != '') {
@@ -156,15 +159,15 @@ $("#loginForm").submit(function(e) {
          }
 
          if (type == 'type=Doctor'){
-            window.open("https://fth-clinic.herokuapp.com/prescription", "_self").reload()
+            window.open("http://127.0.0.1:8000/prescription", "_self").reload()
          }
 
          if (type == 'type=Employee'){
-            window.open("https://fth-clinic.herokuapp.com/payment", "_self").reload()
+            window.open("http://127.0.0.1:8000/payment", "_self").reload()
          }
 
          if (type == 'type=Admin'){
-            window.open("https://fth-clinic.herokuapp.com/admin", "_self").reload()
+            window.open("http://127.0.0.1:8000/admin", "_self").reload()
          }
         },
         error: function(error) {
