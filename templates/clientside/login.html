@@ -53,7 +53,7 @@
 	<div class="right">
       <center><img src="../static/assets/images/logo.png" alt="" width="150px" height="80px" style=""></center><br>
       <h4>Sign in</h4>
-      <form action="http://127.0.0.1:8000/users/login" method="POST" id="loginForm">
+      <form action="https://fth-clinic.herokuapp.com/users/login" method="POST" id="loginForm">
       <div id="failedLogin"></div>
       <div class="inputs">
          <input type="text" name="user_email" placeholder="User name">
@@ -159,15 +159,15 @@ $("#loginForm").submit(function(e) {
          }
 
          if (type == 'type=Doctor'){
-            window.open("http://127.0.0.1:8000/prescription", "_self").reload()
+            window.open("https://fth-clinic.herokuapp.com/prescription", "_self").reload()
          }
 
          if (type == 'type=Employee'){
-            window.open("http://127.0.0.1:8000/payment", "_self").reload()
+            window.open("https://fth-clinic.herokuapp.com/payment", "_self").reload()
          }
 
          if (type == 'type=Admin'){
-            window.open("http://127.0.0.1:8000/admin", "_self").reload()
+            window.open("https://fth-clinic.herokuapp.com/admin", "_self").reload()
          }
         },
         error: function(error) {

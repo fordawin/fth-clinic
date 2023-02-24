@@ -137,7 +137,7 @@
 				</div>	
 			</div>
 		<div class="modal-body">
-			<form action="http://127.0.0.1:8000/client/home3" method="POST" id="appointmentForm">
+			<form action="https://fth-clinic.herokuapp.com/client/home3" method="POST" id="appointmentForm">
 				<div class="container">
 					<div class="row mt-2">
 						<div class="col-md-4" style="vertical-align: text-top;">
@@ -169,7 +169,9 @@
 						<div class="col-md-8" id="selectTimeslot">
 							<select class="form-control" name="ap_slotID" required>
 								{% for timeslot in timeslots %}
+									{% if timeslot.slot_status == "Active" %}
 								<option value="{{timeslot.slot_id}}">{{timeslot.slot_start}} - {{timeslot.slot_end}}</option>
+									{% endif %}
 								{% endfor %}
 							</select>
 							<div class="invalid-feedback">

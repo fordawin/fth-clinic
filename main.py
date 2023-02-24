@@ -18,8 +18,8 @@ models.paymentModel.Base.metadata.create_all(bind=engine)
 templates = Jinja2Templates('templates')
 
 
-app = FastAPI()
-# app = FastAPI(docs_url=None, redoc_url=None)
+# app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None)
 # Mount static folder
 app.mount('/static', StaticFiles(directory='static'), name='static')
 

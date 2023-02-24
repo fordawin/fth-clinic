@@ -80,7 +80,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="http://127.0.0.1:8000/admin/services" method="POST" class="form" id="serviceAdd">
+                <form action="https://fth-clinic.herokuapp.com/admin/services" method="POST" class="form" id="serviceAdd">
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label" for="">Service Name</label>
@@ -167,7 +167,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="http://127.0.0.1:8000/admin/updateService/{{services.service_id}}" method="POST" id="serviceUpdate">
+                <form action="https://fth-clinic.herokuapp.com/admin/updateService/{{services.service_id}}" method="POST" id="serviceUpdate">
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label" for="">Service Name</label>
@@ -211,7 +211,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="http://127.0.0.1:8000/admin/deactivateService/{{services.service_id}}">
+            <form action="https://fth-clinic.herokuapp.com/admin/deactivateService/{{services.service_id}}">
                 <div class="modal-body">
                 <p>Are you sure you want to delete these entry?</p>
                 </div>
