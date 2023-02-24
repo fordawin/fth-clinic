@@ -14,25 +14,14 @@
     <img src="{{url_for('static', path='/assets/images/logo.png')}}" alt="Website Logo">
   </div>
 <body>
-	<h1>You are currently logged-in</h1>
+	<h1>Unauthorized Access</h1>
 	<p></p>
 	<br><br>
-	<a class="btn btn-success" onclick="goBack()">Go Back</a>&nbsp;&nbsp;&nbsp;
-	<a class="btn btn-danger" href="http://127.0.0.1:8000/users/logout">Log out</a>
 </body>
 
-<script>
+<!-- <script>
 	function goBack() {
-//   window.history.back();
-if (document.cookie.includes('type=Client')) {
-    window.location.href = '/client/home2';
-} else if (document.cookie.includes('type=Admin')) {
-	window.location.href = '/admin/';
-} else if (document.cookie.includes('type=Employee')) {
-	window.location.href = '/payment/';
-} else if (document.cookie.includes('type=Doctor')) {
-	window.location.href = '/prescription/';
-}
+  history.back();
 }
 function alertSweet(){
 	Swal.fire({
@@ -55,5 +44,5 @@ if (document.cookie.includes('type')) {
 		window.location.href = '/users';
 	}, 50000);
 	}
-</script>
+</script> -->
 </html>
