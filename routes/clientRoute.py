@@ -235,11 +235,9 @@ async def home(form_data: AppointmentBase, token: str = Cookie('token'), db: Ses
         ap_amount = serbisyo.service_price,
         ap_slotID = oras.slot_id
     )
-
+    await send_appointment([token["email"]], to_store.ap_clientName, to_store.ap_date, to_store.ap_startTime, to_store.ap_endTime, to_store.ap_service, to_store.ap_amount)
     db.add(to_store)
     db.commit()
-
-    await send_appointment([token["email"]], to_store.ap_clientName, to_store.ap_date, to_store.ap_startTime, to_store.ap_endTime, to_store.ap_service, to_store.ap_amount)
     
     time.sleep(1)
 

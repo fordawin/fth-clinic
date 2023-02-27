@@ -7,6 +7,15 @@
 {% endblock %}
 {% block content %}
 <br><br><br><br>
+<style>
+  .password-weak {
+    border: 2px solid red;
+  }
+
+  .password-strong {
+    border: 2px solid green;
+  }
+</style>
 <section>
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -44,16 +53,18 @@
                  <div class="form-step form-step-active">
                    <div class="input-group">
                      <label for="userID">
-                       <span class="o-label">Email or Username</span>
+                       <span class="o-label">Email or Username<span style="color: red;">*</span></span>
                      </label>
                      <input required type="text" id="username" name="user_username" required="active" placeholder="Email or Username" />
                    </div>
                    <div class="input-group">
                      <label for="password">
-                       <span class="o-label">Password</span>
+                       <span class="o-label">Password<span style="color: red;">*</span></span>
+                       
                      </label>
                      <input required type="password" id="password" name="user_password" required="active" placeholder="Password" />
-                   </div>
+                     <span id="password-error" style="font-size: 15px;"></span>
+                    </div>
                    <div class="">
                      <a href="#" class="btn btn-next width-50 ml-auto">Next</a>
                    </div>
@@ -64,13 +75,13 @@
                    <div class="row">
                      <div class="col-md-6">
                        <div class="form-group">
-                         <span class="o-label">First Name</span>
+                         <span class="o-label">First Name<span style="color: red;">*</span></span>
                          <input type="text" class="form-control" name="cl_firstName" required="active" placeholder="First Name">
                        </div>
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
-                         <span class="o-label"> Marital status</span>
+                         <span class="o-label"> Marital status<span style="color: red;">*</span></span>
                          <select required input type="text" class="form-control" name="cl_maritalStatus" required="active">
                            <option disabled selected hidden>Status</option>
                            <option value="Single">Single</option>
@@ -89,25 +100,25 @@
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
-                         <span class="o-label">Date of Birth</span>
+                         <span class="o-label">Date of Birth<span style="color: red;">*</span></span>
                          <input type="date" class="form-control appointment_date" name="cl_birthdate" required="active" placeholder="">
                        </div>
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
-                         <span class="o-label">Last Name</span>
+                         <span class="o-label">Last Name<span style="color: red;">*</span></span>
                          <input type="text" required="active" class="form-control" name="cl_lastName" placeholder="Last Name">
                        </div>
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
-                         <span class="o-label">Email</span>
+                         <span class="o-label">Email<span style="color: red;">*</span></span>
                          <input type="text" class="form-control" required="active" name="user_email" placeholder="Email">
                        </div>
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
-                         <span class="o-label">Gender</span>
+                         <span class="o-label">Gender<span style="color: red;">*</span></span>
                          <select required input type="text" class="form-control" required="active" name="cl_gender" placeholder="Gender">
                            <option disabled selected hidden>Gender</option>
                            <option value="Male">Male</option>
@@ -118,31 +129,31 @@
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
-                         <span class="o-label">House No.</span>
+                         <span class="o-label">House No.<span style="color: red;">*</span></span>
                          <input type="text" class="form-control" required="active" name="cl_houseNo" placeholder="#">
                        </div>
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
-                         <span class="o-label">Street</span>
+                         <span class="o-label">Street<span style="color: red;">*</span></span>
                          <input type="text" class="form-control" required="active" name="cl_street" placeholder="Street">
                        </div>
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
-                         <span class="o-label">Barangay</span>
+                         <span class="o-label">Barangay<span style="color: red;">*</span></span>
                          <input type="text" class="form-control" required="active" name="cl_brgy" placeholder="Brgy">
                        </div>
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
-                         <span class="o-label">City</span>
+                         <span class="o-label">City<span style="color: red;">*</span></span>
                          <input type="text" class="form-control" required="active" name="cl_city" placeholder="City">
                        </div>
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
-                         <span class="o-label">Contact No.</span>
+                         <span class="o-label">Contact No.<span style="color: red;">*</span></span>
                          <input type="text" class="form-control" required="active" name="cl_contactNo" placeholder="Contact No.">
                        </div>
                      </div>
@@ -166,7 +177,6 @@
      <div class="modal-content">
        <div class="modal-header">
          <h5 class="modal-title" id="exampleModalLabel">Privacy Policy for Faith Hope Love</h5>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
        </div>
        <div class="modal-body">
          {% include 'clientside/privacy.html' %}
@@ -186,6 +196,54 @@
 </script>
 
 <script>
+// <!-- passwordchecker -->
+
+function isPasswordStrong(password) {
+  // Check the length
+  if (password.length < 8) {
+    return false;
+  }
+
+  // Check for at least one lowercase letter
+  if (!/[a-z]/.test(password)) {
+    return false;
+  }
+
+  // Check for at least one uppercase letter
+  if (!/[A-Z]/.test(password)) {
+    return false;
+  }
+
+  // Check for at least one digit
+  if (!/\d/.test(password)) {
+    return false;
+  }
+
+  // Check for at least one special character
+  if (!/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/.test(password)) {
+    return false;
+  }
+
+  // Passed all checks
+  return true;
+}
+
+  const passwordInput = document.getElementById('password');
+  const passwordError = document.getElementById('password-error');
+
+  passwordInput.addEventListener('input', () => {
+    const password = passwordInput.value;
+    if (isPasswordStrong(password)) {
+      passwordError.textContent = '';
+      passwordInput.classList.remove('password-weak');
+      passwordInput.classList.add('password-strong');
+    } else {
+      passwordError.textContent = 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character';
+      passwordInput.classList.remove('password-strong');
+      passwordInput.classList.add('password-weak');
+    }
+  });
+
 const prevBtns = document.querySelectorAll(".btn-prev");
 const nextBtns = document.querySelectorAll(".btn-next");
 const progress = document.getElementById("progress");
@@ -252,10 +310,6 @@ function updateProgressbar() {
     )
   }
 
-  // setTimeout(function() {
-  //       bootstrap.Alert.getOrCreateInstance(document.querySelector(".alert")).close();
-  //   }, 3000)
-  
   function sweetSuccess() {
     Swal.fire({
     icon: 'success',
@@ -263,7 +317,11 @@ function updateProgressbar() {
     text: '',
     footer: 'Would you like to \t<b><a href="https://clinic-local.herokuapp.com/users">login?</a></b>',
     timer: 15000
-  })
+  }).then((result) => {
+			if (result.isConfirmed) {
+				location.reload();
+			}
+			});
 }  
   $("#registerForm").submit(function(e) {
       e.preventDefault();
@@ -281,10 +339,10 @@ function updateProgressbar() {
           dataType:'text',
           data: JSON.stringify(data),
           success: function(data) {
-          //  sweetSuccess('test')
-          
-           window.setTimeout(sweetSuccess(), 25000);
-          
+            sweetSuccess();
+            setTimeout(function() {
+              window.location.href = '/login';
+            }, 50000);        
           },
           error: function(error) {
             resAlert = error.responseText.slice(11,-2),
