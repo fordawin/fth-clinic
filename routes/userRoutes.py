@@ -76,6 +76,10 @@ def registration(request: Request, db: Session = Depends(get_db)):
 def login(request: Request):
     return templates.TemplateResponse("clientside/login.html", {"request": request})
 
+@router.get("/confirmAuth")
+def login(request: Request):
+    return templates.TemplateResponse("confirmAuth.html", {"request": request})
+
 @router.get("/about")
 def about(request: Request):
     return templates.TemplateResponse("clientside/about.html", {"request": request})
@@ -104,66 +108,6 @@ async def login(response: Response, form_data: LoginForm, db: Session = Depends(
         detail="Incorrect Username or Password"
     )
 
-# @router.get("/home2")
-# def home(request: Request, db: Session = Depends(get_db)):
-#     query1 = db.query(Service).all()
-#     query2 = db.query(Timeslot).all()
-#     return templates.TemplateResponse('clientside/home_after_login.html', {
-#         'request': request,
-#         'services': query1,
-#         'timeslots': query2
-#     })  
-
-# @router.post('/home3', response_class=HTMLResponse)
-# async def home(form_data: AppointmentBase, token: str = Cookie('token'), db: Session = Depends(get_db)):
-#     token = jwt.decode(token, secret, algorithms=['HS256'])
-
-#     serbisyo = db.query(Service).filter(Service.service_id == form_data.ap_serviceType).first()
-
-#     oras = db.query(Timeslot).filter(Timeslot.slot_id == form_data.ap_slotID).first()
-
-#     cliente = db.query(Client).filter(Client.cl_user_credential == token["id"]).first()
-
-#     simula = oras.slot_start
-    
-#     hangganan = oras.slot_end
-
-#     sched = db.query(Appointment).filter(Appointment.ap_slotID == form_data.ap_slotID).all()
-
-#     bilang = int(len(sched))
-
-#     kumpara = int(oras.slot_capacity)
-
-#     if bilang > kumpara-1:
-#         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot schedule Appointment. Reached maximum capacity')
-
-#     to_store = Appointment(
-#         ap_number = randoms(),
-#         ap_clientID = token["id"],
-#         ap_startTime = simula,
-#         ap_clientName = cliente.cl_fullName,
-#         ap_date = oras.slot_date,
-#         ap_endTime = hangganan,
-#         ap_status = "Unpaid",
-#         ap_type = form_data.ap_type,
-#         ap_service = serbisyo.service_name,
-#         ap_comorbidity = form_data.ap_comorbidity,
-#         ap_serviceType = serbisyo.service_id,
-#         ap_amount = serbisyo.service_price,
-#         ap_slotID = oras.slot_id
-#     )
-
-#     db.add(to_store)
-#     db.commit()
-
-#     await send_appointment([token["email"]], to_store.ap_clientName, to_store.ap_date, to_store.ap_startTime, to_store.ap_endTime, to_store.ap_service, to_store.ap_amount)
-    
-#     time.sleep(1)
-
-#     response = RedirectResponse(url='/users/appointments', status_code=302)
-
-#     return response
-
 @router.get("/register")
 def register(request: Request):
     return templates.TemplateResponse("clientside/register.html", {"request": request})
@@ -188,7 +132,7 @@ async def register(response: Response, form_data: ClientBase, db: Session = Depe
                             user_email = form_data.user_email,
                             user_points = 0,
                             user_type = "Client",
-                            user_status = "Active"
+                            user_status = "Inactive"
                         )
                         db.add(to_store)
                         db.commit()
@@ -214,10 +158,9 @@ async def register(response: Response, form_data: ClientBase, db: Session = Depe
                             # cl_created_by = client.cl_created_by,
                             # cl_updated_by = client.cl_updated_by
                         )
+                        await send_email([form_data.user_email], form_data.cl_firstName, form_data.cl_middleName, form_data.cl_lastName)
                         db.add(to_client)
                         db.commit()
-
-                        await send_email([form_data.user_email], form_data.cl_firstName, form_data.cl_middleName, form_data.cl_lastName)
 
                         time.sleep(5)
                         response = RedirectResponse(url='login', status_code=302)
@@ -281,4 +224,17 @@ def logout(response: Response):
     response = RedirectResponse(url='/users/login', status_code=307)
     response.delete_cookie('token')
     response.delete_cookie('type')
+    return response
+
+@router.get('/verification/{email}')
+async def emailAuth(email: str, db: Session = Depends(get_db)):
+    verify = db.query(User_credential).filter(User_credential.user_email == email).update({'user_status': "Active"}) 
+
+    if not verify:
+        raise HTTPException(404, 'Not found')
+    
+    db.commit()
+
+    response = RedirectResponse(url='/users/confirmAuth', status_code=302)
+
     return response

@@ -129,10 +129,11 @@ async def createClient(user: UserBase, client: ClientBase, db: Session = Depends
                             # cl_created_by = client.cl_created_by,
                             # cl_updated_by = client.cl_updated_by
                         )
+                        await send_email([user.user_email], user.user_username)
                         db.add(to_client)
                         db.commit()
 
-                        await send_email([user.user_email], user.user_username)
+                        
                         return {'message' : "Successfully Registered"}
                     else:
                         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create user. Email already exists')       
