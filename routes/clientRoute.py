@@ -318,40 +318,25 @@ def order(request: Request, token: str = Cookie('token'), db: Session = Depends(
 @router.get('/cancelAppointment/{id}')
 def deactivate(id: str, db: Session = Depends(get_db)):
     cancel = db.query(Appointment).filter(Appointment.ap_id == id).first()
-    slot = db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).first()
-
-    slotAdd = int(slot.slot_capacity) + 1
 
     currentHour = datetime.datetime.now()
     
     time1 = cancel.ap_startTime
+
     dt_time1 = datetime.datetime.combine(datetime.date.today(), time1)
 
     duration = datetime.timedelta(hours=1)
 
     pastHour = dt_time1
 
-    print(currentHour)
-    print(pastHour)
-
     valid = pastHour - currentHour
-    print(duration)
-    print(valid)
-    # currentHour = datetime.datetime.now().time
 
-    # umpisa = datetime.datetime.strptime(f'{currentHour}', '%H')
-
-    # pastHour = slot.slot_start - timedelta(hours=1)
-
-    # strPastHour = datetime.datetime.strptime(f'{pastHour}', '%H')
-    
     if not cancel:
         raise HTTPException(402, 'Appointment to cancel is not found.')
     elif valid <= duration:
         raise HTTPException(402, 'Cannot cancel appointment 1 hour before your session.')
     else:
-        db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).update({'slot_capacity': slotAdd})
-        db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Canceled"})
+        db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Pending"})
         
     db.commit()
 

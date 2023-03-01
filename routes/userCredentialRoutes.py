@@ -367,7 +367,7 @@ async def forgotpass(form_data: forgotPass, db: Session = Depends(get_db)):
         newPassword = randoms()
         db.query(User_credential).filter(User_credential.user_id == emailChecking.user_id).update({'user_password': password_hash(newPassword)})
         db.commit()
-        await passwordChange([form_data.user_email], newPassword)
+        await emailAuth([form_data.user_email], newPassword)
         return {'message': 'Password Changed!'}
         
 

@@ -901,12 +901,11 @@ async def deactivate(id: str, db: Session = Depends(get_db)):
         raise HTTPException(404, 'Order to cancel is not found')
     else:
         db.query(Orders).filter(Orders.order_id == id).update({'order_status': "For Pick-up"})
+    
+    users = db.query(User_credential).filter(User_credential.user_id == cancel.order_userid).first()
+    await for_pickup([users.user_email])
 
     db.commit()
-
-    users = db.query(User_credential).filter(User_credential.user_id == cancel.order_userid).first()
-
-    await for_pickup([users.user_email])
 
     return
 

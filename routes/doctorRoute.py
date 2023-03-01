@@ -5,6 +5,9 @@ from models.userCredentialModel import User_credential
 from models.clientModel import Client
 from models.doctorModel import Doctor
 from models.employeeModel import Employee
+from models.appointmentModel import Appointment
+from models.timeSlotModel import Timeslot
+from for_email import *
 from database import get_db
 from dependencies import get_token
 from fastapi.templating import Jinja2Templates
@@ -123,3 +126,35 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     time.sleep(1)  
     response = RedirectResponse(url='/admin/doctor/', status_code=302)
     return response
+
+#APPOINTMENT ROUTES
+@router.get('/approveCancel/{id}')
+async def approve(id: str, db: Session = Depends(get_db)):
+    cancel = db.query(Appointment).filter(Appointment.ap_id == id).first()
+    slot = db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).first()
+
+    if not cancel:
+        raise HTTPException(404, 'Appointment to cancel is not found')
+    else:
+        slotAdd = int(slot.slot_capacity) + 1
+        db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).update({'slot_capacity': slotAdd})
+        db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Cancelled"})
+
+    users = db.query(User_credential).filter(User_credential.user_id == cancel.ap_clientID).first()
+    await appointment_cancel([users.user_email])
+    db.commit()
+
+    return
+
+@router.get('/denyCancel/{id}')
+async def deny(id: str, db: Session = Depends(get_db)):
+    cancel = db.query(Appointment).filter(Appointment.ap_id == id).first()
+
+    if not cancel:
+        raise HTTPException(404, 'Appointment to cancel is not found')
+    else:
+        db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Unpaid"})
+
+    db.commit()
+
+    return

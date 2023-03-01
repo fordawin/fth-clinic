@@ -8,6 +8,8 @@ from schemas.paymentSchema import PaymentBase, PaymentUpdate
 from schemas.userCredentialSchema import UserBase, EmployeeBase
 from schemas.orderSchema import PaymentBase as PaymentB
 from models.userCredentialModel import User_credential
+from models.timeSlotModel import Timeslot
+from models.appointmentModel import Appointment
 from models.clientModel import Client
 from models.paymentModel import Payment
 from models.doctorModel import Doctor
@@ -143,11 +145,9 @@ async def deactivate(id: str, db: Session = Depends(get_db)):
     else:
         db.query(Orders).filter(Orders.order_id == id).update({'order_status': "For Pick-up"})
 
-    db.commit()
-
     users = db.query(User_credential).filter(User_credential.user_id == cancel.order_userid).first()
-
     await for_pickup([users.user_email])
+    db.commit()
 
     return
 
@@ -164,3 +164,36 @@ async def payment(id: str, pay: PaymentB, db: Session = Depends(get_db)):
         return {'message': 'Success'}
     else:
         raise HTTPException(402, 'Insufficient Payment')
+
+
+#APPOINTMENT ROUTES
+@router.get('/approveCancel/{id}')
+async def approve(id: str, db: Session = Depends(get_db)):
+    cancel = db.query(Appointment).filter(Appointment.ap_id == id).first()
+    slot = db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).first()
+
+    if not cancel:
+        raise HTTPException(404, 'Appointment to cancel is not found')
+    else:
+        slotAdd = int(slot.slot_capacity) + 1
+        db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).update({'slot_capacity': slotAdd})
+        db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Cancelled"})
+
+    users = db.query(User_credential).filter(User_credential.user_id == cancel.ap_clientID).first()
+    await appointment_cancel([users.user_email])
+    db.commit()
+
+    return
+
+@router.get('/denyCancel/{id}')
+async def deny(id: str, db: Session = Depends(get_db)):
+    cancel = db.query(Appointment).filter(Appointment.ap_id == id).first()
+
+    if not cancel:
+        raise HTTPException(404, 'Appointment to cancel is not found')
+    else:
+        db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Unpaid"})
+
+    db.commit()
+
+    return

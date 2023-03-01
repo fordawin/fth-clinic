@@ -189,11 +189,11 @@ async def deactivate(id: str, db: Session = Depends(get_db)):
     else:
         db.query(Orders).filter(Orders.order_id == id).update({'order_status': "For Pick-up"})
 
-    db.commit()
-
     users = db.query(User_credential).filter(User_credential.user_id == cancel.order_userid).first()
 
     await for_pickup([users.user_email])
+
+    db.commit()
 
     time.sleep(1)
 
