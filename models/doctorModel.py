@@ -16,6 +16,7 @@ class Doctor(Base):
     dt_street = Column(String(255), nullable=False)
     dt_brgy = Column(String(255), nullable=False)
     dt_city = Column(String(255), nullable=False)
+    # dt_specialize = Column(String(255), nullable=True)
     dt_address = Column(String(255), nullable=True)
     dt_status = Column(String(255), nullable=False)
     dt_contactNo = Column(String(255), nullable=False)
