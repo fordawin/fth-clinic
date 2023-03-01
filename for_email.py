@@ -16,10 +16,10 @@ conf = ConnectionConfig(
     MAIL_FROM = config_credentials["EMAIL"],
     MAIL_PORT = 465,
     MAIL_SERVER = "smtp.gmail.com",
-    MAIL_TLS = False,
-    MAIL_SSL = True,
-    # MAIL_STARTTLS = False,
-    # MAIL_SSL_TLS = True,
+    # MAIL_TLS = False,
+    # MAIL_SSL = True,
+    MAIL_STARTTLS = False,
+    MAIL_SSL_TLS = True,
     USE_CREDENTIALS = True
 )
 

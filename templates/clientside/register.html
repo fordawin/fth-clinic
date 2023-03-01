@@ -15,8 +15,31 @@
   .password-strong {
     border: 2px solid green;
   }
+  /* Add a green text color and a checkmark when the requirements are right */
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  
+  content: "✔";
+  color:green !important;
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  color:red !important;
+  content: "✖";
+ 
+}
 </style>
-<section>
+<section >
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
       <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
@@ -29,7 +52,7 @@
     </symbol>
   </svg>
   
-   <div class="card" style="border-top-right-radius: 50%">
+   <div class="card" style="border-top-right-radius: 50% ; ">
      <div class="container">
        <div class="col-md-12 mb-4">
          <h2 class="h4"></h2>
@@ -38,7 +61,7 @@
          <br>
          <div class="container">
            <div class="card" style="border-radius: 00rem 0 0 0rem; z-index:10">
-             <form action="http://127.0.0.1:8000/users/register" method="POST" class="form" id="registerForm">
+             <form action="http://127.0.0.1:8000/users/register" method="POST" class="form needs-validation registerForm" id="registerForm" class="" novalidate>
                <h4 class="text-center">Registration Form</h4>
                <!-- Progress bar -->
                <center>
@@ -51,22 +74,41 @@
                  <!-- Steps -->
                  <div id="failedRegister"></div>
                  <div class="form-step form-step-active">
-                   <div class="input-group">
-                     <label for="userID">
-                       <span class="o-label">Email or Username<span style="color: red;">*</span></span>
-                     </label>
-                     <input required type="text" id="username" name="user_username" required="active" placeholder="Email or Username" />
+                   <div class="form-floating form-outline flex-fill mb-0 mt-3 " style="text-align:left !important">
+                      
+                     <input required class="form-control" type="text" id="username" name="user_username" placeholder="Username" />
+                     <label class="form-label" for="username">Username<span style="color:red">*</span></label>
+                     <div id="invalid_username"></div>
                    </div>
-                   <div class="input-group">
-                     <label for="password">
-                       <span class="o-label">Password<span style="color: red;">*</span></span>
-                       
-                     </label>
-                     <input required type="password" id="password" name="user_password" required="active" placeholder="Password" />
-                     <span id="password-error" style="font-size: 15px;"></span>
+                   <div class="form-floating form-outline flex-fill mb-0 mt-3 " style="text-align: left !important">
+                    
+                     <input required type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" class="form-control" id="password" name="user_password" placeholder="Password" onChange="onChange()"/>
+                     <label for="password" class="form-label">Password<span style="color:red">*</span></label>
+                     <!-- <span id="password-error" style="font-size: 15px;"></span> -->
+                    
+                     <div id="password_invalid1"></div>
+                    <div id="message" class="text-right">
+                      <h5>Password must contain the following:</h5>
+                      <p id="letter" class="invalid"> A <b>lowercase</b> letter</p>
+                      <p id="capital" class="invalid"> A <b>capital (uppercase)</b> letter</p>
+                      <p id="number" class="invalid"> A <b>number</b></p>
+                      <p id="length" class="invalid"> Minimum <b>8 characters</b></p>
                     </div>
+                    </div>
+                    <div class="form-floating form-outline flex-fill mb-3 mt-3 text-right" style="text-align: left !important">
+                      <input type="password" id="password2" class="form-control" required placeholder="Re-type Password" onChange="onChange()"/>
+                      <label for="password2" class="form-label">Re-type Password<span style="color:red">*</span></label>
+                      <!-- <span id="password-error" style="font-size: 15px;"></span> -->
+                     
+                      <div id="password_invalid2"></div>
+                     </div>
+                    
+                     
+                      
+                   
                    <div class="">
-                     <a href="#" class="btn btn-next width-50 ml-auto">Next</a>
+                     <!-- <a href="#" role="button"  class="btn btn-next ">Next</a> -->
+                     <button type="button" id="btn-to-nxt-form" class="btn btn-next btn-success width-50 ml-auto">Next</button>
                    </div>
                  </div>
                </center>
@@ -74,94 +116,128 @@
                  <div class="input-group">
                    <div class="row">
                      <div class="col-md-6">
-                       <div class="form-group">
-                         <span class="o-label">First Name<span style="color: red;">*</span></span>
-                         <input type="text" class="form-control" name="cl_firstName" required="active" placeholder="First Name">
+                       <div class="form-floating form-outline flex-fill mb-0 mt-3 ">
+                         
+                         <input type="text" id="firstname" class="form-control " name="cl_firstName"  placeholder="First Name" required>
+                         <label class="form-label" for="firstname">Firstname<span style="color: red;">*</span></label>
+                         <!-- <div class="invalid-feedback">
+                          Doesn't look good!
+                        </div> -->
                        </div>
+                       
                      </div>
                      <div class="col-md-6">
-                       <div class="form-group">
-                         <span class="o-label"> Marital status<span style="color: red;">*</span></span>
-                         <select required input type="text" class="form-control" name="cl_maritalStatus" required="active">
-                           <option disabled selected hidden>Status</option>
+                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+
+                         <select class="form-control" name="cl_maritalStatus" id="marital_status" placeholder="Marital Status">
+                           <option disabled selected hidden value="">Status</option>
                            <option value="Single">Single</option>
                            <option value="Married">Married</option>
                            <option value="Separated">Separated</option>
                            <option value="Divorced">Divorced</option>
                            <option value="Widowed">Widowed</option>
                          </select>
+                         <label class="form-label" for="marital_status">Marital Status</label>
                        </div>
                      </div>
                      <div class="col-md-6">
-                       <div class="form-group">
-                         <span class="o-label">Middle Name</span>
-                         <input type="text" class="form-control" required="active" name="cl_middleName" placeholder="Middle Name">
+                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                      
+                         <input type="text" id="middle_name" class="form-control" name="cl_middleName" placeholder="Middle Name">
+                         <label class="form-label" for="middle_name">Middle Name</label>
                        </div>
                      </div>
                      <div class="col-md-6">
-                       <div class="form-group">
-                         <span class="o-label">Date of Birth<span style="color: red;">*</span></span>
-                         <input type="date" class="form-control appointment_date" name="cl_birthdate" required="active" placeholder="">
+                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                         
+                         <input type="date" id="dob" class="form-control appointment_date" name="cl_birthdate" required="active" placeholder="Date of Birth">
+                         <label class="form-label" for="dob">Date of Birth<span style="color: red;">*</span></label>
                        </div>
                      </div>
                      <div class="col-md-6">
-                       <div class="form-group">
-                         <span class="o-label">Last Name<span style="color: red;">*</span></span>
-                         <input type="text" required="active" class="form-control" name="cl_lastName" placeholder="Last Name">
+                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        
+                         <input type="text" id="last_name" required="active" class="form-control" name="cl_lastName" placeholder="Last Name">
+                         <label class="form-label" for="last_name">Last Name<span style="color: red;">*</span></label>
                        </div>
                      </div>
                      <div class="col-md-6">
-                       <div class="form-group">
-                         <span class="o-label">Email<span style="color: red;">*</span></span>
-                         <input type="text" class="form-control" required="active" name="user_email" placeholder="Email">
+                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        
+                         <input type="text" id="email_" class="form-control" required="active" name="user_email" placeholder="Email">
+                         <label class="form-control" for="email_">E-mail<span style="color: red;">*</span></label>
                        </div>
                      </div>
                      <div class="col-md-6">
-                       <div class="form-group">
-                         <span class="o-label">Gender<span style="color: red;">*</span></span>
-                         <select required input type="text" class="form-control" required="active" name="cl_gender" placeholder="Gender">
-                           <option disabled selected hidden>Gender</option>
+                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        
+                         <select  id="gender" class="form-control" required="active" name="cl_gender" placeholder="Gender">
+                           <!-- <option disabled selected hidden value="">~ Please select ~</option> -->
                            <option value="Male">Male</option>
                            <option value="Female">Female</option>
                            <option value="Others">Others</option>
                          </select>
+                         <label class="form-control" for="gender">Gender</label>
                        </div>
                      </div>
                      <div class="col-md-6">
-                       <div class="form-group">
-                         <span class="o-label">House No.<span style="color: red;">*</span></span>
-                         <input type="text" class="form-control" required="active" name="cl_houseNo" placeholder="#">
+                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        
+                         <input type="text" id="house_no" class="form-control" required="active" name="cl_houseNo" placeholder="#">
+                         <label class="form-control" for="house_no">House Number<span style="color: red;">*</span></label>
                        </div>
                      </div>
                      <div class="col-md-6">
-                       <div class="form-group">
-                         <span class="o-label">Street<span style="color: red;">*</span></span>
-                         <input type="text" class="form-control" required="active" name="cl_street" placeholder="Street">
+                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        
+                         <input type="text" id="street" class="form-control" required="active" name="cl_street" placeholder="Street">
+                         <label class="form-control" for="street">Street<span style="color: red;">*</span></label>
                        </div>
                      </div>
                      <div class="col-md-6">
-                       <div class="form-group">
-                         <span class="o-label">Barangay<span style="color: red;">*</span></span>
-                         <input type="text" class="form-control" required="active" name="cl_brgy" placeholder="Brgy">
+                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        
+                         <input type="text" id="brgy" class="form-control" required="active" name="cl_brgy" placeholder="Brgy">
+                         <label class="form-control" for="brgy">Barangay<span style="color: red;">*</span></label>
                        </div>
                      </div>
                      <div class="col-md-6">
-                       <div class="form-group">
-                         <span class="o-label">City<span style="color: red;">*</span></span>
-                         <input type="text" class="form-control" required="active" name="cl_city" placeholder="City">
+                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        
+                         <input type="text" id="city" class="form-control" required="active" name="cl_city" placeholder="City">
+                         <label class="form-control" for="city">City<span style="color: red;">*</span></label>
                        </div>
                      </div>
                      <div class="col-md-6">
-                       <div class="form-group">
-                         <span class="o-label">Contact No.<span style="color: red;">*</span></span>
-                         <input type="text" class="form-control" required="active" name="cl_contactNo" placeholder="Contact No.">
+                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                         
+                         <input type="text" id="contact_no" class="form-control" required="active" name="cl_contactNo" placeholder="Contact No.">
+                         <label class="form-control" for="contact_no">Contact No.<span style="color: red;">*</span></label>
                        </div>
                      </div>
                    </div>
                  </div>
+                 <!-- <div class="form-check form-check" style="text-align: left;">
+                  <input type="checkbox" class="form-check-input required" id="terms" >
+                  <label class="form-check-label" for="terms" style="margin-left: 5px; margin-top: 5px">I agree to the  and conditions.</label>
+                  
+                </div> -->
+                <div class="form-group mt-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                    <label class="form-check-label" for="invalidCheck" style="margin-left: 5px; margin-top: 5px">
+                     I Agree to <a role="button" href="" data-toggle="modal" data-target="#exampleModal">terms</a> and conditions
+                    </label>
+                    <div class="valid-feedback"></div>
+                    <div class="invalid-feedback">
+                      You must agree before submitting.
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="invalid-formcheck" style="text-align: left;"></div> -->
                  <div class="btns-group">
-                   <a href="#" class="btn btn-prev">Previous</a>
-                   <button type="submit" class="btn btn-outline-success">Register </a>
+                   <a href="#" class="btn btn-prev btn-success">Previous</a>
+                   <button type="submit" class="btn  btn-success" id="submit-btn">Register </a>
                  </div>
                </div>
                </form>
@@ -190,59 +266,15 @@
  </div>
 
 <script type="text/javascript">
-   $(window).on('load', function() {
-       $('#exampleModal').modal('show');
-   });
+  //  $(window).on('load', function() {
+  //      $('#exampleModal').modal('show');
+  //  });
 </script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
 <script>
-// <!-- passwordchecker -->
+  
 
-function isPasswordStrong(password) {
-  // Check the length
-  if (password.length < 8) {
-    return false;
-  }
-
-  // Check for at least one lowercase letter
-  if (!/[a-z]/.test(password)) {
-    return false;
-  }
-
-  // Check for at least one uppercase letter
-  if (!/[A-Z]/.test(password)) {
-    return false;
-  }
-
-  // Check for at least one digit
-  if (!/\d/.test(password)) {
-    return false;
-  }
-
-  // Check for at least one special character
-  if (!/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/.test(password)) {
-    return false;
-  }
-
-  // Passed all checks
-  return true;
-}
-
-  const passwordInput = document.getElementById('password');
-  const passwordError = document.getElementById('password-error');
-
-  passwordInput.addEventListener('input', () => {
-    const password = passwordInput.value;
-    if (isPasswordStrong(password)) {
-      passwordError.textContent = '';
-      passwordInput.classList.remove('password-weak');
-      passwordInput.classList.add('password-strong');
-    } else {
-      passwordError.textContent = 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character';
-      passwordInput.classList.remove('password-strong');
-      passwordInput.classList.add('password-weak');
-    }
-  });
 
 const prevBtns = document.querySelectorAll(".btn-prev");
 const nextBtns = document.querySelectorAll(".btn-next");
@@ -323,9 +355,9 @@ function updateProgressbar() {
 			}
 			});
 }  
-  $("#registerForm").submit(function(e) {
+  $(".registerForm").submit(function(e) {
       e.preventDefault();
-      var frm = $("#registerForm");
+      var frm = $(".registerForm");
       var data = {};
       $.each(this, function(i, v){
           var input = $(v);
@@ -346,11 +378,205 @@ function updateProgressbar() {
           },
           error: function(error) {
             resAlert = error.responseText.slice(11,-2),
+            // resAlert = 'Please input the required fields!',
             window.setTimeout(alertFailure(resAlert), 25000);
           }
       })
   });
+// password validator 
+  // $('#btn-to-nxt-form').on('click',function (){
+  //     if ($('#username').val().length == 0 && $('password').val().length == 0 && $('password2').val().length == 0) {
+  //         $('.invalid-feedback').show();
+  //     }
+  //     else {
+  //       $('.invalid-feedback').hide();
+  //     }
+  // });
+         
 
+
+            $('#password, #password2').on('keyup', function () {
+                if ($('#password').val() == $('#password2').val() ) {
+                  $('#password_invalid2').html('Password Match!').css('color', 'green');
+                  $('#password2').css('border-color', 'green');
+                }
+                
+                // else if ($('#password').val().length != 0){
+                //   $('#password_invalid2').hide();
+                // }
+              else {
+                // $('#password_invalid2').show();
+                  $('#password_invalid2').html('Passwords does not match!!').css('color', 'red');
+                  $('#password2').css('border-color', 'red');
+                }
+
+
+              });
+              $('#username').on('blur', function(){
+                if ($('#username').val().length == 0) {
+                  $('#invalid_username').innerHTML = "";
+                  $('#invalid_username').html('Please input username.').css('color', 'red');
+                  $('#username').css('border-color', 'red');
+                }
+                else{
+                  $('#invalid_username').innerHTML = "";
+                  $('#invalid_username').html('Username is valid.').css('color', 'green');
+                  $('#username').css('border-color', 'green');
+                }
+              });
+
+              $('#password2').on('blur', function(){
+                if ($('#password2').val().length == 0) {
+                  $('#password_invalid2').innerHTML = "";
+                  $('#password_invalid2').html('Please input password first!').css('color', 'red');
+                  $('#password2').css('border-color', 'red');
+                }
+                
+              });
+             
+
+                $('#password').on('blur', function () {
+                console.log($('#password').val());
+                
+                if ($('#password').val().length == 0) {
+                  $('#password_invalid1').innerHTML = "";
+                  $('#password_invalid1').html('Please input password.').css('color', 'red');
+                  $('#password').css('border-color', 'red');
+                }
+                else if($('#password').val().length > 0 && $('#password').val().length < 8){
+                  $('#password_invalid1').innerHTML = "";
+                  $('#password_invalid1').html('Password must be atleast 8 characters.').css('color', 'red');
+                  $('#password').css('border-color', 'red');
+                }
+           
+                else {
+                  $('#password_invalid1').innerHTML = "";
+                  $('#password_invalid1').html('Password is valid.').css('color', 'green');
+                  $('#password').css('border-color', 'green');
+                 
+                }
+
+
+
+              });
+              // second page validation 
+              // Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+
+$( document ).ready(function() {
+    // $('#contact_form').validate();
+
+    document.getElementById("message").style.display = "none";
+
+    if ($('#username').val().length == 0 && $('#password').val().length == 0 && $('#password2').val().length == 0) {
+        document.getElementById('btn-to-nxt-form').disabled = true;
+    }
+    $('#submit-btn').on('click',function (){
+  if (!$('#terms').is(':checked')) {
+     
+     document.getElementById('btn-to-nxt-form').disabled = true;
+     $('.invalid-formcheck').html('Please agree to the terms and conditions.').css('color', 'red');
+     $('#terms').css('border-color', 'red');
+   }
+   else{
+     $('.invalid-formcheck').html('');
+     $('#terms').css('border-color', '');
+   }
+});
+    onChange()
+   
+});
+
+
+  
+function onChange() {
+            if ($('#password').val().length > 0 && $('#password2').val().length > 0) {
+              
+           
+              if (document.getElementById('password').value ==
+              document.getElementById('password2').value ) {
+              document.getElementById('btn-to-nxt-form').disabled = false;
+
+              } else if(document.getElementById('password').value != 0){
+                  document.getElementById('btn-to-nxt-form').disabled = true;
+
+              }
+            }
+          }
+var myInput = document.getElementById("password");
+var letter = document.getElementById("letter");
+var capital = document.getElementById("capital");
+var number = document.getElementById("number");
+var length = document.getElementById("length");
+
+// When the user clicks on the password field, show the message box
+myInput.onfocus = function() {
+  document.getElementById("message").style.display = "block";
+}
+
+// When the user clicks outside of the password field, hide the message box
+myInput.onblur = function() {
+  document.getElementById("message").style.display = "none";
+}
+
+// When the user starts to type something inside the password field
+myInput.onkeyup = function() {
+  // Validate lowercase letters
+  var lowerCaseLetters = /[a-z]/g;
+  if(myInput.value.match(lowerCaseLetters)) {  
+    letter.classList.remove("invalid");
+    letter.classList.add("valid");
+  } else {
+    letter.classList.remove("valid");
+    letter.classList.add("invalid");
+  }
+  
+  // Validate capital letters
+  var upperCaseLetters = /[A-Z]/g;
+  if(myInput.value.match(upperCaseLetters)) {  
+    capital.classList.remove("invalid");
+    capital.classList.add("valid");
+  } else {
+    capital.classList.remove("valid");
+    capital.classList.add("invalid");
+  }
+
+  // Validate numbers
+  var numbers = /[0-9]/g;
+  if(myInput.value.match(numbers)) {  
+    number.classList.remove("invalid");
+    number.classList.add("valid");
+  } else {
+    number.classList.remove("valid");
+    number.classList.add("invalid");
+  }
+  
+  // Validate length
+  if(myInput.value.length >= 8) {
+    length.classList.remove("invalid");
+    length.classList.add("valid");
+  } else {
+    length.classList.remove("valid");
+    length.classList.add("invalid");
+  }
+}
+         
   </script>
   <script src="{{url_for('static', path='/assets/js/sessioncheckers.js')}}"></script>
 {% endblock %}
