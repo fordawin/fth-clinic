@@ -116,7 +116,7 @@
                      </div>
                   </div>
                </div>
-               <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#appointmentModal">
+               <button type="submit" class="btn btn-success">
 				Book an Appointment
 			   </button>
             </form>
@@ -127,7 +127,7 @@
  <!--dito len end -->
 
  <!-- Modal -->
-<!-- <div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+<div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -137,7 +137,7 @@
 				</div>	
 			</div>
 		<div class="modal-body">
-			<form action="http://127.0.0.1:8000/client/home3" method="POST" id="appointmentForm">
+			<form action="http://127.0.0.1:8000/client/home3/" method="POST" id="appointmentForm">
 				<div class="container">
 					<div class="row mt-2">
 						<div class="col-md-4" style="vertical-align: text-top;">
@@ -188,7 +188,7 @@
 		</div>
 		</div>
 	</div>
-</div> -->
+</div>
 
 		  
 <!--Start services Section-->
@@ -393,6 +393,10 @@
 <!-- <script src="{{url_for('static', path='/assets/js/sessionchecker.js')}}"></script> -->
 <script type="text/javascript">
 
+$(window).on('load', function() {
+       $('#appointmentModal').modal('show');
+   });
+
 function confirm() {
         Swal.fire({
           icon: 'success',
@@ -450,6 +454,7 @@ $("#appointmentForm").submit(function(e) {
         data[input.attr("name")] = input.val();
         delete data["undefined"];
     });
+    console.log(data)
     $.ajax({
         contentType:"application/json; charset=utf-8",
         type:frm.attr("method"),

@@ -33,20 +33,26 @@
                                         <th>Email</th>
                                         <th>Created At</th>
                                         <th>Role</th>
-                                        <th>Action</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                   {% for credentials in credential %}
-                                    {% if credentials.user_status == 'Active' and credentials.user_type != 'Admin' %}
+                                    {% if credentials.user_type != 'Admin' %}
                                     <tr>
                                         <td>{{ credentials.user_username }}</td>
                                         <td>{{ credentials.user_email }}</td>
                                         <td>{{ credentials.user_created_at }}</td>
                                         <td>{{ credentials.user_type }}</td>
+                                        {% if credentials.user_status == 'Active' %}
                                         <td>
-                                            <button type="button" data-toggle="modal" data-target="#deleteStudent{{credentials.user_id}}" class="btn btn-danger btn-sm">Delete</button>
+                                            <button type="button" class="btn btn-success btn-sm">{{ credentials.user_status }}</button>
                                         </td>
+                                        {% else %}
+                                        <td>
+                                          <button type="button" class="btn btn-danger btn-sm">{{ credentials.user_status }}</button>
+                                        </td>
+                                        {% endif %}
                                     </tr>
                                     {% endif %}
                                   {% endfor %}
@@ -73,7 +79,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="https://fth-clinic.herokuapp.com/admin/" id="addUser" method="POST">
+          <form action="http://127.0.0.1:8000/admin/" id="addUser" method="POST">
             <div class="row">
                 <div class="col-md-12">
                     <label class="form-label" for="">Name</label>
@@ -194,7 +200,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-danger" href="https://fth-clinic.herokuapp.com/usercredential/deactivate/{{ credentials.user_id }}" onclick="confirm()">Delete</a>
+          <a class="btn btn-danger" href="http://127.0.0.1:8000/usercredential/deactivate/{{ credentials.user_id }}" onclick="confirm()">Delete</a>
         </div>
       </div>
     </div>

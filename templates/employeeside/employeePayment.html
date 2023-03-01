@@ -83,7 +83,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="https://fth-clinic.herokuapp.com/appointment/employee" method="POST" id="appointmentForm">
+                <form action="http://127.0.0.1:8000/appointment/employee" method="POST" id="appointmentForm">
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label" for="">Client List</label>
@@ -142,7 +142,7 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="https://fth-clinic.herokuapp.com/payment/base" method="POST" class="form" id="paypaypay">
+                <form action="http://127.0.0.1:8000/payment/base" method="POST" class="form" id="paypaypay">
                     <div class="row">
                         <input class="form-control" value="{{appointment.ap_id}}" name="payment_appointmentID" type="hidden" id="paymentID" />
                         <div class="col-md-8">
@@ -272,7 +272,7 @@
                 event.preventDefault();
                 $.ajax({
                     type: "POST",
-                    url: "https://fth-clinic.herokuapp.com/payment/base",
+                    url: "http://127.0.0.1:8000/payment/base",
                     data: $('#paypaypay').serialize(),
                     success: function(data) {
                         console.log(data);

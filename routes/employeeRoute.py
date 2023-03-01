@@ -153,7 +153,8 @@ async def deactivate(id: str, db: Session = Depends(get_db)):
 
 #PAYMENT ROUTES
 @router.post('/orderPayment/{id}')
-def payment(id: str, pay: PaymentB, db: Session = Depends(get_db)):
+async def payment(id: str, pay: PaymentB, db: Session = Depends(get_db)):
+    print(pay)
     payment = db.query(Orders).filter(Orders.order_id == id).first()
 
     if pay.order_payment == payment.order_total:
@@ -162,4 +163,4 @@ def payment(id: str, pay: PaymentB, db: Session = Depends(get_db)):
 
         return {'message': 'Success'}
     else:
-        raise HTTPException(404, 'Insufficient Payment')
+        raise HTTPException(402, 'Insufficient Payment')

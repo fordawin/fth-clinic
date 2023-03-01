@@ -204,7 +204,19 @@ def home(request: Request, db: Session = Depends(get_db)):
         'timeslots': query2
     })  
 
-@router.post('/home3', response_class=HTMLResponse)
+@router.get("/select_date")
+def get_data(request: Request, date: str, db: Session = Depends(get_db)):
+    # Retrieve data for the selected date
+    query1 = db.query(Service).all()
+    query2 = db.query(Timeslot).filter(Timeslot.slot_date == date).all()
+
+    return templates.TemplateResponse('clientside/appointmentModal.html', {
+            'request': request,
+            'services': query1,
+            'timeslots': query2
+        })
+
+@router.post('/home3/', response_class=HTMLResponse)
 async def home(form_data: AppointmentBase, token: str = Cookie('token'), db: Session = Depends(get_db)):
     token = jwt.decode(token, secret, algorithms=['HS256'])
 
@@ -310,14 +322,33 @@ def deactivate(id: str, db: Session = Depends(get_db)):
 
     slotAdd = int(slot.slot_capacity) + 1
 
-    currentHour = datetime.datetime.now().hour
+    currentHour = datetime.datetime.now()
+    
+    time1 = cancel.ap_startTime
+    dt_time1 = datetime.datetime.combine(datetime.date.today(), time1)
 
-    pastHour = slot.slot_start - timedelta(hours=1)
+    duration = datetime.timedelta(hours=1)
 
+    pastHour = dt_time1
+
+    print(currentHour)
+    print(pastHour)
+
+    valid = pastHour - currentHour
+    print(duration)
+    print(valid)
+    # currentHour = datetime.datetime.now().time
+
+    # umpisa = datetime.datetime.strptime(f'{currentHour}', '%H')
+
+    # pastHour = slot.slot_start - timedelta(hours=1)
+
+    # strPastHour = datetime.datetime.strptime(f'{pastHour}', '%H')
+    
     if not cancel:
-        raise HTTPException(404, 'Appointment to cancel is not found.')
-    elif currentHour >= pastHour:
-        raise HTTPException(404, 'Cannot cancel appointment 1 hour before your session.')
+        raise HTTPException(402, 'Appointment to cancel is not found.')
+    elif valid <= duration:
+        raise HTTPException(402, 'Cannot cancel appointment 1 hour before your session.')
     else:
         db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).update({'slot_capacity': slotAdd})
         db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Canceled"})

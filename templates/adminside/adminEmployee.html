@@ -40,7 +40,7 @@
                                         <th>Email</th>
                                         <th>Contact #</th>
                                         <th>Address</th>
-                                        <th>Action</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -50,10 +50,16 @@
                                         <td>{{ usercred.user_email }}</td>
                                         <td>{{ employees.em_contactNo }}</td>
                                         <td>{{ employees.em_address }}</td>
+                                        {% if usercred.user_status == 'Active' %}
                                         <td class="text-white">
-                                          <span><a type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editEmployee{{ employees.em_id }}">Edit</a></span>
-                                          <span><a type="button" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#deleteEmployee">Delete</a></span>
+                                          <!-- <span><a type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editEmployee{{ employees.em_id }}">Edit</a></span> -->
+                                          <span><a type="button" class="btn btn-success btn-sm ">{{ usercred.user_status }}</a></span>
                                         </td>
+                                        {% else %}
+                                        <td class="text-white">
+                                          <span><a type="button" class="btn btn-danger btn-sm ">{{ usercred.user_status }}</a></span>
+                                        </td>
+                                        {% endif %}
                                    </tr>
                                   {% endfor %}
                                 </tbody>
@@ -81,7 +87,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="https://fth-clinic.herokuapp.com/admin/employee" method="POST" class="form" id="employeeAdd">
+          <form action="http://127.0.0.1:8000/admin/employee" method="POST" class="form" id="employeeAdd">
             <div class="row">
               <div class="col-md-6">
                 <label class="form-label" for="">Username</label>
@@ -154,7 +160,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="https://fth-clinic.herokuapp.com/employee/{{employees.em_id}}" id="employeeUpdate" method="POST">
+          <form action="http://127.0.0.1:8000/employee/{{employees.em_id}}" id="employeeUpdate" method="POST">
             <div class="row">
               <div class="col-md-4">
                   <label class="form-label" for="">First Name</label>
@@ -219,7 +225,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-danger" href="https://fth-clinic.herokuapp.com/employee/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
+          <a class="btn btn-danger" href="http://127.0.0.1:8000/employee/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
         </div>
       </div>
     </div>

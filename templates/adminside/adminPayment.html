@@ -42,7 +42,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for appointment in appointments[:appointments[-3]] %}
+                                    {% for appointment, service, timeslot in data %}
                                         {% if appointment.ap_status == 'Unpaid' %}
                                         <tr>
                                             <td>{{ appointment.ap_number }}</td>
@@ -74,7 +74,7 @@
 
 
   <!-- Payment Modal -->
-  {% for appointment in appointments %}
+  {% for appointment, service, timeslot in data %}
   <div class="modal fade" id="paymentModal{{appointment.ap_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -85,7 +85,7 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="https://fth-clinic.herokuapp.com/admin/appointmentPayment" method="POST" class="form" id="paypaypay">
+                <form action="http://127.0.0.1:8000/admin/appointmentPayment" method="POST" class="form" id="paypaypay">
                     <div class="row">
                         <input class="form-control" value="{{appointment.ap_id}}" name="payment_appointmentID" type="hidden" />
                         <div class="col-md-8">

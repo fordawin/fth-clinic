@@ -204,7 +204,7 @@
         $.each(products, function(){
          checkoutString += ("\n " + this.name + " \t " + this.price + " \t " + this.quantity);
          $.ajax({
-                url: "https://fth-clinic.herokuapp.com/orders",
+                url: "http://127.0.0.1:8000/orders",
                 type: "post",
                 dataType: "json",
                 contentType: "application/json",

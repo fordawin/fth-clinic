@@ -131,7 +131,7 @@
   icon: 'info',
   html:
     '<b>You may <b>' +
-    '<b><a href="https://fth-clinic.herokuapp.com/users/login">log-in </a><b> ' +
+    '<b><a href="http://127.0.0.1:8000/users/login">log-in </a><b> ' +
     '<b>here<b>',
   showCloseButton: true,
   focusConfirm: false,
@@ -185,7 +185,7 @@
        $.each(products, function(){
          checkoutString += ("\n " + this.id + " \t " + this.name + " \t " + this.summary + " \t " + this.price + " \t " + this.quantity + " \t " + this.image);
          $.ajax({
-                url: "https://fth-clinic.herokuapp.com/orders",
+                url: "http://127.0.0.1:8000/orders",
                 type: "post",
                 dataType: "json",
                 contentType: "application/json",

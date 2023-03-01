@@ -82,8 +82,9 @@
                </button>
                </div>
                <div class="modal-body">
-               <form action="https://fth-clinic.herokuapp.com/employee/orderPayment/{{ order.order_id }}" id="paymentAccept" method="POST" >
+               <form action="http://127.0.0.1:8000/employee/orderPayment/{{ order.order_id }}" id="paymentAccept" class="form" method="POST" >
                    <div class="row">
+                        <input class="form-control" name="order_id" type="text" value="{{ order.order_id }}" hidden/>
                        <div class="col-md-8">
                            <label class="form-label" for="">Payment Amount</label>
                            <input class="form-control" name="order_payment" type="number" />
@@ -91,7 +92,7 @@
                    </div>
                    <div class="modal-footer">
                        <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                       <button type="submit" id="execute" class="btn btn-primary btn-sm">Save changes</button>
+                       <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
                    </div>
                </form>
                </div>
@@ -162,33 +163,34 @@
 <script type="text/javascript">
         
     function windowsOpen(message) {
-        window.open("accepted", "_self").reload()
+        window.open("", "_self").reload()
     }
+
     $("#paymentAccept").submit(function(e) {
-    e.preventDefault();
-    var frm = $("#paymentAccept");
-    var data = {};
-    $.each(this, function(i, v){
-        var input = $(v);
-        data[input.attr("name")] = input.val();
-        delete data["undefined"];
+        e.preventDefault();
+        var frm = $("#paymentAccept");
+        var data = {};
+        $.each(this, function(i, v){
+            var input = $(v);
+            data[input.attr("name")] = input.val();
+            delete data["undefined"];
+        });
+        console.log(data);
+        $.ajax({
+            contentType:"application/json; charset=utf-8",
+            type:frm.attr("method"),
+            url:frm.attr("action"),
+            dataType:'json',
+            data: JSON.stringify(data),
+            success: function(data) {
+                confirm();
+                const myTimeout = setTimeout(windowsOpen, 2000);
+            },
+            error: function(error) {
+                resAlert = error.responseText.slice(11,-2)
+                sweetError(resAlert);
+            }
+        })
     });
-    console.log(data);
-    $.ajax({
-        contentType:"application/json",
-        type:frm.attr("method"),
-        url:frm.attr("action"),
-        dataType:'text',
-        data: JSON.stringify(data),
-        success: function(data) {
-          confirm();
-          const myTimeout = setTimeout(windowsOpen, 2000);
-        },
-        error: function(error) {
-          resAlert = error.responseText.slice(11,-2)
-          sweetError(resAlert);
-        }
-    })
-});
 </script>
 {% endblock %}

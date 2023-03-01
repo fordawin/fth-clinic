@@ -43,12 +43,11 @@
                                         <th>Marital Status</th>
                                         <th>Birthdate</th>
                                         <th>Gender</th>
-                                        <th>Action</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody> 
                                     {% for usercred, clients in client %}
-                                      {% if usercred.user_status == 'Active' %}
                                     <tr>
                                         <td>{{ clients.cl_firstName }} {{ clients.cl_middleName }} {{ clients.cl_lastName }}</td>
                                         <td>{{ usercred.user_email }}</td>
@@ -57,12 +56,16 @@
                                         <td>{{ clients.cl_maritalStatus }}</td>
                                         <td>{{ clients.cl_birthdate }}</td>
                                         <td>{{ clients.cl_gender }}</td>
+                                        {% if usercred.user_status == 'Active' %}
                                         <td class="text-white">
-                                            <span><a type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#editClient{{clients.cl_id}}">Edit</a></span>
-                                            <span><a type="button" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#deleteClient{{clients.cl_id}}">Delete</a></span>
+                                            <span><a type="button" class="btn btn-success btn-sm ">{{ usercred.user_status }}</a></span>
                                         </td>
+                                        {% else %}
+                                        <td class="text-white">
+                                          <span><a type="button" class="btn btn-danger btn-sm ">{{ usercred.user_status }}</a></span>
+                                        </td>
+                                        {% endif %}
                                     </tr>
-                                      {% endif %}
                                     {% endfor %}
                                 </tbody>
                             </table>
@@ -88,7 +91,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="https://fth-clinic.herokuapp.com/admin/client" method="POST" class="form" id="clientAdd">
+          <form action="http://127.0.0.1:8000/admin/client" method="POST" class="form" id="clientAdd">
             <div class="row">
                 <div class="col-md-6">
                   <label class="form-label" for="">Username</label>
@@ -178,7 +181,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="https://fth-clinic.herokuapp.com/client/admin/{{clients.cl_id}}" id="clientUpdate" method="POST">
+          <form action="http://127.0.0.1:8000/client/admin/{{clients.cl_id}}" id="clientUpdate" method="POST">
             <div class="row">
               <div class="col-md-4">
                   <label class="form-label" for="">First Name</label>
@@ -251,7 +254,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-danger" href="https://fth-clinic.herokuapp.com/client/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
+          <a class="btn btn-danger" href="http://127.0.0.1:8000/client/deactivate/{{ usercred.user_id }}" onclick="delet()">Delete</a>
         </div>
       </div>
     </div>

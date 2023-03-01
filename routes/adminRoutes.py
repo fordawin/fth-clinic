@@ -460,9 +460,7 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         applist = [(applen)]
         timlen = int(len(query2))
         timlist = [(timlen)]
-        print(applist)
-        
-        print(applen)
+
         lst_all = query + query1 + query2 + applist + serlist + timlist
 
         return templates.TemplateResponse('adminside/adminAppointments.html', {
@@ -527,19 +525,13 @@ async def store(form_data: AppointmentBase = Depends(AppointmentBase.as_form), t
 @router.get('/paymentPending')
 def appointments(request: Request, db: Session = Depends(get_db)):
     try:
-        query = db.query(Appointment).all()
-        query1 = db.query(Service).all()
-        query2 = db.query(Timeslot).all()
-        applen = int(len(query))
-        serlen = int(len(query1))
-        serlist = [(serlen)]
-        applist = [(applen)]
-        timlen = int(len(query2))
-        timlist = [(timlen)]
-        lst_all = query + query1 + query2 + applist + serlist + timlist
+        queryJoin = db.query(Appointment, Service, Timeslot) \
+        .join(Appointment, Appointment.ap_serviceType == Service.service_id) \
+        .join(Timeslot, Timeslot.slot_id == Appointment.ap_slotID)
+
         return templates.TemplateResponse('adminside/adminPayment.html', {
             'request': request,
-            'appointments': lst_all
+            'data': queryJoin
         })
         
     except Exception as e:
@@ -966,12 +958,12 @@ def payment(id: str, pay: PaymentOrder, db: Session = Depends(get_db)):
     
 @router.post('/appointmentPayment')
 def store(form_data: PaymentB, db: Session = Depends(get_db)):
-
+    print(form_data)
     query = db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).first()
 
-    babayaran = int(query.ap_amount)
+    babayaran = query.ap_amount
 
-    bayad = int(form_data.payment_amount)
+    bayad = form_data.payment_amount
 
     points = db.query(User_credential).filter(User_credential.user_id == query.ap_clientID).first()
 

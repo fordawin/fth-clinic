@@ -9,17 +9,25 @@ from models.timeSlotModel import Timeslot
 from dependencies import get_token
 import models
 from fastapi.templating import Jinja2Templates
-
-
+from fastapi.exceptions import HTTPException
 
 models.paymentModel.Base.metadata.create_all(bind=engine)
+
+async def not_found_error(request: Request, exc: HTTPException):
+    return templates.TemplateResponse('auth.html', {'request': request}, status_code=404)
+async def method_not_allowed(request: Request, exc: HTTPException):
+    return templates.TemplateResponse('auth.html', {'request': request}, status_code=405)
+# async def unauthorized(request: Request, exc: HTTPException):
+#     return templates.TemplateResponse('auth.html', {'request': request}, status_code=401)
 
 # Register template folder
 templates = Jinja2Templates('templates')
 
+exception_handlers = {404: not_found_error,
+                      405: method_not_allowed}
 
 # app = FastAPI()
-app = FastAPI(docs_url=None, redoc_url=None)
+app = FastAPI(exception_handlers=exception_handlers)
 # Mount static folder
 app.mount('/static', StaticFiles(directory='static'), name='static')
 
@@ -48,3 +56,4 @@ def index():
 @app.get("/logged")
 def logged(request: Request):
     return templates.TemplateResponse("/logged.html", {"request": request}) 
+
