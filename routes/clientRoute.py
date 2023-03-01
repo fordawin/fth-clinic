@@ -20,6 +20,8 @@ from fastapi.templating import Jinja2Templates
 from passlib.context import CryptContext
 from fastapi.responses import RedirectResponse, HTMLResponse
 from for_email import *
+import datetime
+from datetime import timedelta
 import time
 import random
 import string
@@ -49,9 +51,14 @@ def password_verify(plain, hashed):
 def password_hash(password):
     return pwd_context.hash(password)
 
+# router = APIRouter(
+#     prefix='/client',
+#     tags=['client'], dependencies=[Depends(get_token)]
+# )
+
 router = APIRouter(
     prefix='/client',
-    tags=['client'], dependencies=[Depends(get_token)]
+    tags=['client']
 )
 
 templates = Jinja2Templates(directory="templates")
@@ -295,3 +302,30 @@ def order(request: Request, token: str = Cookie('token'), db: Session = Depends(
         })
     except Exception as e:
         print(e)
+
+@router.get('/cancelAppointment/{id}')
+def deactivate(id: str, db: Session = Depends(get_db)):
+    cancel = db.query(Appointment).filter(Appointment.ap_id == id).first()
+    slot = db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).first()
+
+    slotAdd = int(slot.slot_capacity) + 1
+
+    currentHour = datetime.datetime.now().hour
+
+    pastHour = slot.slot_start - timedelta(hours=1)
+
+    if not cancel:
+        raise HTTPException(404, 'Appointment to cancel is not found.')
+    elif currentHour >= pastHour:
+        raise HTTPException(404, 'Cannot cancel appointment 1 hour before your session.')
+    else:
+        db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).update({'slot_capacity': slotAdd})
+        db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Canceled"})
+        
+    db.commit()
+
+    time.sleep(1)
+
+    response = RedirectResponse(url='/users/appointments', status_code=302)
+
+    return response
