@@ -3,11 +3,16 @@
 <title>Register - Acupuncture and Herbal Medicine with Dr. Lee</title>
 {% endblock %}
 {% block linkcontent %}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="{{url_for('static', path='/assets/css/register.css')}}" type="text/css">	
 {% endblock %}
 {% block content %}
 <br><br><br><br>
 <style>
+  input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        display: none;
+      }
   .password-weak {
     border: 2px solid red;
   }
@@ -19,7 +24,9 @@
 .valid {
   color: green;
 }
-
+.card{
+  z-index: 0 !important;
+}
 .valid:before {
   position: relative;
   
@@ -87,8 +94,8 @@
                      <!-- <span id="password-error" style="font-size: 15px;"></span> -->
                     
                      <div id="password_invalid1"></div>
-                    <div id="message" class="text-right">
-                      <h5>Password must contain the following:</h5>
+                    <div id="message" style="margin-top: 10px; padding: 10px; box-sizing: border-box; border: 1px #dc143c;background-color: #ffcccb; border-radius: 5px;">
+                      <label><b>Password must contain the following:</b> </label>
                       <p id="letter" class="invalid"> A <b>lowercase</b> letter</p>
                       <p id="capital" class="invalid"> A <b>capital (uppercase)</b> letter</p>
                       <p id="number" class="invalid"> A <b>number</b></p>
@@ -126,9 +133,9 @@
                        </div>
                        
                      </div>
+
                      <div class="col-md-6">
                        <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
-
                          <select class="form-control" name="cl_maritalStatus" id="marital_status" placeholder="Marital Status">
                            <option disabled selected hidden value="">Status</option>
                            <option value="Single">Single</option>
@@ -140,81 +147,83 @@
                          <label class="form-label" for="marital_status">Marital Status</label>
                        </div>
                      </div>
+
                      <div class="col-md-6">
                        <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
-                      
                          <input type="text" id="middle_name" class="form-control" name="cl_middleName" placeholder="Middle Name">
                          <label class="form-label" for="middle_name">Middle Name</label>
                        </div>
                      </div>
+
                      <div class="col-md-6">
                        <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
-                         
                          <input type="date" id="dob" class="form-control appointment_date" name="cl_birthdate" required="active" placeholder="Date of Birth">
                          <label class="form-label" for="dob">Date of Birth<span style="color: red;">*</span></label>
+              
                        </div>
                      </div>
+
                      <div class="col-md-6">
                        <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
-                        
                          <input type="text" id="last_name" required="active" class="form-control" name="cl_lastName" placeholder="Last Name">
                          <label class="form-label" for="last_name">Last Name<span style="color: red;">*</span></label>
                        </div>
                      </div>
+
                      <div class="col-md-6">
-                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
-                        
-                         <input type="text" id="email_" class="form-control" required="active" name="user_email" placeholder="Email">
-                         <label class="form-control" for="email_">E-mail<span style="color: red;">*</span></label>
-                       </div>
-                     </div>
+                      <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        <input type="email" id="email_" class="form-control" required="active" name="user_email" placeholder="Email">
+                        <label class="form-label" for="email_">E-mail<span style="color: red;">*</span></label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        <select class="form-control" name="cl_gender" id="gender" placeholder="Gender">
+                          <option disabled selected hidden value="">Gender</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Others">Others</option>
+                        </select>
+                        <label class="form-label" for="gender">Gender</label>
+                      </div>
+                    </div>
+
                      <div class="col-md-6">
-                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
-                        
-                         <select  id="gender" class="form-control" required="active" name="cl_gender" placeholder="Gender">
-                           <!-- <option disabled selected hidden value="">~ Please select ~</option> -->
-                           <option value="Male">Male</option>
-                           <option value="Female">Female</option>
-                           <option value="Others">Others</option>
-                         </select>
-                         <label class="form-control" for="gender">Gender</label>
-                       </div>
-                     </div>
-                     <div class="col-md-6">
-                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
-                        
-                         <input type="text" id="house_no" class="form-control" required="active" name="cl_houseNo" placeholder="#">
-                         <label class="form-control" for="house_no">House Number<span style="color: red;">*</span></label>
-                       </div>
-                     </div>
-                     <div class="col-md-6">
-                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
-                        
-                         <input type="text" id="street" class="form-control" required="active" name="cl_street" placeholder="Street">
-                         <label class="form-control" for="street">Street<span style="color: red;">*</span></label>
-                       </div>
-                     </div>
-                     <div class="col-md-6">
-                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
-                        
-                         <input type="text" id="brgy" class="form-control" required="active" name="cl_brgy" placeholder="Brgy">
-                         <label class="form-control" for="brgy">Barangay<span style="color: red;">*</span></label>
-                       </div>
-                     </div>
-                     <div class="col-md-6">
-                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
-                        
-                         <input type="text" id="city" class="form-control" required="active" name="cl_city" placeholder="City">
-                         <label class="form-control" for="city">City<span style="color: red;">*</span></label>
-                       </div>
-                     </div>
-                     <div class="col-md-6">
-                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
-                         
-                         <input type="text" id="contact_no" class="form-control" required="active" name="cl_contactNo" placeholder="Contact No.">
-                         <label class="form-control" for="contact_no">Contact No.<span style="color: red;">*</span></label>
-                       </div>
-                     </div>
+                      <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        <input type="number" min="0" id="house_no" class="form-control" required="active" name="cl_houseNo" placeholder="#" oninput="this.value = Math.abs(this.value)">
+                        <label class="form-label" for="house_no">House Number<span style="color: red;">*</span></label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        <input type="text" id="street" class="form-control" required="active" name="cl_street" placeholder="Street">
+                        <label class="form-label" for="street">Street<span style="color: red;">*</span></label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        <input type="text" id="brgy" class="form-control" required="active" name="cl_brgy" placeholder="Brgy">
+                        <label class="form-label" for="brgy">Barangay<span style="color: red;">*</span></label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        <input type="text" id="city" class="form-control" required="active" name="cl_city" placeholder="City">
+                        <label class="form-label" for="city">City<span style="color: red;">*</span></label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+                        <input type="text" id="contact_no" class="form-control" required="active" name="cl_contactNo" placeholder="Contact Number" >
+                        <label class="form-label" for="contact_no">Contact Number<span style="color: red;">*</span></label>
+                      </div>
+                    </div>
+
                    </div>
                  </div>
                  <!-- <div class="form-check form-check" style="text-align: left;">
@@ -229,14 +238,14 @@
                      I Agree to <a role="button" href="" data-toggle="modal" data-target="#exampleModal">terms</a> and conditions
                     </label>
                     <div class="valid-feedback"></div>
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="margin-left: -10px !important">
                       You must agree before submitting.
                     </div>
                   </div>
                 </div>
                 <!-- <div class="invalid-formcheck" style="text-align: left;"></div> -->
                  <div class="btns-group">
-                   <a href="#" class="btn btn-prev btn-success">Previous</a>
+                   <a href="#" id="prev-btn" class="btn btn-prev btn-success">Previous</a>
                    <button type="submit" class="btn  btn-success" id="submit-btn">Register </a>
                  </div>
                </div>
@@ -377,8 +386,9 @@ function updateProgressbar() {
             }, 50000);        
           },
           error: function(error) {
+            console.log(error);
             resAlert = error.responseText.slice(11,-2),
-            // resAlert = 'Please input the required fields!',
+             //resAlert = 'Please input the required fields!', 
             window.setTimeout(alertFailure(resAlert), 25000);
           }
       })
@@ -392,7 +402,9 @@ function updateProgressbar() {
   //       $('.invalid-feedback').hide();
   //     }
   // });
-         
+         $('#prev-btn').on('click', function (){
+            document.getElementById('btn-to-nxt-form').disabled = false;
+         });
 
 
             $('#password, #password2').on('keyup', function () {
@@ -401,15 +413,18 @@ function updateProgressbar() {
                   $('#password2').css('border-color', 'green');
                 }
                 
-                // else if ($('#password').val().length != 0){
-                //   $('#password_invalid2').hide();
-                // }
               else {
                 // $('#password_invalid2').show();
                   $('#password_invalid2').html('Passwords does not match!!').css('color', 'red');
                   $('#password2').css('border-color', 'red');
                 }
 
+                $('#password, #username').on('keyup', function (){
+                  if ($('#password').val() == $('#username').val() ) {
+                    $('#invalid_username').html('Invalid username!').css('color', 'red');
+                    $('#username').css('border-color', 'red');
+                }
+                });
 
               });
               $('#username').on('blur', function(){
@@ -484,6 +499,15 @@ $( document ).ready(function() {
 
     document.getElementById("message").style.display = "none";
 
+    /* $("#dob").datepicker({
+      showOtherMonths: true,
+      selectOtherMonths: true,
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "-100:+10",
+      format: "yyyy-mm-dd",
+      autoclose: true
+    }); */
     if ($('#username').val().length == 0 && $('#password').val().length == 0 && $('#password2').val().length == 0) {
         document.getElementById('btn-to-nxt-form').disabled = true;
     }
@@ -536,15 +560,18 @@ myInput.onblur = function() {
 }
 
 // When the user starts to type something inside the password field
+var errorss = 0;
 myInput.onkeyup = function() {
   // Validate lowercase letters
   var lowerCaseLetters = /[a-z]/g;
   if(myInput.value.match(lowerCaseLetters)) {  
     letter.classList.remove("invalid");
     letter.classList.add("valid");
+    errorss--;
   } else {
     letter.classList.remove("valid");
     letter.classList.add("invalid");
+    errorss = 1;
   }
   
   // Validate capital letters
@@ -552,9 +579,11 @@ myInput.onkeyup = function() {
   if(myInput.value.match(upperCaseLetters)) {  
     capital.classList.remove("invalid");
     capital.classList.add("valid");
+    errorss--;
   } else {
     capital.classList.remove("valid");
     capital.classList.add("invalid");
+    errorss = 1;
   }
 
   // Validate numbers
@@ -562,18 +591,29 @@ myInput.onkeyup = function() {
   if(myInput.value.match(numbers)) {  
     number.classList.remove("invalid");
     number.classList.add("valid");
+    errorss--;
   } else {
     number.classList.remove("valid");
     number.classList.add("invalid");
+    errorss =1;
   }
   
   // Validate length
   if(myInput.value.length >= 8) {
     length.classList.remove("invalid");
     length.classList.add("valid");
+    errorss--;
   } else {
     length.classList.remove("valid");
     length.classList.add("invalid");
+    errorss =1;
+  }
+
+  if (errorss < 0) {
+      $('#message').css('background-color', '#98fb98');
+  }
+  else{
+    $('#message').css('background-color', '#ffcccb');
   }
 }
          

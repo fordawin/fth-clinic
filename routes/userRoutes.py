@@ -110,11 +110,16 @@ async def login(response: Response, form_data: LoginForm, db: Session = Depends(
 
 @router.get("/register")
 def register(request: Request):
+   
+    
+    
     return templates.TemplateResponse("clientside/register.html", {"request": request})
 
 @router.post('/register', response_class=HTMLResponse)
 async def register(response: Response, form_data: ClientBase, db: Session = Depends(get_db)):
-    
+   
+    for xyz in form_data:
+         print(xyz)
     user_duplicate = db.query(User_credential).filter(User_credential.user_username == form_data.user_username).first()
     user_email_dup = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
     user_num_cl = db.query(Client).filter(Client.cl_contactNo == form_data.cl_contactNo).first()
