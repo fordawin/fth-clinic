@@ -9,7 +9,7 @@ class Client(Base):
     cl_id = Column(String(36), primary_key=True, default=text('gen_random_uuid()'))
     cl_pic = Column(String(255), nullable=True)
     cl_firstName = Column(String(255), nullable=False)
-    cl_middleName = Column(String(255), nullable=True)
+    cl_middleName = Column(String(255), nullable=True, default=text(' '))
     cl_lastName = Column(String(255), nullable=False)
     cl_fullName = Column(String(255), nullable=True)
     cl_houseNo = Column(String(255), nullable=False)

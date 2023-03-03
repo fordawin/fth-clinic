@@ -214,12 +214,10 @@
    
 	$('#date').on('change', function (){
 		var date = moment($(this).val()).format("YYYY-MM-DD");
-      console.log(date);
       $.each(date, function() {
          eds.push(test);
       }) 
       var test = $("#compareDate").val();
-      console.log(test);
       if(date == test){
          $("#selectTimeslot").show();
          
@@ -242,7 +240,6 @@
 		}
 
 	});
-   console.log(eds);
 	}	
 
 </script>
