@@ -8,7 +8,7 @@ from dependencies import get_token, check_employee
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 import time
-
+from systemlogs import *
 router = APIRouter(
     prefix='/service',
     tags=['service'], dependencies=[Depends(check_employee)]

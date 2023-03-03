@@ -26,7 +26,7 @@ import random
 import string
 import time
 from for_email import *
-
+from systemlogs import *
 def get_random_string(length):
     # choose from all lowercase letter
     letters = string.ascii_lowercase

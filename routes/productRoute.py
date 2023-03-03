@@ -8,7 +8,7 @@ from dependencies import get_token, check_employee
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, HTMLResponse
 import time
-
+from systemlogs import *
 #img
 from fastapi import File, UploadFile
 from fastapi.staticfiles import StaticFiles

@@ -24,7 +24,7 @@ from jose import jwt
 from for_email import *
 from datatables import DataTable
 from dependencies import get_token, check_employee
-
+from systemlogs import *
 #image upload
 from fastapi import File, UploadFile
 from fastapi.staticfiles import StaticFiles

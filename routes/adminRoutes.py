@@ -35,11 +35,11 @@ from passlib.context import CryptContext
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, HTMLResponse
 import time
-
+from systemlogs import *
 from fastapi.staticfiles import StaticFiles
 from PIL import Image
 import secrets
-
+from systemlogs import *
 def get_random_string(length):
     # choose from all lowercase letter
     letters = string.ascii_lowercase
@@ -127,9 +127,10 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.get('/deactivate/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
+async def deactivate(id: str, db: Session = Depends(get_db)):
     cancel = db.query(Appointment).filter(Appointment.ap_id == id).first()
     slot = db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).first()
+    main = db.query(User_credential).filter(User_credential.user_id == cancel.ap_clientID).first()
 
     slotAdd = int(slot.slot_capacity) + 1
 
@@ -138,7 +139,8 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     else:
         db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).update({'slot_capacity': slotAdd})
         db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Canceled"})
-        
+    
+    await system_logs("Admin", f"Cancelled the appointment of {main.user_username}.")
     db.commit()
 
     time.sleep(1)
@@ -164,7 +166,7 @@ def doctor(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/doctor', response_class=HTMLResponse)
-def createDoctor(response: Response, form_data: DoctorBase, db: Session = Depends(get_db)):
+async def createDoctor(response: Response, form_data: DoctorBase, db: Session = Depends(get_db)):
     user_duplicate = db.query(User_credential).filter(User_credential.user_username == form_data.user_username).first()
     user_email_dup = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
 
@@ -204,6 +206,7 @@ def createDoctor(response: Response, form_data: DoctorBase, db: Session = Depend
                             # cl_updated_by = client.cl_updated_by
                         )
                         db.add(to_employee)
+                        await system_logs("Admin", f"Created the account of {to_employee.dt_fullName} as a Doctor.")
                         db.commit()
                         db.refresh(to_employee)
 
@@ -237,7 +240,7 @@ def employee(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/employee', response_class=HTMLResponse)
-def createEmployee(response: Response, form_data: EmployeeBase, db: Session = Depends(get_db)):
+async def createEmployee(response: Response, form_data: EmployeeBase, db: Session = Depends(get_db)):
     user_duplicate = db.query(User_credential).filter(User_credential.user_username == form_data.user_username).first()
     user_email_dup = db.query(User_credential).filter(User_credential.user_email == form_data.user_email).first()
 
@@ -275,6 +278,7 @@ def createEmployee(response: Response, form_data: EmployeeBase, db: Session = De
                             em_user_credential = to_store.user_id,
                         )
                         db.add(to_employee)
+                        await system_logs("Admin", f"Created the account of {to_employee.em_fullName} as an Employee.")
                         db.commit()
                         db.refresh(to_employee)
 
@@ -291,7 +295,7 @@ def createEmployee(response: Response, form_data: EmployeeBase, db: Session = De
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create user. Mobile Number already exists')
 
 @router.post('/employeeUpdate/{id}')
-def update(id: str, user: employeeUpdate, db: Session = Depends(get_db)):
+async def update(id: str, user: employeeUpdate, db: Session = Depends(get_db)):
     verify = db.query(Employee).filter(Employee.em_id == id).first()
     user_num_cl = db.query(Client).filter(Client.cl_contactNo == user.em_contactNo).first()
     user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == user.em_contactNo).first()
@@ -325,14 +329,15 @@ def update(id: str, user: employeeUpdate, db: Session = Depends(get_db)):
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Employee. Mobile Number already exists')
 
 @router.get('/employeeDeactivate/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
+async def deactivate(id: str, db: Session = Depends(get_db)):
     cancel = db.query(User_credential).filter(User_credential.user_id == id).first()
 
     if not cancel:
-        raise HTTPException(404, 'Employee to cancel is not found')
+        raise HTTPException(404, 'Employee to deactivate is not found')
     else:
         db.query(User_credential).filter(User_credential.user_id == id).update({'user_status': "Inactive"})
-        
+
+    await system_logs("Admin", f"Deactivate the account of an Employee.")
     db.commit()
     
     time.sleep(1)  
@@ -396,6 +401,7 @@ async def createClient(response: Response, form_data: ClientBase, db: Session = 
                             cl_user_credential = to_store.user_id,
                         )
                         db.add(to_client)
+                        await system_logs("Admin", f"Created the account of {to_client.cl_fullName} as a Client.")
                         db.commit()
                         return 
                     else:
@@ -417,36 +423,6 @@ async def updateEmployee(response: Response, form_data: EmployeeBase = Depends(E
     time.sleep(1)
     response = RedirectResponse(url='/admin/client', status_code=302)
     return response
-
-# @router.post('/update/client/{id}', response_class=clientUpdate)
-# async def update(id: str, user: clientUpdate, db: Session = Depends(get_db)):
-#     verify = db.query(Client).filter(Client.cl_id == id).first()
-    
-#     if not verify:
-#         raise HTTPException(404, 'User to update is not found')
-
-#     user_num_cl = db.query(Client).filter(Client.cl_contactNo == user.cl_contactNo).first()
-#     user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == user.cl_contactNo).first()
-#     user_num_em = db.query(Employee).filter(Employee.em_contactNo == user.cl_contactNo).first()
-    
-#     if not user_num_cl: 
-#         if not user_num_doc: 
-#             if not user_num_em:
-#                     user_data = user.dict(exclude_unset=True)
-#                     for key, value in user_data.items():
-#                         setattr(verify, key, value)
-#                         # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
-#                     db.add(verify)
-#                     db.commit()
-
-#             else:
-#                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
-#         else:
-#             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
-#     else:
-#         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Client. Mobile Number already exists')
-        
-#     return {'message': 'Client updated successfully.'} 
 
 @router.get('/appointment')
 def appointments(request: Request, db: Session = Depends(get_db)):
@@ -584,7 +560,7 @@ def services(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/services', response_class=HTMLResponse)
-def store(response: Response, form_data: ServiceBase, db: Session = Depends(get_db)):
+async def store(response: Response, form_data: ServiceBase, db: Session = Depends(get_db)):
 
     if db.query(Service).filter(Service.service_name == form_data.service_name).first():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create service. Service already exists')
@@ -597,11 +573,12 @@ def store(response: Response, form_data: ServiceBase, db: Session = Depends(get_
         )
 
     db.add(to_store)
+    await system_logs("Admin", f"Created a new service named {to_store.service_name}.")
     db.commit()
     return
 
 @router.post('/updateService/{id}')
-def update(id: str, user: updateService, db: Session = Depends(get_db)):
+async def update(id: str, user: updateService, db: Session = Depends(get_db)):
     verify = db.query(Service).filter(Service.service_id == id).first()
 
     if not verify:
@@ -611,19 +588,22 @@ def update(id: str, user: updateService, db: Session = Depends(get_db)):
         for key, value in user_data.items():
             setattr(verify, key, value)
     try:
+        await system_logs("Admin", f"Updated a service named {user.service_name}.")
         db.commit()
     except:
         db.rollback()
-        raise HTTPException(500, 'Failed to update payment')
+        raise HTTPException(500, 'Failed to update service')
     
     return {'message': 'Service updated successfully.'}
 
 @router.get('/deactivateService/{id}')
-def deactivateService(id: str, db: Session = Depends(get_db)):
+async def deactivateService(id: str, db: Session = Depends(get_db)):
     
+    user = db.query(Service).filter(Service.service_id == id).first()
     if not db.query(Service).filter(Service.service_id == id).update({'service_status': "Inactive"}):
         raise HTTPException(404, 'Service to delete is not found')
-
+    
+    await system_logs("Admin", f"Deactivated a service named {user.service_name}.")
     db.commit()
 
     time.sleep(1)
@@ -685,7 +665,7 @@ async def store(request: Request, product: ProductBase = Depends(ProductBase.as_
             product_description = product.product_description,
             product_status = "Active"
         )
-
+        await system_logs("Admin", f"Created a product named {to_store.product_name}.")
         db.add(to_store)
         db.commit()
 
@@ -733,7 +713,7 @@ async def store(request: Request, product: ProductBase = Depends(ProductBase.as_
             product_description = product.product_description,
             product_status = "Active"
         )
-
+        await system_logs("Admin", f"Created a promotional product named {to_store.product_name}.")
         db.add(to_store)
         db.commit()
 
@@ -742,7 +722,7 @@ async def store(request: Request, product: ProductBase = Depends(ProductBase.as_
         return response
 
 @router.post('/productUpdate/{id}', response_model=productUpdate)
-def update(id: str, user: productUpdate, db: Session = Depends(get_db)):
+async def update(id: str, user: productUpdate, db: Session = Depends(get_db)):
     verify = db.query(Product).filter(Product.product_id == id).first()
 
     if not verify:
@@ -755,17 +735,18 @@ def update(id: str, user: productUpdate, db: Session = Depends(get_db)):
         for key, value in user_data.items():
             setattr(verify, key, value)
         db.add(verify)
+        await system_logs("Admin", f"Updated a product named {verify.product_name}.")
         db.commit()
 
         return {'message': 'Product updated successfully.'} 
 
 @router.get('/productDeactivate/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
+async def deactivate(id: str, db: Session = Depends(get_db)):
     # deletion = db.query(Product).filter(Product.product_id == id).first()
-
+    to_store = db.query(Product).filter(Product.product_id == id).first()
     if not db.query(Product).filter(Product.product_id == id).update({'product_status': "Inactive"}):
         raise HTTPException(404, 'Product to delete is not found')
-
+    await system_logs("Admin", f"Deactivated a product named {to_store.product_name}.")
     db.commit()
     
     time.sleep(1)
@@ -775,11 +756,11 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     return response
 
 @router.post('/productDiscount/{id}')
-def discount(id: str, product: Discount, db: Session = Depends(get_db)):
-    db.expire_all()
+async def discount(id: str, product: Discount, db: Session = Depends(get_db)):
+    to_store = db.query(Product).filter(Product.product_id == id).first()
     if not db.query(Product).filter(Product.product_id == id).update({'product_discount': product.product_discount}):
         raise HTTPException(404, 'Product not found')
-
+    await system_logs("Admin", f"Created a discout for a product named {to_store.product_name}.")
     db.commit()
     return {'message': 'Discount successfully placed.'}
 
@@ -797,7 +778,7 @@ def schedules(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/newSchedule')
-def store(user: SlotBase, db: Session = Depends(get_db)):
+async def store(user: SlotBase, db: Session = Depends(get_db)):
 
     i = 0
     user.slot_number = user.slot_number + 1
@@ -840,10 +821,11 @@ def store(user: SlotBase, db: Session = Depends(get_db)):
             db.add(to_store)
             db.commit()
         i += 1
-    return {'message': 'Success successfully.'}
+    await system_logs("Admin", f"Created new schedule/s.")
+    return {'message': 'Schedule created successfully.'}
 
 @router.post('/updateSchedule/{id}')
-def update(id: str, user: TimeSlotUpdate, db: Session = Depends(get_db)):
+async def update(id: str, user: TimeSlotUpdate, db: Session = Depends(get_db)):
     verify = db.query(Timeslot).filter(Timeslot.slot_id == id).first()
 
     if not verify:
@@ -855,17 +837,18 @@ def update(id: str, user: TimeSlotUpdate, db: Session = Depends(get_db)):
             setattr(verify, key, value)
             db.add(verify)
             db.commit()
-            
+        await system_logs("Admin", f"Updated a schedule.") 
         return {'message': 'Updated successfully.'} 
 
 @router.post('/deactivateSchedule/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
+async def deactivate(id: str, db: Session = Depends(get_db)):
     cancel = db.query(Timeslot).filter(Timeslot.slot_id == id).first()
 
     if not cancel:
         raise HTTPException(404, 'Time Slot to cancel is not found')
     else:
         db.query(Timeslot).filter(Timeslot.slot_id == id).update({'slot_status': "Inactive"})
+        await system_logs("Admin", f"Deactivated a schedule.")
         db.commit()
 
 #ORDER ROUTES
@@ -903,6 +886,7 @@ async def deactivate(id: str, db: Session = Depends(get_db)):
         db.query(Orders).filter(Orders.order_id == id).update({'order_status': "For Pick-up"})
     
     users = db.query(User_credential).filter(User_credential.user_id == cancel.order_userid).first()
+    await system_logs("Admin", f"Accepted an order.")
     await for_pickup([users.user_email])
 
     db.commit()
@@ -922,7 +906,7 @@ def employee(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.get('/denyOrder/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
+async def deactivate(id: str, db: Session = Depends(get_db)):
     cancel = db.query(Orders).filter(Orders.order_id == id).first()
     product = db.query(Product).filter(Product.product_id == cancel.order_productid).first()
     
@@ -933,7 +917,7 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     else:
         db.query(Product).filter(Product.product_id == cancel.order_productid).update({'product_quantity': quantity})
         db.query(Orders).filter(Orders.order_id == id).update({'order_status': "Cancelled"})
-
+    await system_logs("Admin", f"Denied an order.")
     db.commit()
 
     time.sleep(1)
@@ -944,11 +928,12 @@ def deactivate(id: str, db: Session = Depends(get_db)):
 
 #PAYMENT ROUTES
 @router.post('/orderPayment/{id}')
-def payment(id: str, pay: PaymentOrder, db: Session = Depends(get_db)):
+async def payment(id: str, pay: PaymentOrder, db: Session = Depends(get_db)):
     payment = db.query(Orders).filter(Orders.order_id == id).first()
 
     if pay.order_payment == payment.order_total:
         db.query(Orders).filter(Orders.order_id == id).update({'order_status': "Paid"})
+        await system_logs("Admin", f"Successfully paid an order.")
         db.commit()
 
         return {'message': 'Success'}
@@ -956,8 +941,8 @@ def payment(id: str, pay: PaymentOrder, db: Session = Depends(get_db)):
         raise HTTPException(404, 'Insufficient Payment')
     
 @router.post('/appointmentPayment')
-def store(form_data: PaymentB, db: Session = Depends(get_db)):
-    print(form_data)
+async def store(form_data: PaymentB, db: Session = Depends(get_db)):
+    
     query = db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).first()
 
     babayaran = query.ap_amount
@@ -980,6 +965,17 @@ def store(form_data: PaymentB, db: Session = Depends(get_db)):
         payment_appointmentID = form_data.payment_appointmentID
     )
     db.add(to_store)
+    await system_logs("Admin", f"Successfully paid an appointment.")
     db.commit()
 
     return {'message': 'Payment added successfully.'}
+
+#LOGS ROUTE
+@router.post('/deleteLogs')
+async def deleteLogs(db: Session = Depends(get_db)):
+
+    with open('logging.log', 'w') as f:
+    # Immediately close the file
+        pass
+
+    return {'message': 'Logs Cleared'}

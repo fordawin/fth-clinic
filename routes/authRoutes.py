@@ -8,6 +8,7 @@ from passlib.context import CryptContext
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from dotenv import dotenv_values
+from systemlogs import *
 config_credentials = dict(dotenv_values(".env"))
 
 secret = config_credentials["SECRET"]

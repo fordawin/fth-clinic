@@ -7,7 +7,7 @@ from dependencies import get_token, check_employee
 import datetime as dt
 import time
 from datetime import timedelta
-
+from systemlogs import *
 router = APIRouter(
     prefix='/slot',
     tags=['slot'], dependencies=[Depends(check_employee)]

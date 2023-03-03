@@ -4,7 +4,7 @@ from schemas.receiptSchema import ReceiptBase
 from models.receiptModel import Receipt
 from database import get_db
 from dependencies import get_token
-
+from systemlogs import *
 
 router = APIRouter(
     prefix='/receipt',

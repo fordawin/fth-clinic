@@ -18,7 +18,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, HTMLResponse
 import time
 from for_email import *
-
+from systemlogs import *
 def get_random_string(length):
     # choose from all lowercase letter
     letters = string.ascii_lowercase
@@ -41,11 +41,6 @@ router = APIRouter(
 
 templates = Jinja2Templates(directory="templates")
 
-# @router.get('/')
-# def all(db: Session = Depends(get_db)):
-#     query = db.query(Appointment, Service, Client).join(Service).filter(Appointment.ap_status == "Paid").all()
-#     product = db.query(Appointment).filter(Appointment.ap_status == "Paid").all()
-#     return {'Appointments': query[].Appointment.ap_amount}
 @router.get('/')
 def appointments(request: Request, db: Session = Depends(get_db)):
     try:
@@ -111,6 +106,7 @@ async def store(form_data: AppointmentBase = Depends(AppointmentBase.as_form), t
     )
     await send_appointment([token["email"]], to_store.ap_clientName, to_store.ap_date, to_store.ap_startTime, to_store.ap_endTime, to_store.ap_service, to_store.ap_amount)
     db.add(to_store)
+    
     db.commit()
     time.sleep(1)
 

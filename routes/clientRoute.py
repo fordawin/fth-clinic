@@ -25,7 +25,7 @@ from datetime import timedelta
 import time
 import random
 import string
-
+from systemlogs import *
 
 #image upload
 from fastapi import File, UploadFile
@@ -51,14 +51,9 @@ def password_verify(plain, hashed):
 def password_hash(password):
     return pwd_context.hash(password)
 
-# router = APIRouter(
-#     prefix='/client',
-#     tags=['client'], dependencies=[Depends(get_token)]
-# )
-
 router = APIRouter(
     prefix='/client',
-    tags=['client']
+    tags=['client'], dependencies=[Depends(get_token)]
 )
 
 templates = Jinja2Templates(directory="templates")
@@ -116,8 +111,9 @@ async def upload_profile(id: str, file: UploadFile = File(...), db: Session = De
     return response
 
 @router.post('/{id}', response_model=clientUpdate)
-def update(id: str, form_data: clientUpdate = Depends(clientUpdate.as_form), db: Session = Depends(get_db)):
+async def update(id: str, form_data: clientUpdate = Depends(clientUpdate.as_form), db: Session = Depends(get_db)):
     verify = db.query(Client).filter(Client.cl_id == id).first()
+    main = db.query(User_credential).filter(User_credential.user_id == verify.cl_user_credential).first()
     user_num_cl = db.query(Client).filter(Client.cl_contactNo == form_data.cl_contactNo).first()
     user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == form_data.cl_contactNo).first()
     user_num_em = db.query(Employee).filter(Employee.em_contactNo == form_data.cl_contactNo).first()
@@ -129,7 +125,8 @@ def update(id: str, form_data: clientUpdate = Depends(clientUpdate.as_form), db:
         user_data = form_data.dict(exclude_unset=True)
         for key, value in user_data.items():
             setattr(verify, key, value)
-            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+
+        await system_logs(main.user_username, f"Updated their profile.")    
         db.add(verify)
         db.commit()
         
@@ -140,8 +137,9 @@ def update(id: str, form_data: clientUpdate = Depends(clientUpdate.as_form), db:
                         user_data = form_data.dict(exclude_unset=True)
                         for key, value in user_data.items():
                             setattr(verify, key, value)
-                            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+                            
                         db.add(verify)
+                        await system_logs(main.user_username, f"Updated their profile.")
                         db.commit()
 
                 else:
@@ -156,24 +154,6 @@ def update(id: str, form_data: clientUpdate = Depends(clientUpdate.as_form), db:
     response = RedirectResponse(url='/client/profile', status_code=302)
 
     return response
-
-@router.post('/admin/{id}')
-def update(id: str, user: clientUpdate, db: Session = Depends(get_db)):
-    verify = db.query(Client).filter(Client.cl_id == id).first()
-    user_num_cl = db.query(Client).filter(Client.cl_contactNo == user.cl_contactNo).first()
-    user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == user.cl_contactNo).first()
-    user_num_em = db.query(Employee).filter(Employee.em_contactNo == user.cl_contactNo).first()
-
-    if not verify:
-        raise HTTPException(404, 'User to update is not found')
-
-    if user.cl_contactNo == verify.cl_contactNo:
-        user_data = user.dict(exclude_unset=True)
-        for key, value in user_data.items():
-            setattr(verify, key, value)
-            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
-        db.add(verify)
-        db.commit()
   
 @router.get('/deactivate/{id}')
 def deactivate(id: str, db: Session = Depends(get_db)):
