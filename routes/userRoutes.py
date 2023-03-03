@@ -95,13 +95,14 @@ async def login(response: Response, form_data: LoginForm, db: Session = Depends(
     if user:
         match = password_verify(form_data.user_password, user.user_password)
         if match:
-            data = TokenData(id = user.user_id, email = user.user_email, type = user.user_type)
-            token = jwt.encode(dict(data), secret)
-            # response = RedirectResponse(url='appointments', status_code=302)
-            response.set_cookie('token', token, httponly=True)
-            response.set_cookie('type', user.user_type, httponly=False)
-            
-            return token
+            if user.user_status == "Active":
+                data = TokenData(id = user.user_id, email = user.user_email, type = user.user_type)
+                token = jwt.encode(dict(data), secret)
+                # response = RedirectResponse(url='appointments', status_code=302)
+                response.set_cookie('token', token, httponly=True)
+                response.set_cookie('type', user.user_type, httponly=False)
+                
+                return token
 
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

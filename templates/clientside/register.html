@@ -219,7 +219,7 @@
 
                     <div class="col-md-6">
                       <div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
-                        <input type="text" id="contact_no" class="form-control" required="active" name="cl_contactNo" placeholder="Contact Number" >
+                        <input type="number" min="0" id="contact_no" class="form-control" required="active" name="cl_contactNo" placeholder="Contact Number" >
                         <label class="form-label" for="contact_no">Contact Number<span style="color: red;">*</span></label>
                       </div>
                     </div>
@@ -356,7 +356,8 @@ function updateProgressbar() {
     icon: 'success',
     title: 'Successfully Registered',
     text: '',
-    footer: 'Would you like to \t <b><a href="https://clinic-local.herokuapp.com/users">login?</a></b>',
+    footer: '<center>An email has been sent to your gmail to activate your newly registered account.<center>',
+    // footer: 'Would you like to \t <b><a href="https://clinic-local.herokuapp.com/users">login?</a></b>',
     timer: 15000
   }).then((result) => {
 			if (result.isConfirmed) {

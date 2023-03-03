@@ -932,8 +932,8 @@ async def payment(id: str, pay: PaymentOrder, db: Session = Depends(get_db)):
         raise HTTPException(404, 'Insufficient Payment')
     
 @router.post('/appointmentPayment')
-def store(form_data: PaymentB, db: Session = Depends(get_db)):
-    print(form_data)
+async def store(form_data: PaymentB, db: Session = Depends(get_db)):
+
     query = db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).first()
 
     babayaran = query.ap_amount
@@ -970,6 +970,3 @@ async def deleteLogs(db: Session = Depends(get_db)):
         pass
 
     return {'message': 'Logs Cleared'}
-    data = {'message': 'Payment added successfully.'}
-
-    return data
