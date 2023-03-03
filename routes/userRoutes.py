@@ -162,9 +162,8 @@ async def register(response: Response, form_data: ClientBase, db: Session = Depe
                         db.add(to_client)
                         db.commit()
 
-                        time.sleep(5)
-                        response = RedirectResponse(url='login', status_code=302)
-                        return response
+                        return
+                    
                     else:
                         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create user. Email already exists')       
                 else:

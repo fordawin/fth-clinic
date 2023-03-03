@@ -27,7 +27,7 @@ exception_handlers = {404: not_found_error,
                       405: method_not_allowed}
 
 # app = FastAPI()
-app = FastAPI(exception_handlers=exception_handlers)
+app = FastAPI()
 # Mount static folder
 app.mount('/static', StaticFiles(directory='static'), name='static')
 

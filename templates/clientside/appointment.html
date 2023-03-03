@@ -96,6 +96,7 @@
                                       <th>Date</th>
                                       <th>Start-End<em class="text-muted mb-0  small"> (Time) </em> </th>
                                       <th>Invoice</th>
+									  <th>Status</th>
                                       <th>Action</th>
                                       
                                     </tr>
@@ -110,6 +111,7 @@
 										  <td>
 											  <a type="button" class="btn btn-sm btn-outline-warning rounded-circle" data-toggle="modal" data-target="#invoice{{appointments.ap_id}}"><i class="uil uil-file align-text-bottom text-primary h5 "></i></a>
 										  </td>
+										  <td><a>{{ appointments.ap_status }}</a> </td>
 										  <td>
 											  <a type="button" class="btn btn-sm btn-outline-success rounded-circle" data-toggle="modal" data-target="#viewAppointment{{appointments.ap_id}}"><i class="uil uil-eye align-text-bottom text-primary h5 "></i></a>
 											  <a type="button" class="btn btn-sm btn-outline-danger rounded-circle" data-toggle="modal" data-target="#cancelAppointment{{appointments.ap_id}}"><i class="uil uil-times-circle align-text-bottom text-primary h5"></i></a>
@@ -139,6 +141,7 @@
                                     <th>Date</th>
                                     <th>Start-End<em class="text-muted mb-0  small"> (Time) </em> </th>
                                     <th>Invoice</th>
+									<th>Status</th>
                                     <th>Action</th>
                                   </tr>
                                 </thead>
@@ -152,6 +155,7 @@
 											<td>
 												<a type="button" class="btn btn-sm btn-outline-warning rounded-circle" data-toggle="modal" data-target="#invoice{{appointments.ap_id}}"><i class="uil uil-file align-text-bottom text-primary h5 "></i></a>
 											</td>
+											<td><a>{{ appointments.ap_status }}</a> </td>
 											<td>
 												<a type="button" class="btn btn-sm btn-outline-success rounded-circle" data-toggle="modal" data-target="#viewAppointment{{appointments.ap_id}}"><i class="uil uil-eye align-text-bottom text-primary h5 "></i></a>
 											</td>
@@ -327,13 +331,15 @@
 		<div class="modal-header" style="background-color: rgb(175, 44, 44); color: white">
 		  <h5 class="modal-title" id="exampleModalLabel">Cancel Appointment</h5>
 		</div>
-		<div class="modal-body">
-		 Are you sure you want to cancel this appointment?
-		</div>
-		<div class="modal-footer">
-		  <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-		  <a class="btn btn-danger" href="http://127.0.0.1:8000/appointment/deactivate/{{appointments.ap_id}}" onclick="confirm()">Save changes</a>
-		</div>
+		<form action="http://127.0.0.1:8000/client/cancelAppointment/{{appointments.ap_id}}" id="cancelForm">
+			<div class="modal-body">
+			Are you sure you want to cancel this appointment?
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+			<button type="submit" class="btn btn-sm btn-danger">Save changes</button>
+			</div>
+		</form>
 	  </div>
 	</div>
   </div>
@@ -381,14 +387,54 @@
   <!-- MODAL END  -->
   {% endif %}
 {% endfor %} 
-  <script>
+  <script type="text/javascript">
     function confirm() {
-      Swal.fire(
-        'Appointment Canceled!',
-        '',
-        'success'
-      )
-    }
+        Swal.fire({
+          icon: 'success',
+          title: 'Appointment Canceled',
+          showConfirmButton: true,
+          timer: 2000
+      })
+        }
+      function sweetError(message) {
+        Swal.fire({
+        icon: 'error',
+        title: 'Sorry',
+        text: message,
+        footer: ''
+    })
+      }
+	  function windowsOpen(){
+		window.open("appointments", "_self").reload()
+	}
+
+	$("#cancelForm").submit(function(e) {
+    e.preventDefault();
+    var frm = $("#cancelForm");
+	var data = {};
+	$.each(this, function(i, v){
+		var input = $(v);
+		data[input.attr("name")] = input.val();
+		delete data["undefined"];
+	});
+    $.ajax({
+		contentType:"application/json",
+        type:frm.attr("method"),
+        url:frm.attr("action"),
+        dataType:'text',
+		data: JSON.stringify(data),
+        success: function(data) {
+			confirm();
+			const myTimeout = setTimeout(windowsOpen, 2000);
+        },
+        error: function(error) {
+			console.log(error);
+         // console.log(error.responseText.slice(11,-2))
+         resAlert = error.responseText.slice(11,-2);
+         sweetError(resAlert);
+        }
+    })
+});
   </script>
 <!-- <script src="{{url_for('static', path='/assets/js/sessionchecker.js')}}"></script> -->
 {% endblock %}

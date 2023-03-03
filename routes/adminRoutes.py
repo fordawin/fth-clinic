@@ -427,22 +427,13 @@ async def updateEmployee(response: Response, form_data: EmployeeBase = Depends(E
 @router.get('/appointment')
 def appointments(request: Request, db: Session = Depends(get_db)):
     try:
-        query = db.query(Appointment).all()
-        query1 = db.query(Service).all()
-        query2 = db.query(Timeslot).all()
-        applen = int(len(query))
-        serlen = int(len(query1))
-        serlist = [(serlen)]
-        applist = [(applen)]
-        timlen = int(len(query2))
-        timlist = [(timlen)]
-
-        lst_all = query + query1 + query2 + applist + serlist + timlist
+        queryJoin = db.query(Appointment, Service, Timeslot) \
+        .join(Appointment, Appointment.ap_serviceType == Service.service_id) \
+        .join(Timeslot, Timeslot.slot_id == Appointment.ap_slotID)
 
         return templates.TemplateResponse('adminside/adminAppointments.html', {
             'request': request,
-            'appointments': lst_all,
-            'details': queryJoin
+            'data': queryJoin
         })
         
     except Exception as e:
@@ -941,8 +932,8 @@ async def payment(id: str, pay: PaymentOrder, db: Session = Depends(get_db)):
         raise HTTPException(404, 'Insufficient Payment')
     
 @router.post('/appointmentPayment')
-async def store(form_data: PaymentB, db: Session = Depends(get_db)):
-    
+def store(form_data: PaymentB, db: Session = Depends(get_db)):
+    print(form_data)
     query = db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).first()
 
     babayaran = query.ap_amount
@@ -954,7 +945,7 @@ async def store(form_data: PaymentB, db: Session = Depends(get_db)):
     addPoints = int(points.user_points) + 1
 
     if bayad < babayaran:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Insufficient Funds')
+        raise HTTPException(status_code=409, detail= f'Insufficient Funds')
     else:
         db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).update({"ap_status": "Paid"})
         db.query(User_credential).filter(User_credential.user_id == points.user_id).update({"user_points": addPoints})
@@ -979,3 +970,6 @@ async def deleteLogs(db: Session = Depends(get_db)):
         pass
 
     return {'message': 'Logs Cleared'}
+    data = {'message': 'Payment added successfully.'}
+
+    return data
