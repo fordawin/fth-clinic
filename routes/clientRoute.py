@@ -330,18 +330,14 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     pastHour = dt_time1
 
     valid = pastHour - currentHour
-
+    
     if not cancel:
-        raise HTTPException(402, 'Appointment to cancel is not found.')
+        raise HTTPException(status_code=404, detail='Appointment to cancel is not found.')
     elif valid <= duration:
-        raise HTTPException(402, 'Cannot cancel appointment 1 hour before your session.')
+        raise HTTPException(status_code=404, detail='Cannot cancel appointment 1 hour before your session.')
     else:
         db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Pending"})
         
     db.commit()
-
-    time.sleep(1)
-
-    response = RedirectResponse(url='/users/appointments', status_code=302)
-
-    return response
+    data = {'message': 'Success'}
+    return data

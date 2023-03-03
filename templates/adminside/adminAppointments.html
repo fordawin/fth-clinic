@@ -47,7 +47,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for appointment in appointments[:appointments[-3]] %}
+                                    {% for appointment, service, timeslot in data %}
                                     <tr>
                                         <td>{{ appointment.ap_number }}</td>
                                         <td>{{ appointment.ap_clientName }}</td>
@@ -57,8 +57,8 @@
                                         <td>{{ appointment.ap_startTime }} - {{ appointment.ap_endTime }}</td>
                                         <td>{{ appointment.ap_status }}</td>
                                         <td class="text-white">
-                                            <span><a type="button" class="btn btn-warning btn-sm " data-toggle="modal" data-target="#viewAppointments{{appointment.ap_id}}">View</a></span>
-                                            <span><a type="button" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#deleteAppointments{{appointment.ap_id}}">Delete</a></span>
+                                            <span><a type="button" class="btn btn-warning btn-sm " data-toggle="modal" data-target="#viewAppointment{{appointment.ap_id}}">View</a></span>
+                                            <span><a type="button" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#deleteAppointment{{appointment.ap_id}}">Delete</a></span>
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -95,7 +95,7 @@
                     <div class="col-md-6">
                         <label class="form-label" for="">Type</label>
                         <select class="form-control" name="ap_serviceType" id="">
-                            {% for service in appointments[appointments[-3]:-appointments[-1] - appointments[-2]] %}
+                            {% for appointment, service, timeslot in data %}
                             <option value="{{service.service_id}}">{{service.service_name}}</option>
                             {% endfor %}
                         </select>
@@ -103,7 +103,7 @@
                     <div class="col-md-6">
                         <label class="form-label" for="">TIME</label>
                         <select class="form-control" name="ap_slotID" id="">
-                            {% for timeslot in appointments[appointments[-3] + appointments[-2]:-3] %}
+                            {% for appointment, service, timeslot in data %}
                             <option value="{{timeslot.slot_id}}">{{timeslot.slot_time}}</option>
                             {% endfor %}
                         </select>
@@ -120,7 +120,7 @@
         </div>
         </div>
   </div>
-{% for appointment in appointments[:appointments[-3]] %}
+  {% for appointment, service, timeslot in data %}
   <!-- View Appointments Modal -->
   <div class="modal fade" id="viewAppointments{{appointment.ap_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -162,6 +162,7 @@
     </div>
 {% endfor %}
     <!-- Edit Appointments Modal -->
+    {% for appointment, service, timeslot in data %}
   <div class="modal fade" id="editAppointments" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -172,20 +173,20 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                <form action="https://faith-hope-love.onrender.com/admin/appointment/{{appointments.ap_id}}" id="appUpdate" method="POST">
+                <form action="https://faith-hope-love.onrender.com/admin/appointment/{{appointment.ap_id}}" id="appUpdate" method="POST">
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label" for="">Client's Name</label>
-                            <input class="form-control" type="text" value="{{appointments.ap_fullName}}">
+                            <input class="form-control" type="text" value="{{appointment.ap_fullName}}">
                         </div>
                         <div class="col-md-12">
                             <label class="form-label" for="">Condition</label>
-                            <textarea class="form-control" value="{{appointments.ap_comorbidity}}" rows="4"></textarea>
+                            <textarea class="form-control" value="{{appointment.ap_comorbidity}}" rows="4"></textarea>
                         </div>
                         
                         <div class="col-md-6">
                             <label class="form-label" for="">Type</label>
-                            <select class="form-control" value="{{appointments.ap_type}}">
+                            <select class="form-control" value="{{appointment.ap_type}}">
                                 <option value="">Covid-19</option>
                                 <option value="">Anti-Rabies</option>
                                 <option value="">Laboratory</option>
@@ -194,19 +195,19 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="">Date</label>
-                            <input class="form-control" type="date" value="{{appointments.ap_date}}">
+                            <input class="form-control" type="date" value="{{appointment.ap_date}}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="">Start Time</label>
-                            <input class="form-control" type="time" value="{{appointments.ap_startTime}}">
+                            <input class="form-control" type="time" value="{{appointment.ap_startTime}}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="">End Time</label>
-                            <input class="form-control" type="time" value="{{appointments.ap_endTime}}">
+                            <input class="form-control" type="time" value="{{appointment.ap_endTime}}">
                         </div>
                         <!-- <div class="col-md-12">
                             <label class="form-label" for="">Doctor's Name</label>
-                            <input class="form-control" type="number" value="{{appointments.ap_}}">
+                            <input class="form-control" type="number" value="{{appointment.ap_}}">
                         </div> -->
                         
                     </div>
@@ -221,8 +222,8 @@
             </div>
         </div>
     </div>
-
-{% for appointment in appointments[:appointments[-3]] %}
+    {% endfor %}
+    {% for appointment, service, timeslot in data %}
     <!-- Delete Appointments Modal -->
     <div class="modal fade" id="deleteAppointments{{appointment.ap_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
