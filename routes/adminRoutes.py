@@ -211,9 +211,6 @@ async def createDoctor(response: Response, form_data: DoctorBase, db: Session = 
                         db.commit()
                         db.refresh(to_employee)
 
-                        # time.sleep(1)
-
-                        # response = RedirectResponse(url='/admin/doctor', status_code=302)
 
                         return
                     else:
