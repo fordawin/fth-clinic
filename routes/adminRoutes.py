@@ -962,6 +962,7 @@ async def store(form_data: PaymentB, db: Session = Depends(get_db)):
 
     return {'message': 'Payment added successfully.'}
 
+
 #LOGS ROUTE
 @router.post('/deleteLogs')
 async def deleteLogs(db: Session = Depends(get_db)):

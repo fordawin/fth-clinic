@@ -209,4 +209,3 @@ async def store(form_data: AppointmentEmployee = Depends(AppointmentEmployee.as_
 
     response = RedirectResponse(url='/payment/base', status_code=302)
 
-    # return {'message': 'Appointment added successfully.'}
