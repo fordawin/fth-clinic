@@ -30,9 +30,6 @@ router = APIRouter(
 
 templates = Jinja2Templates(directory="templates")
 
-# @router.get("/")
-# def registration(request: Request):
-#     return templates.TemplateResponse("adminside/admin.html", {"request": request})
 
 @router.get("/")
 def registration(request: Request):
