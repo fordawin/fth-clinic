@@ -194,6 +194,7 @@ async def createDoctor(response: Response, form_data: DoctorBase, db: Session = 
                             dt_middleName = form_data.dt_middleName,
                             dt_lastName = form_data.dt_lastName,
                             dt_fullName = form_data.dt_firstName + " " + form_data.dt_middleName + " " + form_data.dt_lastName,
+                            dt_specialize = form_data.dt_specialize,
                             dt_houseNo = form_data.dt_houseNo,
                             dt_street = form_data.dt_street,
                             dt_brgy = form_data.dt_brgy,

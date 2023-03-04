@@ -184,6 +184,7 @@ class DoctorBase(UserBase):
     dt_middleName : Optional[str] = None 
     dt_lastName : Optional[str] = None 
     dt_fullName : Optional[str] = None 
+    dt_specialize : Optional[str] = None 
     dt_houseNo : Optional[str] = None 
     dt_street : Optional[str] = None 
     dt_brgy : Optional[str] = None 

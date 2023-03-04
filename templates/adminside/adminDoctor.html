@@ -33,6 +33,7 @@
                                 <thead>
                                     <tr>
                                         <th>Doctor Name</th>
+                                        <th>Specialize</th>
                                         <th>Email</th>
                                         <th>Contact #</th>
                                         <th>Address</th>
@@ -44,6 +45,7 @@
                                     {% for usercred, doctors in doctor %}
                                     <tr>
                                         <td>{{ doctors.dt_firstName }} {{ doctors.dt_middleName }} {{ doctors.dt_lastName }}</td>
+                                        <td>{{ doctors.dt_specialize }}</td>
                                         <td>{{ usercred.user_email }}</td>
                                         <td>{{ doctors.dt_contactNo }}</td>
                                         <td>{{ doctors.dt_address }}</td>
@@ -120,7 +122,11 @@
                             <label class="form-label" for="">City</label>
                             <input class="form-control" type="text" name="dt_city">
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-4">
+                            <label class="form-label" for="">Specialize</label>
+                            <input class="form-control" type="text" name="dt_specialize">
+                        </div>
+                        <div class="col-md-4">
                             <label class="form-label" for="">Email</label>
                             <input class="form-control" type="email" name="user_email">
                         </div>
