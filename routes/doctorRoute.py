@@ -32,19 +32,8 @@ templates = Jinja2Templates(directory="templates")
 def home(request: Request):
     return templates.TemplateResponse("adminside/adminDoctor.html", {"request": request})
 
-
-@router.get('/{id}', status_code=status.HTTP_202_ACCEPTED)
-def findOne(id: str, db: Session = Depends(get_db)):
-
-    user = db.query(Doctor).filter(Doctor.dt_id == id).first()
-
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f'Doctor does not exists')
-
-    return {'user': user}
-
 @router.post('/{id}')
-def update(id: str, user: doctorUpdate, db: Session = Depends(get_db)):
+async def update(id: str, user: doctorUpdate, db: Session = Depends(get_db)):
     verify = db.query(Doctor).filter(Doctor.dt_id == id).first()
     user_num_cl = db.query(Client).filter(Client.cl_contactNo == user.dt_contactNo).first()
     user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == user.dt_contactNo).first()
@@ -57,8 +46,10 @@ def update(id: str, user: doctorUpdate, db: Session = Depends(get_db)):
         user_data = user.dict(exclude_unset=True)
         for key, value in user_data.items():
             setattr(verify, key, value)
-            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+
+        await system_logs("Dr.", verify.dt_fullName, f"Updated their profile.") 
         db.add(verify)
+        
         db.commit()
         
     else:
@@ -68,7 +59,8 @@ def update(id: str, user: doctorUpdate, db: Session = Depends(get_db)):
                         user_data = user.dict(exclude_unset=True)
                         for key, value in user_data.items():
                             setattr(verify, key, value)
-                            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+                        
+                        await system_logs("Dr.", verify.dt_fullName, f"Updated their profile.") 
                         db.add(verify)
                         db.commit()
 
@@ -113,12 +105,13 @@ async def upload_profile(id: str, file: UploadFile = File(...), db: Session = De
     return {"status": "ok", "filename": file_url}
 
 @router.get('/deactivate/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
+async def deactivate(id: str, db: Session = Depends(get_db)):
     cancel = db.query(User_credential).filter(User_credential.user_id == id).first()
 
     if not cancel:
         raise HTTPException(404, 'Doctor to delete is not found')
     else:
+        await system_logs("Dr.", cancel.user_username, f"'s account has been deactivated'") 
         db.query(User_credential).filter(User_credential.user_id == id).update({'user_status': "Inactive"})
         
     db.commit()
@@ -141,6 +134,7 @@ async def approve(id: str, db: Session = Depends(get_db)):
         db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Cancelled"})
 
     users = db.query(User_credential).filter(User_credential.user_id == cancel.ap_clientID).first()
+    await system_logs("Dr.", users.user_username, f"Approved the cancellation of appointment.") 
     await appointment_cancel([users.user_email])
     db.commit()
 
@@ -155,6 +149,8 @@ async def deny(id: str, db: Session = Depends(get_db)):
     else:
         db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Unpaid"})
 
+    users = db.query(User_credential).filter(User_credential.user_id == cancel.ap_clientID).first()
+    await system_logs("Dr.", users.user_username, f"Denied the cancellation of appointment.") 
     db.commit()
 
     return

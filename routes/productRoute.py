@@ -4,9 +4,11 @@ from sqlalchemy.orm import Session
 from schemas.productSchema import ProductBase, productUpdate, Discount
 from models.productsModel import Product
 from database import get_db
+from dotenv import dotenv_values
 from dependencies import get_token, check_employee
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, HTMLResponse
+from models.userCredentialModel import User_credential
 import time
 from systemlogs import *
 #img
@@ -15,6 +17,8 @@ from fastapi.staticfiles import StaticFiles
 from PIL import Image
 import secrets
 
+config_credentials = dict(dotenv_values(".env"))
+secret = config_credentials["SECRET"]
 router = APIRouter(
     prefix='/product',
     tags=['product'], dependencies=[Depends(check_employee)]
@@ -74,6 +78,9 @@ async def store(request: Request, product: ProductBase = Depends(ProductBase.as_
             product_description = product.product_description,
             product_status = "Active"
         )
+        token = jwt.decode(token, secret, algorithms=['HS256'])
+        main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+        await system_logs("Employee.", main.user_username, f"Created a new product.")
 
         db.add(to_store)
         db.commit()
@@ -131,7 +138,7 @@ async def store(request: Request, product: ProductBase = Depends(ProductBase.as_
         return response
 
 @router.post('/{id}', response_model=productUpdate)
-def update(id: str, user: productUpdate, db: Session = Depends(get_db)):
+async def update(id: str, user: productUpdate, db: Session = Depends(get_db)):
     verify = db.query(Product).filter(Product.product_id == id).first()
 
     if not verify:
@@ -143,6 +150,10 @@ def update(id: str, user: productUpdate, db: Session = Depends(get_db)):
         user_data = user.dict(exclude_unset=True)
         for key, value in user_data.items():
             setattr(verify, key, value)
+        token = jwt.decode(token, secret, algorithms=['HS256'])
+        main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+        await system_logs("Employee.", main.user_username, f"Updated a product.")
+
         db.add(verify)
         db.commit()
 

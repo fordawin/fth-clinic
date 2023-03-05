@@ -3,12 +3,17 @@ from fastapi import APIRouter, Depends, HTTPException, Cookie, status, Response,
 from sqlalchemy.orm import Session
 from schemas.serviceSchema import ServiceBase, ServiceBas, updateService
 from models.serviceModel import Service
+from models.userCredentialModel import User_credential
+from dotenv import dotenv_values
 from database import get_db
 from dependencies import get_token, check_employee
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 import time
 from systemlogs import *
+
+config_credentials = dict(dotenv_values(".env"))
+secret = config_credentials["SECRET"]
 router = APIRouter(
     prefix='/service',
     tags=['service'], dependencies=[Depends(check_employee)]
@@ -33,7 +38,7 @@ def read(id: str, db: Session = Depends(get_db)):
     return {'Service': service}
 
 @router.post('/')
-def store(service: ServiceBase, db: Session = Depends(get_db)):
+async def store(service: ServiceBase, db: Session = Depends(get_db)):
 
     if db.query(Service).filter(Service.service_name == service.service_name).first():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot create service. Service already exists')
@@ -44,13 +49,17 @@ def store(service: ServiceBase, db: Session = Depends(get_db)):
             service_description = service.service_description,
             service_status = "Active"
         )
+    token = jwt.decode(token, secret, algorithms=['HS256'])
+    main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+    await system_logs("Employee.", main.user_username, f"Created a new service.")
+
 
     db.add(to_store)
     db.commit()
     return {'message': 'Service created successfully.'}
 
 @router.post('/update/{id}')
-def update(id: str, user: updateService, db: Session = Depends(get_db)):
+async def update(id: str, user: updateService, db: Session = Depends(get_db)):
     verify = db.query(Service).filter(Service.service_id == id).first()
 
     if not verify:
@@ -59,14 +68,20 @@ def update(id: str, user: updateService, db: Session = Depends(get_db)):
         user_data = user.dict(exclude_unset=True)
         for key, value in user_data.items():
             setattr(verify, key, value)
+        token = jwt.decode(token, secret, algorithms=['HS256'])
+        main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+        await system_logs("Employee.", main.user_username, f"Updated a service.")
         db.add(verify)
         db.commit()
 
 @router.post('/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
+async def deactivate(id: str, db: Session = Depends(get_db)):
 
     if not db.query(Service).filter(Service.service_id == id).update({'service_status': "Inactive"}):
         raise HTTPException(404, 'Service to delete is not found')
+    token = jwt.decode(token, secret, algorithms=['HS256'])
+    main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+    await system_logs("Employee.", main.user_username, f"Deactivated a service.")
 
     db.commit()
     return {'message': 'Service removed successfully.'}

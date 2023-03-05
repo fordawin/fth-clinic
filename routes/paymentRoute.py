@@ -86,7 +86,7 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/base')
-def store(form_data: PaymentBase, db: Session = Depends(get_db)):
+async def store(form_data: PaymentBase, db: Session = Depends(get_db)):
 
     query = db.query(Appointment).filter(Appointment.ap_id == form_data.payment_appointmentID).first()
 
@@ -109,6 +109,9 @@ def store(form_data: PaymentBase, db: Session = Depends(get_db)):
         payment_amount = form_data.payment_amount,
         payment_appointmentID = form_data.payment_appointmentID
     )
+    token = jwt.decode(token, secret, algorithms=['HS256'])
+    main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+    await system_logs("Employee", main.user_username, f"Paid an appointment.")
     db.add(to_store)
     db.commit()
 
@@ -190,6 +193,9 @@ async def deactivate(id: str, db: Session = Depends(get_db)):
         db.query(Orders).filter(Orders.order_id == id).update({'order_status': "For Pick-up"})
 
     users = db.query(User_credential).filter(User_credential.user_id == cancel.order_userid).first()
+    token = jwt.decode(token, secret, algorithms=['HS256'])
+    main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+    await system_logs("Employee", main.user_username, f"Accepted an order.")
 
     await for_pickup([users.user_email])
 
@@ -202,7 +208,7 @@ async def deactivate(id: str, db: Session = Depends(get_db)):
     return response
 
 @router.get('/deny/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
+async def deactivate(id: str, db: Session = Depends(get_db)):
     cancel = db.query(Orders).filter(Orders.order_id == id).first()
     product = db.query(Product).filter(Product.product_id == cancel.order_productid).first()
     
@@ -213,6 +219,9 @@ def deactivate(id: str, db: Session = Depends(get_db)):
     else:
         db.query(Product).filter(Product.product_id == cancel.order_productid).update({'product_quantity': quantity})
         db.query(Orders).filter(Orders.order_id == id).update({'order_status': "Cancelled"})
+        token = jwt.decode(token, secret, algorithms=['HS256'])
+        main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+        await system_logs("Employee", main.user_username, f"Denied an order.")
 
     db.commit()
 

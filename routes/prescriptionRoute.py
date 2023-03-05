@@ -105,7 +105,7 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/base')
-def store(form_data: PrescriptionBase = Depends(PrescriptionBase.as_form), db: Session = Depends(get_db)):
+async def store(form_data: PrescriptionBase = Depends(PrescriptionBase.as_form), db: Session = Depends(get_db)):
 
     db.query(Appointment).filter(Appointment.ap_id == form_data.presc_appointmentID).update({"ap_type": "Done"})
 
@@ -115,6 +115,9 @@ def store(form_data: PrescriptionBase = Depends(PrescriptionBase.as_form), db: S
         presc_treatment = form_data.presc_treatment,
         presc_remarks = form_data.presc_remarks
     )
+    token = jwt.decode(token, secret, algorithms=['HS256'])
+    main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+    await system_logs("Dr.", main.user_username, f"Created a prescription.")
     db.add(to_store)
     db.commit()
     
@@ -137,7 +140,7 @@ def appointments(request: Request, db: Session = Depends(get_db)):
         print(e)
 
 @router.post('/{id}', response_model=PrescriptionUpdate)
-def update(id: str, user: PrescriptionUpdate, db: Session = Depends(get_db)):
+async def update(id: str, user: PrescriptionUpdate, db: Session = Depends(get_db)):
     verify = db.query(Prescription).filter(Prescription.presc_id == id).first()
 
     if not verify:
@@ -146,13 +149,16 @@ def update(id: str, user: PrescriptionUpdate, db: Session = Depends(get_db)):
     user_data = user.dict(exclude_unset=True)
     for key, value in user_data.items():
         setattr(verify, key, value)
+        token = jwt.decode(token, secret, algorithms=['HS256'])
+        main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+        await system_logs("Dr.", main.user_username, f"Updated a prescription.")
         db.add(verify)
         db.commit()
         
     return {'message': 'Updated successfully.'} 
 
 @router.post('/update/{id}', response_model=doctorUpdate)
-def update(id: str, user: doctorUpdate = Depends(doctorUpdate.as_form), db: Session = Depends(get_db)):
+async def update(id: str, user: doctorUpdate = Depends(doctorUpdate.as_form), db: Session = Depends(get_db)):
     verify = db.query(Doctor).filter(Doctor.dt_id == id).first()
     user_num_cl = db.query(Client).filter(Client.cl_contactNo == user.dt_contactNo).first()
     user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == user.dt_contactNo).first()
@@ -166,6 +172,9 @@ def update(id: str, user: doctorUpdate = Depends(doctorUpdate.as_form), db: Sess
         for key, value in user_data.items():
             setattr(verify, key, value)
             # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+        token = jwt.decode(token, secret, algorithms=['HS256'])
+        main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+        await system_logs("Dr.", main.user_username, f"Updated their profile.")
         db.add(verify)
         db.commit()
         
@@ -176,7 +185,9 @@ def update(id: str, user: doctorUpdate = Depends(doctorUpdate.as_form), db: Sess
                         user_data = user.dict(exclude_unset=True)
                         for key, value in user_data.items():
                             setattr(verify, key, value)
-                            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+                        token = jwt.decode(token, secret, algorithms=['HS256'])
+                        main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+                        await system_logs("Dr.", main.user_username, f"Updated their profile.")
                         db.add(verify)
                         db.commit()
 
