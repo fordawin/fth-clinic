@@ -56,3 +56,9 @@ def logout(response: Response):
     response = RedirectResponse(url='/auth', status_code=307)
     response.delete_cookie('token')
     return response
+
+@router.post('/clear')
+async def clear(db: Session = Depends(get_db)):
+    with open('logging.log', 'r') as file:
+        file_contents = file.read()
+    return {'message': file_contents}

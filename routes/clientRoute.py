@@ -156,14 +156,15 @@ async def update(id: str, form_data: clientUpdate = Depends(clientUpdate.as_form
     return response
   
 @router.get('/deactivate/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
+async def deactivate(id: str, db: Session = Depends(get_db)):
     cancel = db.query(User_credential).filter(User_credential.user_id == id).first()
 
     if not cancel:
         raise HTTPException(404, 'User to cancel is not found')
     else:
         db.query(User_credential).filter(User_credential.user_id == id).update({'user_status': "Inactive"})
-        
+
+    await system_logs(cancel.user_username, f"Deactivated their profile.")     
     db.commit()
 
     time.sleep(1)  
@@ -200,6 +201,8 @@ def get_data(request: Request, date: str, db: Session = Depends(get_db)):
 async def home(form_data: AppointmentBase, token: str = Cookie('token'), db: Session = Depends(get_db)):
     token = jwt.decode(token, secret, algorithms=['HS256'])
 
+    main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
+
     serbisyo = db.query(Service).filter(Service.service_id == form_data.ap_serviceType).first()
 
     oras = db.query(Timeslot).filter(Timeslot.slot_id == form_data.ap_slotID).first()
@@ -234,6 +237,7 @@ async def home(form_data: AppointmentBase, token: str = Cookie('token'), db: Ses
         ap_amount = serbisyo.service_price,
         ap_slotID = oras.slot_id
     )
+    await system_logs(main.user_username, f"Scheduled an appointment.") 
     await send_appointment([token["email"]], to_store.ap_clientName, to_store.ap_date, to_store.ap_startTime, to_store.ap_endTime, to_store.ap_service, to_store.ap_amount)
     db.add(to_store)
     db.commit()
@@ -296,8 +300,10 @@ def order(request: Request, token: str = Cookie('token'), db: Session = Depends(
         print(e)
 
 @router.get('/cancelAppointment/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
+async def deactivate(id: str, db: Session = Depends(get_db)):
     cancel = db.query(Appointment).filter(Appointment.ap_id == id).first()
+    token = jwt.decode(token, secret, algorithms=['HS256'])
+    main = db.query(User_credential).filter(User_credential.user_id == token["id"]).first()
 
     currentHour = datetime.datetime.now()
     
@@ -317,6 +323,7 @@ def deactivate(id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail='Cannot cancel appointment 1 hour before your session.')
     else:
         db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Pending"})
+        await system_logs(main.user_username, f"Requested for cancellation of appointment.") 
         
     db.commit()
     data = {'message': 'Success'}

@@ -160,6 +160,7 @@ async def register(response: Response, form_data: ClientBase, db: Session = Depe
                             # cl_updated_by = client.cl_updated_by
                         )
                         await send_email([form_data.user_email], form_data.cl_firstName, form_data.cl_middleName, form_data.cl_lastName)
+                        await system_logs("Client", to_store.user_username, f"registered into our clinic.")
                         db.add(to_client)
                         db.commit()
 

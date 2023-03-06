@@ -39,7 +39,7 @@ from systemlogs import *
 from fastapi.staticfiles import StaticFiles
 from PIL import Image
 import secrets
-from systemlogs import *
+
 def get_random_string(length):
     # choose from all lowercase letter
     letters = string.ascii_lowercase

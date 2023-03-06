@@ -53,7 +53,7 @@ router = APIRouter(
 templates = Jinja2Templates(directory="templates")
 
 @router.post('/{id}')
-def update(id: str, user: employeeUpdate, db: Session = Depends(get_db)):
+async def update(id: str, user: employeeUpdate, db: Session = Depends(get_db)):
     verify = db.query(Employee).filter(Employee.em_id == id).first()
     user_num_cl = db.query(Client).filter(Client.cl_contactNo == user.em_contactNo).first()
     user_num_doc = db.query(Doctor).filter(Doctor.dt_contactNo == user.em_contactNo).first()
@@ -66,7 +66,7 @@ def update(id: str, user: employeeUpdate, db: Session = Depends(get_db)):
         user_data = user.dict(exclude_unset=True)
         for key, value in user_data.items():
             setattr(verify, key, value)
-            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+        await system_logs("Dr.", verify.em_fullName, f"Updated their profile.")     
         db.add(verify)
         db.commit()
     else:
@@ -76,10 +76,10 @@ def update(id: str, user: employeeUpdate, db: Session = Depends(get_db)):
                         user_data = user.dict(exclude_unset=True)
                         for key, value in user_data.items():
                             setattr(verify, key, value)
-                            # db.query(User_credential).filter(User_credential.user_id == id).update(verify)
+                            
                         db.add(verify)
                         db.commit()
-
+                        await system_logs("Dr.", verify.em_fullName, f"Updated their profile.") 
                         return {'message': 'Employee updated successfully.'} 
                 else:
                     raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail= f'Cannot update Employee. Mobile Number already exists')
@@ -121,14 +121,15 @@ async def upload_profile(id: str, file: UploadFile = File(...), db: Session = De
     return {"status": "ok", "filename": file_url}
 
 @router.get('/deactivate/{id}')
-def deactivate(id: str, db: Session = Depends(get_db)):
+async def deactivate(id: str, db: Session = Depends(get_db)):
     cancel = db.query(User_credential).filter(User_credential.user_id == id).first()
 
     if not cancel:
         raise HTTPException(404, 'Employee to cancel is not found')
     else:
         db.query(User_credential).filter(User_credential.user_id == id).update({'user_status': "Inactive"})
-        
+
+    await system_logs("Emoloyee", cancel.user_username, f"Deactivated their account.")     
     db.commit()
     
     time.sleep(1)  
@@ -146,6 +147,7 @@ async def deactivate(id: str, db: Session = Depends(get_db)):
         db.query(Orders).filter(Orders.order_id == id).update({'order_status': "For Pick-up"})
 
     users = db.query(User_credential).filter(User_credential.user_id == cancel.order_userid).first()
+    await system_logs("Employee", users.user_username, f"Approved an order.") 
     await for_pickup([users.user_email])
     db.commit()
 
@@ -160,7 +162,8 @@ async def payment(id: str, pay: PaymentB, db: Session = Depends(get_db)):
     if pay.order_payment == payment.order_total:
         db.query(Orders).filter(Orders.order_id == id).update({'order_status': "Paid"})
         db.commit()
-
+        users = db.query(User_credential).filter(User_credential.user_id == payment.order_userid).first()
+        await system_logs("Employee", users.user_username, f"Paid an order.")
         return {'message': 'Success'}
     else:
         raise HTTPException(402, 'Insufficient Payment')
@@ -179,7 +182,8 @@ async def approve(id: str, db: Session = Depends(get_db)):
         db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).update({'slot_capacity': slotAdd})
         db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Cancelled"})
 
-    users = db.query(User_credential).filter(User_credential.user_id == cancel.ap_clientID).first()
+    users = db.query(User_credential).filter(User_credential.user_id == cancel.ap_clientID).first()   
+    await system_logs("Employee", users.user_username, f"Approved a request for cancellation of appointment.")
     await appointment_cancel([users.user_email])
     db.commit()
 
@@ -193,6 +197,8 @@ async def deny(id: str, db: Session = Depends(get_db)):
         raise HTTPException(404, 'Appointment to cancel is not found')
     else:
         db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Unpaid"})
+        users = db.query(User_credential).filter(User_credential.user_id == cancel.ap_clientID).first()   
+        await system_logs("Employee", users.user_username, f"Denied a request for cancellation of appointment.")
 
     db.commit()
 
