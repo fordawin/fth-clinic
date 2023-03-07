@@ -130,20 +130,20 @@ header .navbar-expand-lg .navbar-nav .nav-link {
 
 /*Hero Banner*/
 
-.image{
+/* .image{
     height: 500px;
     display: flex;
     position: relative;
     object-fit: cover;
 
 
-}
+} */
 
-.image img{
+/* .image img{
      
      border-radius: 500%;
      object-fit: cover;
-}
+} */
 
 
 .hero-banner{

@@ -29,6 +29,13 @@
     <title>Login</title>
     <link rel="shortcut icon" href="../static/assets/images/caduceus_logo.png">
    <style>
+      li.active{
+         background-color: #198754;
+         border-radius: 10px
+      }
+      li.active > .nav-link{
+         color: white !important;
+      }
 		.flatpickr-calendar {
 			width: 335px !important;
 		}
@@ -43,11 +50,11 @@
 <body>
 	
 <!-- Start Header -->
-<header>
-   <div id="navbar">
+<header style="z-index: 2 !important">
+   <div id="navbar" >
     <div class="container">
       {% block navcontent%}
-       <nav class="navbar navbar-expand-lg navbar-light">
+       <nav class="navbar navbar-expand-lg navbar-light" >
           <div class="container-fluid">
              <a class="navbar-brand" href="/users/">
              <img src="../static/assets/images/logo.png" alt="">
@@ -57,10 +64,10 @@
              </button>
              <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                   <li class="nav-item">
-                      <a class="nav-link" href="/users/">Home</a>
+                   <li class="nav-item active" >
+                      <a class="nav-link " href="/users/">Home</a>
                    </li>
-                   <li class="nav">
+                   <li class="nav-item">
                       <a class="nav-link" href="about">About</a>
                    </li>
                    <li class="nav-item">
@@ -130,11 +137,8 @@
              <p>Loc: 24k Mansion Unit 5, 45 Timog Ave. Cor. Sct. Tuazon St., Quezon City</p>
           </div>
           <div class="contact-details">
-             <i class="fa fa-phone"></i>
-             <p>+639088907608</p>
-             &nbsp;&nbsp;
-             <i class="fa fa-phone"></i>
-             <p>+639173290155</p>
+             <span><i class="fa fa-phone"></i></span>
+             <p>+639088907608 / +639173290155</p>
           </div>
           <div class="contact-details">
              <i class="fa fa-envelope"></i>
@@ -275,6 +279,12 @@
        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
        fjs.parentNode.insertBefore(js, fjs);
      }(document, 'script', 'facebook-jssdk'));
+   </script>
+
+   <script> 
+    
+    
+     
    </script>
 {% block scripts %}
 {% endblock %}

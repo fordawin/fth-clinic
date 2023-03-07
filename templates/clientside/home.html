@@ -10,23 +10,31 @@
 {%block content%}
 
 <!--Start Hero Banner	-->
-<div class="hero-banner container-fluid" id="home-section">
-	<div class="image" alt="banner" style="  position: absolute; margin-left: 1000px; margin-top: -100px">
-		<img src="../static/assets/images/banner.jpg">
-	</div>
-	 <div class="container">
-		 <div class="row">
-			  <div class="col-md-12">
-				  <div class="banner-text-wrap">
-					   <h2 class="text-white"> <p style="color:rgb(255, 255, 255)">Acupuncture and<br>
-						Herbal Medicine</p></h2>
-						<p style="color:rgb(255, 255, 255)">Dr. Lee of Faith Hope Love Medical Center has <br>practiced traditional Chinese Medicine in the <br>Philippines for 40 years and still continues to serve<br> patients to this day.</p><br>
-					  <a href="http://127.0.0.1:8000/users/register" class="btn" style="color: white;">GET STARTED</a>
-					  </div>
-				  </div>
-			 </div>
+<section class="hero-banner " >
+	<div class="container">
+		<div class="row">
+			
+			<div class="col-md-6 col-sm-12 col-xs-12 col-lg-6">
+				
+					<h2 class="text-white"> <p style="color:rgb(255, 255, 255)">Acupuncture and<br>
+					Herbal Medicine</p></h2>
+					<p style="color:rgb(255, 255, 255)">Dr. Lee of Faith Hope Love Medical Center has <br>practiced traditional Chinese Medicine in the <br>Philippines for 40 years and still continues to serve<br> patients to this day.</p><br>
+					<a href="http://127.0.0.1:8000/users/register" class="btn" style="color: white;">GET STARTED</a>
+					
+				
+			</div>
+
+			<div class="col-md-6 col-sm-12 col-lg-6 col-xs-12">
+				
+					<img src="../static/assets/images/banner.jpg" style="border-radius: 50%; height: 550px " >
+				
+					
+				
+			</div>
+		
 		 </div>
-	</div>
+		</div>
+		</section>
 
 	<section class="ftco-intro">
 		<div class="container">
@@ -266,6 +274,8 @@
 		<div class="pricing-list">
 			<div class="row row-3">
 				{% for services in service %}
+				
+			
 				<div class="col">
 					<div class="pricing-box">
 						<div class="pricing-box-header">
@@ -283,9 +293,10 @@
 							<p><del></del></p>
 						</div>
 						<div class="pricing-box-action">
-							<a href="http://127.0.0.1:8000/users/register" class="btn btn-hover">
-								<span>Order now</span>
+							<a href="http://127.0.0.1:8000/users/register" class="btn btn-success">Order now
+								
 							</a>
+							
 						</div>
 					</div>
 				</div>

@@ -11,7 +11,47 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css"  />
 <link rel="stylesheet" href="{{url_for('static', path='/assets/css/contact.css')}}" type="text/css">	
 {% endblock %}
-
+{% block navcontent%}
+<nav class="navbar navbar-expand-lg navbar-light" >
+   <div class="container-fluid">
+	  <a class="navbar-brand" href="/users/">
+	  <img src="../static/assets/images/logo.png" alt="">
+	  </a>
+	  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	  <span class="navbar-toggler-icon"></span>
+	  </button>
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+			<li class="nav-item" >
+			   <a class="nav-link " href="/users/">Home</a>
+			</li>
+			<li class="nav-item">
+			   <a class="nav-link" href="about">About</a>
+			</li>
+			<li class="nav-item">
+			   <a class="nav-link" href="product">Shop</a>
+			</li>
+			<li class="nav-item active">
+			   <a class="nav-link" href="contact">Contact</a>
+			</li>
+			<li class="nav-item">
+			   <a class="nav-link" href="register">Register</a>
+			</li>
+			
+		   
+		   <li class="nav-item">
+			  <a class="nav-link" href="login">Login</a>
+		   </li>
+			<!-- PROFILE NAVBAR -->
+			<li class="nav-item">
+			 <a class="nav-link " href="#"><i class="fa-solid fa-cart-shopping my-cart-icon"><span class="badge badge-danger my-cart-badge"></span></i>
+			 </a>
+		   </li> 
+		 </ul>
+	  </div>
+   </div>
+</nav>
+{% endblock %}
 <!--End Header	-->
 {% block content %}
 <br><br><br><br><br><br>
@@ -37,12 +77,28 @@
 		</ul>
 	</div>
 	<div class="contact-in">
-		<h1>Contact us</h1>
-		<form data-dashlane-rid="0eb391fa3ce4110b" data-form-type="contact">
-			<input type="text" placeholder="Full Name" class="contact-in-input" data-dashlane-rid="d567e1443fe89316" data-kwimpalastatus="alive" data-kwimpalaid="1675848848089-0" data-form-type="name">
-			<input type="text" placeholder="Email" class="contact-in-input" data-dashlane-rid="e009e7715e4d46bb" data-kwimpalastatus="alive" data-kwimpalaid="1675848848089-1" data-form-type="email">
-			<input type="text" placeholder="Subject" class="contact-in-input" data-dashlane-rid="1e18a76a77a5567e" data-form-type="other">
-			<textarea placeholder="Message" class="contact-in-textarea" data-dashlane-rid="b248e2a6be6e0fd8" data-form-type="other"></textarea>
+		<h3 style="color:white">Contact us</h3>
+		<form data-dashlane-rid="0eb391fa3ce4110b" data-form-type="contact" class="needs-validation-contact" novalidate>
+			<div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+				<input required type="text" id="name" placeholder="Full Name" class="contact-in-input form-control" data-dashlane-rid="d567e1443fe89316" data-kwimpalastatus="alive" data-kwimpalaid="1675848848089-0" data-form-type="name">
+				<label class="form-label" for="name">Full Name<span style="color: red;">*</span></label>
+			
+			</div>
+			
+			<div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+				<input required type="text" id="email" placeholder="Email" class="contact-in-input form-control" data-dashlane-rid="e009e7715e4d46bb" data-kwimpalastatus="alive" data-kwimpalaid="1675848848089-1" data-form-type="email">
+				<label class="form-label" for="email">Email<span style="color: red;">*</span></label>
+			</div>
+	
+			<div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+				<input required type="text" id="subj" placeholder="Subject" class="contact-in-input form-control" data-dashlane-rid="1e18a76a77a5567e" data-form-type="other">
+				<label class="form-label" for="subj">Subject<span style="color: red;">*</span></label>
+			</div>
+			<div class="form-group form-floating form-outline flex-fill mb-0 mt-3">
+				<textarea style="resize: none;height: 200px;" required id="message" placeholder="Message" class="contact-in-textarea form-control" data-dashlane-rid="b248e2a6be6e0fd8" data-form-type="other" ></textarea>
+				<label class="form-label" for="message">Message<span style="color: red;">*</span></label>
+			</div>
+			
 			<input type="submit" value="SUBMIT" class="contact-in-btn" data-dashlane-rid="607a3583ec3ee6f3" data-form-type="action">
 		</form>
 	</div>
@@ -62,4 +118,23 @@
 </section>
 <br><br><br>
 <script src="{{url_for('static', path='/assets/js/sessioncheckers.js')}}"></script>
+<script> 
+	(function() {
+		'use strict';
+		window.addEventListener('load', function() {
+		  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+		  var forms = document.getElementsByClassName('needs-validation-contact');
+		  // Loop over them and prevent submission
+		  var validation = Array.prototype.filter.call(forms, function(form) {
+			form.addEventListener('submit', function(event) {
+			  if (form.checkValidity() === false) {
+				event.preventDefault();
+				event.stopPropagation();
+			  }
+			  form.classList.add('was-validated');
+			}, false);
+		  });
+		}, false);
+	  })();
+</script>
 {% endblock %}
