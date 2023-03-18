@@ -1,0 +1,331 @@
+{% extends 'adminside/adminBase.html' %}
+    
+{%block content%}
+        <!-- End Sidebar -->
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="breadcrumb-holder">
+                        <h1 class="main-title float-left">Admin</h1>
+                        <ol class="breadcrumb float-right">
+                            <li class="breadcrumb-item">Admin</li>
+                            <li class="breadcrumb-item active">Appointments</li>
+                        </ol>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            
+                <!-- end row -->
+                    
+
+          
+
+            <!-- student tracker table  -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
+                    <div class="card mb-3">
+                        <div class="card-header text-white" style="background-color: rgba(54, 162, 235, 1);">
+                            <h3><i class="fa fa-table text-warning" aria-hidden="true"></i> Appointments</h3>
+                        </div>
+                            
+                        <div class="card-body">
+                            <table id="example1"  class="table table-hover table-control no-footer" >
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>Appointment ID</th>
+                                        <th>Client's Name</th>
+                                        <th>Type</th>
+                                        <th>Condition</th>
+                                        <th>Date</th>
+                                        <th>Start Time - End Time</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for appointment, service, timeslot in data %}
+                                        {% if appointment.ap_status == "Pending" %}
+                                    <tr>
+                                        <td>{{ appointment.ap_number }}</td>
+                                        <td>{{ appointment.ap_clientName }}</td>
+                                        <td>{{ appointment.ap_type }}</td>
+                                        <td>{{ appointment.ap_comorbidity }}</td>
+                                        <td>{{ appointment.ap_date }}</td>
+                                        <td>{{ appointment.ap_startTime }} - {{ appointment.ap_endTime }}</td>
+                                        <td>{{ appointment.ap_status }}</td>
+                                        <td class="text-white">
+                                            <span><a type="button" class="btn btn-success btn-sm " data-toggle="modal" data-target="#acceptAppointment{{appointment.ap_id}}">Accept</a></span>
+                                            <span><a type="button" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#denyAppointment{{appointment.ap_id}}">Deny</a></span>
+                                        </td>
+                                    </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>							
+                        <div class="card-footer small text-muted"> Updated yesterday at 11:59 PM</div>
+                    </div><!-- end card-->					
+                </div>
+            </div>
+    <!-- end row -->
+        </div>
+    </div>
+</div>
+   <!-- end row -->
+
+    <!-- Add Appointments Modal -->
+    <div class="modal fade" id="addAppointments" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Add Appointments</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <form method="POST">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="form-label" for="">Condition</label>
+                        <textarea class="form-control" name="ap_comorbidity" id="" rows="4"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="">Type</label>
+                        <select class="form-control" name="ap_serviceType" id="">
+                            {% for appointment, service, timeslot in data %}
+                            <option value="{{service.service_id}}">{{service.service_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="">TIME</label>
+                        <select class="form-control" name="ap_slotID" id="">
+                            {% for appointment, service, timeslot in data %}
+                            <option value="{{timeslot.slot_id}}">{{timeslot.slot_time}}</option>
+                            {% endfor %}
+                        </select>
+                    </div> 
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                </div>
+            </form>
+            </div>
+            
+        </div>
+        </div>
+  </div>
+  {% for appointment, service, timeslot in data %}
+  <!-- View Appointments Modal -->
+  <div class="modal fade" id="viewAppointments{{appointment.ap_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">View Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                <form action="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Appointment ID</label>
+                            <input class="form-control" value="{{appointment.ap_number}}" type="text" readonly>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" for="">Medication</label>
+                            <textarea class="form-control" name="" id="" rows="2"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="">Treatment</label>
+                            <textarea class="form-control" name="" id="" rows="2"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="">Remarks</label>
+                            <textarea class="form-control" name="" id="" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+{% endfor %}
+    {% for appointment, service, timeslot in data %}
+        <!-- Deny Appointments Modal -->
+        <div class="modal fade" id="denyAppointment{{appointment.ap_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Deny Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <form action="http://127.0.0.1:8000/admin/denyCancel/{{appointment.ap_id}}">
+                    <div class="modal-body">
+                    <p>Are you sure you want to deny the cancellation of this appointment?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-sm btn-danger">Yes</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">No</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+    </div>
+    </div>
+    {% endfor %}
+    {% for appointment, service, timeslot in data %}
+    <!-- Accept Appointments Modal -->
+    <div class="modal fade" id="acceptAppointment{{appointment.ap_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Accept Request</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <form action="http://127.0.0.1:8000/admin/approveCancel/{{appointment.ap_id}}">
+                <div class="modal-body">
+                <p>Are you sure you want to approve the cancellation of this appointment?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm btn-danger">Yes</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </form>
+        </div>
+        </div>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+{% block scripts %}
+    <!-- sidebar script -->
+    <script>
+		$(document).ready(function() {
+			// data-tables
+			$('#example1').DataTable();
+					
+			// counter-up
+			$('.counter').counterUp({
+				delay: 10,
+				time: 600
+			});
+		} );		
+	</script>
+
+     <!-- CUSTOM ACTIVE NAVBAR  -->
+     <script>
+		$('.navbar-nav .nav-link').click(function(){
+		$('.navbar-nav .nav-link').removeClass('active');
+		$(this).addClass('active');
+		})
+	</script>
+    <script>
+        function confirm() {
+        Swal.fire({
+          icon: 'success',
+          title: 'Doctor Successfully Added',
+          showConfirmButton: true,
+          timer: 2000
+      })
+        }
+        function delet() {
+            Swal.fire(
+            'Doctor Deleted!',
+            '',
+            'success'
+            )
+      }
+      function edit() {
+            Swal.fire(
+            'Saved Changes!',
+            '',
+            'success'
+            )
+      }
+      function sweetError(message) {
+        Swal.fire({
+        icon: 'error',
+        title: 'Try Again',
+        text: message,
+        footer: ''
+    })
+      }
+    </script>
+    <script type="text/javascript">
+
+        function windowsOpen(message) {
+            window.open("appointment", "_self").reload()
+            }
+        
+          $("#doctorAdd").submit(function(e) {
+              e.preventDefault();
+              var frm = $("#doctorAdd");
+              var data = {};
+              $.each(this, function(i, v){
+                  var input = $(v);
+                  data[input.attr("name")] = input.val();
+                  delete data["undefined"];
+              });
+              $.ajax({
+                  contentType:"application/json",
+                  type:frm.attr("method"),
+                  url:frm.attr("action"),
+                  dataType:'text',
+                  data: JSON.stringify(data),
+                  success: function(data) {
+                    confirm();
+                    const myTimeout = setTimeout(windowsOpen, 2000);
+                  },
+                  error: function(error) {
+                    resAlert = error.responseText.slice(11,-2)
+                    sweetError(resAlert);
+                  }
+              })
+          });
+
+          $("#appUpdate").submit(function(e) {
+              e.preventDefault();
+              var frm = $("#appUpdate");
+              var data = {};
+              $.each(this, function(i, v){
+                  var input = $(v);
+                  data[input.attr("name")] = input.val();
+                  delete data["undefined"];
+              });
+              console.log(data);
+              $.ajax({
+                  contentType:"application/json",
+                  type:frm.attr("method"),
+                  url:frm.attr("action"),
+                  dataType:'text',
+                  data: JSON.stringify(data),
+                  success: function(data) {
+                    confirm();
+                    const myTimeout = setTimeout(windowsOpen, 2000);
+                  },
+                  error: function(error) {
+                    resAlert = error.responseText.slice(11,-2)
+                    sweetError(resAlert);
+                  }
+              })
+          });
+    </script>
+{% endblock %}

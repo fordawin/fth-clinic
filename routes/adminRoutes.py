@@ -115,16 +115,47 @@ def user_credentials(request: Request, db: Session = Depends(get_db)):
     except Exception as e:
         print(e)
 
-@router.get('/appointments')
+@router.get('/PendingAppointments')
 def appointments(request: Request, db: Session = Depends(get_db)):
     try:
-        query = db.query(Appointment).all()
-        return templates.TemplateResponse('adminside/adminAppointments.html', {
+        queryJoin = db.query(Appointment, Service, Timeslot) \
+        .join(Appointment, Appointment.ap_serviceType == Service.service_id) \
+        .join(Timeslot, Timeslot.slot_id == Appointment.ap_slotID)
+
+        return templates.TemplateResponse('adminside/adminPendingAppointments.html', {
             'request': request,
-            'appointments': query
+            'data': queryJoin
         })
     except Exception as e:
         print(e)
+
+@router.get('/AcceptedAppointments')
+def appointments(request: Request, db: Session = Depends(get_db)):
+    try:
+        queryJoin = db.query(Appointment, Service, Timeslot) \
+        .join(Appointment, Appointment.ap_serviceType == Service.service_id) \
+        .join(Timeslot, Timeslot.slot_id == Appointment.ap_slotID)
+
+        return templates.TemplateResponse('adminside/adminAcceptedAppointments.html', {
+            'request': request,
+            'data': queryJoin
+        })
+    except Exception as e:
+        print(e)
+
+@router.get('/CanceledAppointments')
+def appointments(request: Request, db: Session = Depends(get_db)):
+    try:
+        queryJoin = db.query(Appointment, Service, Timeslot) \
+        .join(Appointment, Appointment.ap_serviceType == Service.service_id) \
+        .join(Timeslot, Timeslot.slot_id == Appointment.ap_slotID)
+
+        return templates.TemplateResponse('adminside/adminCanceledAppointments.html', {
+            'request': request,
+            'data': queryJoin
+        })
+    except Exception as e:
+        print(e)        
 
 @router.get('/deactivate/{id}')
 async def deactivate(id: str, db: Session = Depends(get_db)):
@@ -882,11 +913,11 @@ async def deactivate(id: str, db: Session = Depends(get_db)):
 
     return
 
-@router.get('/orderCancelled')
+@router.get('/orderCanceled')
 def employee(request: Request, db: Session = Depends(get_db)):
     try:
         query = db.query(Orders).all()
-        return templates.TemplateResponse('adminside/adminOrderCancelled.html', {
+        return templates.TemplateResponse('adminside/adminOrderCanceled.html', {
             'request': request,
             'order_list': query
         })
@@ -969,3 +1000,39 @@ async def deleteLogs(db: Session = Depends(get_db)):
         pass
 
     return {'message': 'Logs Cleared'}
+
+#Accept/Cancel Appointment
+
+@router.get('/approveCancel/{id}')
+async def approve(id: str, db: Session = Depends(get_db)):
+    cancel = db.query(Appointment).filter(Appointment.ap_id == id).first()
+    slot = db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).first()
+
+    if not cancel:
+        raise HTTPException(404, 'Appointment to cancel is not found')
+    else:
+        slotAdd = int(slot.slot_capacity) + 1
+        db.query(Timeslot).filter(Timeslot.slot_id == cancel.ap_slotID).update({'slot_capacity': slotAdd})
+        db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Canceled"})
+
+    users = db.query(User_credential).filter(User_credential.user_id == cancel.ap_clientID).first()   
+    await system_logs("Admin", f"Approved a request for cancellation of appointment.")
+    await appointment_cancel([users.user_email])
+    db.commit()
+
+    return
+
+@router.get('/denyCancel/{id}')
+async def deny(id: str, db: Session = Depends(get_db)):
+    cancel = db.query(Appointment).filter(Appointment.ap_id == id).first()
+
+    if not cancel:
+        raise HTTPException(404, 'Appointment to cancel is not found')
+    else:
+        db.query(Appointment).filter(Appointment.ap_id == id).update({'ap_status': "Unpaid"})
+        users = db.query(User_credential).filter(User_credential.user_id == cancel.ap_clientID).first()   
+        await system_logs("Admin", f"Denied a request for cancellation of appointment.")
+
+    db.commit()
+
+    return
